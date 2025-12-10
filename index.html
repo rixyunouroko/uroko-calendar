@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Uroko Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- iPhoneでホーム画面追加したとき用（簡易アプリ化） -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+        "Segoe UI", sans-serif;
+      background: #fffaf4;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .date {
+      margin-top: 4px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .box {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .label {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .memo {
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .small-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Uroko Calendar</h1>
+    <div class="date" id="today"></div>
+  </header>
+
+  <!-- 今日の表（人側） -->
+  <div class="box">
+    <div class="label">今日の表（人側）</div>
+    <div class="value" id="front-value">
+      音3・蛇の日（例）
+    </div>
+    <div class="memo" id="front-memo">
+      ・ここに毎日のメモを書く<br />
+      ・断捨離、整える など
+    </div>
+  </div>
+
+  <!-- 今日の裏（神側） -->
+  <div class="box">
+    <div class="label">今日の裏（神側）</div>
+    <div class="value" id="back-value">
+      ○○の日
+    </div>
+    <div class="memo" id="back-memo">
+      ・神々の動きやサインを書くスペース
+    </div>
+  </div>
+
+  <div class="small-note">
+    ※ しらの用マヤ暦メモアプリ（試作版）<br />
+    GitHub で index.html を直接編集して日付ごとに書き換えてね。
+  </div>
+
+  <script>
+    // 今日の日付をいい感じに表示するだけの簡単スクリプト
+    (function () {
+      var d = new Date();
+      var y = d.getFullYear();
+      var m = d.getMonth() + 1;
+      var day = d.getDate();
+      var weekdayNames = ["日", "月", "火", "水", "木", "金", "土"];
+      var w = weekdayNames[d.getDay()];
+
+      var text = y + "年" + m + "月" + day + "日（" + w + "）";
+      document.getElementById("today").textContent = text;
+    })();
+  </script>
+</body>
+</html>
