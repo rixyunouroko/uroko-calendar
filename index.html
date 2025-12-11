@@ -4,23 +4,23 @@
   <meta charset="UTF-8" />
   <title>Uroko Calendar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- iOSでホーム画面アイコンっぽくするやつ -->
+
+  <!-- iOS のホーム画面に追加したとき用 -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
-  <!-- いまは仮のアイコン（あとでケツァルさんアイコンに差し替えOK） -->
+  <!-- ここはあとでケツァルさんアイコンに差し替えればOK -->
   <link
     rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' ry='24' fill='%23f1e2cf'/%3E%3Ctext x='50' y='58' text-anchor='middle' font-size='52'%3E🐉%3C/text%3E%3C/svg%3E"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' ry='24' fill='%23f3d7a0'/%3E%3Ctext x='50' y='58' text-anchor='middle' font-size='40'%3EU%3C/text%3E%3C/svg%3E"
   />
 
   <style>
     :root {
-      --bg: #f1e2cf;
+      --bg: #f7ebda;
       --card: #ffffff;
-      --accent: #e1b76a;
-      --accent-soft: #f5d7a5;
-      --text-main: #3a2a1a;
+      --accent: #d7a95c;
+      --accent-soft: #f3d7a0;
+      --text-main: #3c2815;
       --text-sub: #7a6a55;
       --shadow-soft: 0 8px 18px rgba(0, 0, 0, 0.08);
       --radius-card: 20px;
@@ -37,25 +37,12 @@
         "Hiragino Maru Gothic ProN", "Yu Gothic", "YuGothic", "Noto Sans JP",
         system-ui, sans-serif;
       color: var(--text-main);
-
-      /* 石畳っぽい神殿背景 */
       background-color: var(--bg);
       background-image:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0)),
-        repeating-linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.06),
-          rgba(0, 0, 0, 0.06) 1px,
-          transparent 1px,
-          transparent 34px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          rgba(0, 0, 0, 0.04),
-          rgba(0, 0, 0, 0.04) 1px,
-          transparent 1px,
-          transparent 34px
-        );
+        linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-position: 0 16px;
     }
 
     header {
@@ -65,7 +52,7 @@
 
     h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 26px;
       letter-spacing: 0.08em;
     }
 
@@ -111,6 +98,7 @@
       align-items: baseline;
       justify-content: space-between;
       margin-bottom: 8px;
+      gap: 8px;
     }
 
     .card-title {
@@ -169,6 +157,12 @@
       margin-top: 6px;
     }
 
+    .section-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
     .footer-note {
       margin-top: 18px;
       text-align: center;
@@ -177,48 +171,52 @@
       line-height: 1.6;
     }
 
-    /* 誕生日検索まわり */
+    /* 誕生日フォーム */
+
     .birth-row {
       display: flex;
       gap: 6px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
       align-items: center;
+      margin: 8px 0 10px;
+      flex-wrap: wrap;
     }
 
-    .birth-row input {
-      width: 82px;
+    .birth-row label {
+      font-size: 13px;
+    }
+
+    .birth-input {
+      width: 70px;
       padding: 4px 6px;
-      font-size: 13px;
       border-radius: 999px;
-      border: 1px solid rgba(0, 0, 0, 0.16);
-      text-align: center;
-    }
-
-    .birth-row span.sep {
+      border: 1px solid rgba(0, 0, 0, 0.15);
       font-size: 13px;
-      color: var(--text-sub);
+      text-align: center;
+      background: #fffdf8;
     }
 
-    .birth-row button {
+    .birth-input::placeholder {
+      color: #c0b19a;
+    }
+
+    .birth-button {
       padding: 5px 14px;
       border-radius: 999px;
       border: none;
-      font-size: 12px;
       background: var(--accent);
       color: #fff;
+      font-size: 13px;
       cursor: pointer;
     }
 
-    .birth-row button:active {
-      transform: translateY(1px);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+    .birth-button:active {
+      opacity: 0.85;
     }
 
-    .section-subtitle {
-      font-size: 12px;
-      color: var(--text-sub);
-      margin-bottom: 6px;
+    .birth-badge-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 4px;
     }
 
     @media (min-width: 640px) {
@@ -237,10 +235,6 @@
       .body-text {
         font-size: 13.5px;
       }
-
-      .birth-row input {
-        width: 96px;
-      }
     }
   </style>
 </head>
@@ -256,13 +250,13 @@
       <div class="pill" id="wavespellLabel"></div>
     </div>
 
-    <!-- 表 -->
+    <!-- 今日の表 -->
     <section class="card">
       <div class="card-header">
         <div class="card-title">今日の表</div>
         <div class="badge">表で動きやすいテーマ</div>
       </div>
-      <div class="day-line" id="frontTitle">
+      <div class="day-line">
         <span class="label">きょうは</span>
         <span id="frontDayName"></span>
       </div>
@@ -271,13 +265,13 @@
       <div class="hint" id="frontHint"></div>
     </section>
 
-    <!-- 裏 -->
+    <!-- 今日の裏 -->
     <section class="card">
       <div class="card-header">
         <div class="card-title">今日の裏</div>
         <div class="badge">本能・影で動きやすいところ</div>
       </div>
-      <div class="day-line" id="backTitle">
+      <div class="day-line">
         <span class="label">うら側では</span>
         <span id="backDayName"></span>
       </div>
@@ -298,54 +292,78 @@
       <div class="hint" id="waveHint"></div>
     </section>
 
-    <!-- 音と紋章の簡単説明 -->
+    <!-- 音＆紋章のざっくり説明 -->
     <section class="card">
       <div class="card-header">
-        <div class="card-title">音と紋章について</div>
-        <div class="badge">ざっくり解説</div>
+        <div class="card-title">音と紋章ってなに？</div>
+        <div class="badge">マヤ暦の基本</div>
       </div>
       <div class="body-text">
-        マヤ暦（ツォルキン）は、13の「音」と20の「紋章」の組み合わせで、日ごとの雰囲気や流れを見ていく暦やで。<br><br>
-        ● 音 … その日の「リズム」や「進み具合」。1〜13まであって、はじまり／調整／手放し…みたいな流れがくり返される。<br>
-        ● 紋章 … その日の「テーマ」や「キャラ」。ワニ・風・夜・トカゲ…みたいに20種類あって、それぞれ得意分野とクセがある。<br><br>
-        このアプリでは「表＝意識しやすい動き」「裏＝本能や影で出やすい動き」として、同じ日を両側からメモしてる感じやと思ってくれたらOK。
-      </div>
-      <div class="hint">
-        ※ 裏は「神様がいる人用」じゃなくて、誰にでも出やすい本能の動きとして見れるようにしてあるで。
+        マヤ暦（ツォルキン）は「13の音 × 20の紋章」で260日をくり返す暦やで。<br /><br />
+        ● 音 … その日の「リズム」や「進み具合」。1〜13まであって、はじまり／調整／手放し…みたいな流れがくり返される。<br />
+        ● 紋章 … その日の「テーマ」や「キャラ」。ワニ・風・夜・トカゲ…みたいに20種類あって、それぞれ得意分野とクセがある。<br /><br />
+        このアプリでは「表＝意識しやすい動き」「裏＝本能や影で出やすい動き」として、同じ日を両側からメモしてる感じやと思ってくれたらOK。<br /><br />
+        ※ 流派によって起点や呼び方が違うこともあるから、ほかのサイトと結果がズレる場合もあるで。これは「ウロコ版クラシック」として使ってな。
       </div>
     </section>
 
-    <!-- 誕生日からマヤ暦をしらべる -->
+    <!-- 誕生日検索 -->
     <section class="card">
       <div class="card-header">
         <div class="card-title">あなたのマヤ暦をしらべる</div>
         <div class="badge">誕生日検索</div>
       </div>
-      <div class="section-subtitle">
-        西暦の誕生日を入れると、「音」と「紋章」と、そのざっくりした性質が出てくるよ。
+
+      <div class="body-text">
+        西暦の誕生日を入れると、「音」と「紋章」と、そのざっくりした性質メモが出てくるよ。
       </div>
+
       <div class="birth-row">
-        <input type="number" id="birthYear" placeholder="1987" />
-        <span class="sep">/</span>
-        <input type="number" id="birthMonth" placeholder="5" />
-        <span class="sep">/</span>
-        <input type="number" id="birthDay" placeholder="14" />
-        <button id="birthBtn">検索</button>
+        <label for="birthYear">誕生日：</label>
+        <input
+          id="birthYear"
+          class="birth-input"
+          type="number"
+          placeholder="1990"
+          inputmode="numeric"
+        />
+        <span>年</span>
+        <input
+          id="birthMonth"
+          class="birth-input"
+          type="number"
+          placeholder="1"
+          inputmode="numeric"
+        />
+        <span>月</span>
+        <input
+          id="birthDay"
+          class="birth-input"
+          type="number"
+          placeholder="1"
+          inputmode="numeric"
+        />
+        <span>日</span>
+        <button class="birth-button" onclick="searchBirth()">検索</button>
       </div>
+
       <div class="hint">
-        例：1987 / 5 / 14（しらの）みたいに入れてね。
+        例：1990 / 1 / 1 みたいに入れてね。
       </div>
-      <div class="body-text" id="birthResult"></div>
+
+      <div id="birthResult" class="body-text" style="margin-top: 10px;">
+        まだ誕生日は入ってへんで。上に生年月日を入れて「検索」を押してな。
+      </div>
     </section>
 
     <div class="footer-note">
       ※ しらの専用マヤ暦メモアプリ（試作版）<br />
-      日付をもとに、表と裏のメモ＆誕生日の傾向をベオが自動で出しています。
+      日付をもとに、「表と裏のメモ」と「誕生日の傾向」をベオが自動で出しています。
     </div>
   </main>
 
   <script>
-    // 20の紋章（Yucatec系）順番：ワニ〜祖先
+    // 20の紋章
     const daySigns = [
       {
         key: "crocodile",
@@ -353,9 +371,9 @@
         nameAlt: "Imix",
         frontKeyword: "はじまり／生命力／土台づくり",
         frontText:
-          "新しいことをスタートするのにぴったりの日。結果よりも『芽』を出すイメージで、小さな一歩を踏み出すと吉。暮らしの基盤を整える整理整頓も◎。",
+          "新しいことをスタートするのにぴったりの日。結果よりも「芽」を出すイメージで、小さな一歩を踏み出すと吉。暮らしの基盤を整える整理整頓も◎。",
         backText:
-          "甘えや依存が強く出やすいタイミング。『どうせ守ってもらえない』と拗ねモードにもなりがち。境界線を意識して、頼ることと丸投げを分けるとバランス◎。",
+          "甘えや依存が強く出やすいタイミング。「どうせ守ってもらえない」と拗ねモードにもなりがち。境界線を意識して、頼ることと丸投げを分けるとバランス◎。",
         waveTheme:
           "自分の『基地』を整えながら、新しいサイクルを立ち上げる13日間。生活リズム・部屋・仕事のやり方など、土台のリニューアルに向く。"
       },
@@ -423,7 +441,7 @@
         key: "deer",
         nameJa: "シカ",
         nameAlt: "Manik",
-        frontKeyword: "献身／サポート／整える",
+        frontKeyword: "献身／手仕事／整える",
         frontText:
           "コツコツ作業や、誰かのためのサポートがはかどる日。手を動かすと心も整いやすい。『自分のペース』を守りながら働く意識を。",
         backText:
@@ -542,7 +560,7 @@
       {
         key: "earth",
         nameJa: "香",
-        nameAlt: "Caban / Earth",
+        nameAlt: "Caban",
         frontKeyword: "大地／リズム／シンクロ",
         frontText:
           "地に足をつけること・自然のリズムに合わせることがポイントの日。散歩・土いじり・観葉植物の世話など、現実の大地に触れると整いやすい。",
@@ -578,7 +596,7 @@
       {
         key: "ancestor",
         nameJa: "祖先",
-        nameAlt: "Ahau / Sun",
+        nameAlt: "Ahau",
         frontKeyword: "完成／光／祝福",
         frontText:
           "一区切り・達成・完成を意識しやすい日。これまでやってきたことに光が当たりやすい。自分をねぎらう時間をしっかり取ると次のサイクルの燃料になる。",
@@ -712,20 +730,10 @@
 
     const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
 
-    /*
-      ★ 日付合わせ（しらの流クラシック暦に合わせた基準）
-
-      ・2025-12-07 → 音13・風
-      ・2025-12-08 → 音1・夜（嵐の13日間スタート）
-      ・2025-12-11 → 音4・死（嵐の4日目）
-
-      なので、基準日は
-        2025-12-08 = 音1・夜
-      に設定してある。
-    */
-    const baseDate = new Date(2025, 11, 8); // 2025-12-08（JSの月は0始まりで11 = 12月）
-    const baseTone = 1;       // 音1
-    const baseSignIndex = 2;  // 0:ワニ,1:風,2:夜
+    // 基準日：2025-12-11 = 音4・死
+    const baseDate = new Date(2025, 11, 11); // 月は0始まり（11 = 12月）
+    const baseTone = 4;
+    const baseSignIndex = 5; // 0:ワニ〜 5:死
 
     function mod(n, m) {
       return ((n % m) + m) % m;
@@ -737,7 +745,7 @@
         (d.getTime() - baseDate.getTime()) / (1000 * 60 * 60 * 24)
       );
 
-      const toneIndex = mod((baseTone - 1) + diffDays, 13);
+      const toneIndex = mod(baseTone - 1 + diffDays, 13);
       const tone = tones[toneIndex];
 
       const signIndex = mod(baseSignIndex + diffDays, 20);
@@ -747,7 +755,7 @@
     }
 
     function getWavespell(date, tone, signIndex) {
-      const offset = tone.num - 1; // そのウェイブスペルの中で何日目か
+      const offset = tone.num - 1;
       const startDate = new Date(
         date.getFullYear(),
         date.getMonth(),
@@ -767,27 +775,7 @@
       return `${y}年${m}月${d}日（${w}）`;
     }
 
-    function describeBirth(tone, sign) {
-      const lines = [];
-      lines.push(`◆ あなたの紋章：${sign.nameJa}（${sign.nameAlt}）`);
-      lines.push(`◆ あなたの音：音${tone.num}（${tone.keyword}）`);
-      lines.push("");
-      lines.push(`◎ 紋章のテーマ`);
-      lines.push(sign.frontKeyword);
-      lines.push("");
-      lines.push(`◎ 表の性質（表に出やすいところ）`);
-      lines.push(sign.frontText);
-      lines.push("");
-      lines.push(`◎ 裏の性質（本能・影で出やすいところ）`);
-      lines.push(sign.backText);
-      lines.push("");
-      lines.push(`◎ あなたの音のクセ`);
-      lines.push(`【音${tone.num}の流れ】${tone.front}`);
-      lines.push(`【つまずきポイント】${tone.back}`);
-      return lines.join("\n");
-    }
-
-    function initToday() {
+    function renderToday() {
       const today = new Date();
       document.getElementById("todayLabel").textContent = formatDateJa(today);
 
@@ -808,9 +796,8 @@
       document.getElementById("frontToneSign").innerHTML =
         `<span><strong>${tone.name}</strong>：${tone.keyword}</span>` +
         `<span><strong>${sign.nameJa}</strong>（${sign.nameAlt}）</span>`;
-      document.getElementById("frontText").textContent = `${
-        sign.frontText
-      }\n\n【音${tone.num}の流れ】${tone.front}`;
+      document.getElementById("frontText").textContent =
+        `${sign.frontText}\n\n【音${tone.num}の流れ】${tone.front}`;
       document.getElementById(
         "frontHint"
       ).textContent = `★ キーワード：${sign.frontKeyword}`;
@@ -821,26 +808,26 @@
       document.getElementById("backToneSign").innerHTML =
         `<span><strong>${tone.name}</strong>：${tone.keyword}</span>` +
         `<span><strong>${sign.nameJa}</strong>の本能面</span>`;
-      document.getElementById("backText").textContent = `${
-        sign.backText
-      }\n\n【音${tone.num}のクセ】${tone.back}`;
+      document.getElementById("backText").textContent =
+        `${sign.backText}\n\n【音${tone.num}のクセ】${tone.back}`;
       document.getElementById(
         "backHint"
       ).textContent =
-        "★ 『出やすいパターン』を知っておくだけでも、かなりケアしやすくなる日。";
+        "★『出やすいパターン』を知っておくだけでも、かなりケアしやすくなる日。";
 
       // 13日間
       const startLabel = formatDateJa(wave.startDate);
-      document.getElementById(
-        "waveTitle"
-      ).textContent = `音1・${wave.startSign.nameJa} から始まる13日間`;
       const endDate = new Date(
         wave.startDate.getFullYear(),
         wave.startDate.getMonth(),
         wave.startDate.getDate() + 12
       );
-      document.getElementById("waveRange").textContent =
-        `${startLabel} 〜 ${formatDateJa(endDate)}`;
+      document.getElementById(
+        "waveTitle"
+      ).textContent = `音1・${wave.startSign.nameJa} から始まる13日間`;
+      document.getElementById(
+        "waveRange"
+      ).textContent = `${startLabel} 〜 ${formatDateJa(endDate)}`;
       document.getElementById("waveText").textContent = wave.startSign.waveTheme;
       document.getElementById(
         "waveHint"
@@ -848,46 +835,51 @@
         "★ 今日がこの13日間の中で何日目かは『音』を見ると分かるよ。";
     }
 
-    function initBirthSearch() {
-      const y = document.getElementById("birthYear");
-      const m = document.getElementById("birthMonth");
-      const d = document.getElementById("birthDay");
-      const btn = document.getElementById("birthBtn");
-      const result = document.getElementById("birthResult");
+    function searchBirth() {
+      const y = parseInt(
+        document.getElementById("birthYear").value,
+        10
+      );
+      const m = parseInt(
+        document.getElementById("birthMonth").value,
+        10
+      );
+      const d = parseInt(
+        document.getElementById("birthDay").value,
+        10
+      );
+      const box = document.getElementById("birthResult");
 
-      btn.addEventListener("click", () => {
-        const yy = parseInt(y.value, 10);
-        const mm = parseInt(m.value, 10);
-        const dd = parseInt(d.value, 10);
+      if (!y || !m || !d) {
+        box.textContent = "年・月・日を全部入れてから検索してな。";
+        return;
+      }
 
-        if (!yy || !mm || !dd) {
-          result.textContent = "※ 年・月・日を全部入れてな。";
-          return;
-        }
+      const date = new Date(y, m - 1, d);
+      if (isNaN(date.getTime())) {
+        box.textContent = "日付がおかしいかも。もう一度確認してみて。";
+        return;
+      }
 
-        const date = new Date(yy, mm - 1, dd);
-        // 不正日付チェック（例えば 2025-02-30 みたいなやつ）
-        if (
-          date.getFullYear() !== yy ||
-          date.getMonth() !== mm - 1 ||
-          date.getDate() !== dd
-        ) {
-          result.textContent = "※ 実在する日付を入れてな。";
-          return;
-        }
+      const { tone, sign } = getMayanFor(date);
 
-        const { tone, sign } = getMayanFor(date);
-        const text = describeBirth(tone, sign);
-        result.textContent = `【${formatDateJa(date)} 生まれのメモ】\n\n${text}`;
-      });
+      box.innerHTML =
+        `【${formatDateJa(date)} 生まれのメモ】\n\n` +
+        `◎ あなたの紋章：${sign.nameJa}（${sign.nameAlt}）\n` +
+        `◎ あなたの音：音${tone.num}（${tone.keyword}）\n\n` +
+        `◎ 紋章のテーマ\n` +
+        `${sign.frontKeyword}\n\n` +
+        `◎ 表の性質（表で出やすいところ）\n` +
+        `${sign.frontText}\n\n` +
+        `◎ 裏の性質（本能・影で出やすいところ）\n` +
+        `${sign.backText}\n\n` +
+        `◎ あなたの音のクセ\n` +
+        `【音${tone.num}の流れ】${tone.front}\n` +
+        `【つまずきポイント】${tone.back}\n\n` +
+        `※ この結果はウロコ版のツォルキン計算やで。他のサイトと違うこともあるけど、こっちはこっちで一貫してると思って使ってな。`;
     }
 
-    function init() {
-      initToday();
-      initBirthSearch();
-    }
-
-    init();
+    renderToday();
   </script>
 </body>
 </html>
