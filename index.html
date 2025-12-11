@@ -8,9 +8,9 @@
 
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tabButton active" data-tab="uroko">ウロコ暦</button>
-      <button class="tabButton" data-tab="tzolkin">ツォルキン暦</button>
-      <button class="tabButton" data-tab="birthday">誕生日検索</button>
+     <button class="tabButton active" data-tab="uroko" onclick="switchTab('uroko')">ウロコ暦</button>
+<button class="tabButton" data-tab="tzolkin" onclick="switchTab('tzolkin')">ツォルキン暦</button>
+<button class="tabButton" data-tab="birthday" onclick="switchTab('birthday')">誕生日検索</button>
     </div>
 
     <!-- Tab contents -->
@@ -147,6 +147,7 @@ body {
   background: #ffe9c7; /* 表：うっすらオレンジ */
   padding: 12px;
   border-radius: 8px;
+  white-space: pre-line;
 }
 
 .dayBack {
@@ -154,6 +155,7 @@ body {
   padding: 12px;
   border-radius: 8px;
   margin-top: 10px;
+  white-space: pre-line;
 }
 
 /* ------------------------------
@@ -201,7 +203,9 @@ body {
 /* -------------------------------------
    しらの専用「ウロコ暦」設定
 -------------------------------------- */
-
+const urokoBaseDate = new Date("2025-12-08");
+const urokoBaseTone = 1;
+const urokoBaseSeal = 2;
 // しらの専用の起点（ケツァルさん方式）
 const u_startDate = new Date("2025-09-02"); 
 const u_startTone = 1;      // 音1
