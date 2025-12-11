@@ -1275,10 +1275,33 @@
 
     // ウェイブスペル（13日間）は 2025-12-08 を基準に、
     // 「嵐（Cauac）」から始まる13日間として扱う
-    const BASE_WAVE_DATE = new Date(2025, 11, 8);
-    const BASE_WAVE_SIGN_INDEX = 18; // 嵐
+    // ==============================
+// ウェイブスペル（13日間）
+// ==============================
 
-    function getWavespellFor(date) {
+// 「その日の音」から逆算して、13日サイクルを出す版
+function getWavespellFor(date) {
+  // 日付は時刻をゼロにそろえる
+  const d0 = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+  // まず今日のマヤ暦情報を取得
+  const todayInfo = getMayanFor(d0);
+  const toneNum = todayInfo.tone.num; // 1〜13
+
+  // 「音1の日」＝この13日間のスタート
+  const startDate = new Date(d0);
+  startDate.setDate(d0.getDate() - (toneNum - 1));
+
+  // 念のため、スタート日の情報も取得（音1・○○のはず）
+  const startInfo = getMayanFor(startDate);
+
+  return {
+    startDate,                  // 13日間の1日目の日付
+    startSign: startInfo.sign,  // その日の紋章（＝13日間のテーマ）
+    startSignIndex: startInfo.signIndex,
+    dayNumber: toneNum          // 今日がその13日間の何日目か（音）
+  };
+}
       const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       const diffDays = Math.round((d.getTime() - BASE_WAVE_DATE.getTime()) / MS_PER_DAY);
       const waveOffset = Math.floor(diffDays / 13);
