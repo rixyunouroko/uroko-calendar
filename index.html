@@ -139,7 +139,6 @@ body {
       </div>
 
       <div class="mini-col">
-        <div class="mini-title" id="tGlyphName"></div>
         <div class="mini-text" id="tGlyphTheme"></div>
       </div>
     </div>
@@ -778,15 +777,19 @@ document.getElementById("tGlyphName").textContent =
 document.getElementById("tGlyphTheme").textContent =
   document.getElementById("tGlyphTheme").textContent =
   glyphTexts[tGlyphName].keyword.split("／")[0];
-document.getElementById("tFront").innerHTML = `
+document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
-${glyphTexts[tGlyphName].keyword}<br><br>
-${glyphTexts[tGlyphName].energy}
+${glyphTexts[uGlyphName].keyword}<br><br>
+${glyphTexts[uGlyphName].energy}
 `;
 
-document.getElementById("uBack").innerHTML = `
+// 先に定義
+const uGlyphName = glyphNames[u.glyph - 1];
+
+// それから使う
+document.getElementById("tBack").innerHTML = `
 【気をつけたいところ】<br>
-・${dailyGlyph[uGlyphName].weak.join("<br>・")}
+・${glyphTexts[tGlyphName].weak.join("<br>・")}
 `;
 
 document.getElementById("tWave").textContent =
@@ -830,7 +833,6 @@ document.getElementById("uGlyphName").textContent =
   uGlyphName;
 
 document.getElementById("uGlyphTheme").textContent =
-  document.getElementById("tGlyphTheme").textContent =
   glyphTexts[tGlyphName].keyword.split("／")[0];
   // --- ウロコ暦 表・裏 ---
 document.getElementById("uFront").innerHTML = `
