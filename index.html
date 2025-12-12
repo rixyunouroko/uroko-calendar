@@ -780,11 +780,12 @@ document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
 ${dailyGlyph[tGlyphName].keyword}<br><br>
 ${dailyGlyph[tGlyphName].energy}
+dailyGlyph[uGlyphName].weak}
 `;
 
-document.getElementById("tBack").innerHTML = `
+document.getElementById("uBack").innerHTML = `
 【気をつけたいところ】<br>
-・${dailyGlyph[tGlyphName].weak.join("<br>・")}
+・${dailyGlyph[uGlyphName].weak.join("<br>・")}
 `;
 
 document.getElementById("tWave").textContent =
