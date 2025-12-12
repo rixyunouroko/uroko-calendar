@@ -424,6 +424,12 @@ document.getElementById("uGlyphName").textContent =
 
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].front.split("。")[0];
+  // --- ウロコ暦 表・裏 ---
+document.getElementById("uFront").textContent =
+  glyphTexts[uGlyphName].front;
+
+document.getElementById("uBack").textContent =
+  glyphTexts[uGlyphName].back;
   // --- ★ウロコ暦13日間 ---
   const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
   const uWaveEnd   = new Date(uWaveStart.getTime() + 12 * 86400000);
