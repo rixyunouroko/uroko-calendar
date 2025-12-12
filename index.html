@@ -722,6 +722,7 @@ const glyphTexts = {
   pair: ["ワシ", "コンドル"],
   caution: ["ナイフ", "嵐"]
 },
+};
 const toneThemes = [
   "はじまり","協力","活性","形づくる","力を与える",
   "整える","調律","調和","意図","完成へ向かう",
@@ -775,12 +776,12 @@ document.getElementById("tGlyphName").textContent =
   tGlyphName;
 
 document.getElementById("tGlyphTheme").textContent =
-  glyphTexts[tGlyphName].front.split("。")[0];
+  document.getElementById("tGlyphTheme").textContent =
+  glyphTexts[tGlyphName].keyword.split("／")[0];
 document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
-${dailyGlyph[tGlyphName].keyword}<br><br>
-${dailyGlyph[tGlyphName].energy}
-dailyGlyph[uGlyphName].weak}
+${glyphTexts[tGlyphName].keyword}<br><br>
+${glyphTexts[tGlyphName].energy}
 `;
 
 document.getElementById("uBack").innerHTML = `
@@ -829,7 +830,8 @@ document.getElementById("uGlyphName").textContent =
   uGlyphName;
 
 document.getElementById("uGlyphTheme").textContent =
-  glyphTexts[uGlyphName].front.split("。")[0];
+  document.getElementById("tGlyphTheme").textContent =
+  glyphTexts[tGlyphName].keyword.split("／")[0];
   // --- ウロコ暦 表・裏 ---
 document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
