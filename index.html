@@ -1,703 +1,200 @@
-<body>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Uroko Calendar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div id="app">
-
-    <h1 class="title">Uroko Calendar</h1>
-    <p class="subtitle" id="todayDate"></p>
-    <p class="cycleInfo" id="cycleInfo"></p>
-
-    <!-- Tabs -->
-    <div class="tabs">
-     <button class="tabButton active" data-tab="uroko" onclick="switchTab('uroko')">ウロコ暦</button>
-<!--
-<button class="tabButton" data-tab="tzolkin" onclick="switchTab('tzolkin')">
-  ツォルキン暦
-</button>
--->
-  </div>
-
-    <!-- Tab contents -->
-<div id="uroko" class="tabContent active">
-
-  <p class="miniInfo">
-    <span id="uTone"></span>｜<span id="uGlyph"></span>
-  </p>
-
-  <div class="section">
-    <h2>今日の表</h2>
-    <span class="tag">表で動きやすいテーマ</span>
-    <div class="card front" id="uFront"></div>
-  </div>
-
-  <div class="section">
-    <h2>今日の裏</h2>
-    <span class="tag">本能・影で出やすいところ</span>
-    <div class="card back" id="uBack"></div>
-  </div>
-
-  <div class="section">
-    <h2>いま流れている13日間</h2>
-    <span class="tag">ウェイブスペル</span>
-    <div class="card">
-      <span id="uCycle"></span>
-    </div>
-  </div>
-
-</div>
-
-    <div id="birthday" class="tabContent">
-      <h2>誕生日からみる紋章（ツォルキン）</h2>
-      <input id="bInput" type="date">
-      <button onclick="searchBirthday()">検索</button>
-
-      <div id="birthdayResult"></div>
-    </div>
-
-  </div>
-
-</body>
 <style>
-
-/* ------------------------------
-   全体レイアウト
------------------------------- */
-
-body {
-  font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
-  background: #f5f0e6; /* ベージュ背景 */
-  margin: 0;
-  padding: 0;
+:root{
+  --bg:#fff6e9;
+  --card:#ffffff;
+  --accent:#e1b76a;
+  --soft:#f5d7a5;
+  --text:#3a2a1a;
+  --sub:#7a6a55;
+  --shadow:0 8px 18px rgba(0,0,0,.08);
+  --radius:20px;
 }
-
-#app {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 55%);
+  color:var(--text);
 }
-
-/* ------------------------------
-   タイトル
------------------------------- */
-
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0;
+header{
+  text-align:center;
+  padding:24px 16px 12px;
 }
-
-.subtitle {
-  text-align: center;
-  font-size: 1.1rem;
-  margin-top: 4px;
+h1{
+  margin:0;
+  font-size:26px;
+  letter-spacing:.08em;
 }
-
-.cycleInfo {
-  text-align: center;
-  font-size: 0.95rem;
-  margin-bottom: 20px;
-  color: #555;
+.date{
+  margin-top:6px;
+  font-size:14px;
+  color:var(--sub);
 }
-
-/* ------------------------------
-   タブ
------------------------------- */
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+main{
+  max-width:720px;
+  margin:0 auto;
+  padding:0 16px 40px;
 }
-
-.tabButton {
-  padding: 10px 20px;
-  border: none;
-  background: #d4c7b9;
-  cursor: pointer;
-  font-size: 1rem;
-  border-radius: 8px 8px 0 0;
-  margin: 0 4px;
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
 }
-
-.tabButton.active {
-  background: #ffffff;
-  font-weight: bold;
+.card h2{
+  margin:0 0 6px;
+  font-size:16px;
+  letter-spacing:.08em;
 }
-
-/* ------------------------------
-   タブの中身
------------------------------- */
-
-.tabContent {
-  display: none;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 0 8px 8px 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.badge{
+  display:inline-block;
+  font-size:11px;
+  padding:3px 10px;
+  border-radius:999px;
+  background:var(--soft);
+  margin-bottom:8px;
 }
-
-.tabContent.active {
-  display: block;
+.body{
+  font-size:14px;
+  line-height:1.65;
+  white-space:pre-line;
 }
-
-/* ------------------------------
-   今日の表裏カード
------------------------------- */
-
-.dayBox {
-  padding: 15px;
-  background: #fff;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  line-height: 1.6;
+.small{
+  font-size:12px;
+  color:var(--sub);
 }
-
-.dayFront {
-  background: #ffe9c7; /* 表：うっすらオレンジ */
-  padding: 12px;
-  border-radius: 8px;
-  white-space: pre-line;
+input[type="date"]{
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid #ccc;
+  font-size:13px;
 }
-
-.dayBack {
-  background: #ffd6d6; /* 裏：うっすら赤 */
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 10px;
-  white-space: pre-line;
+button{
+  border:none;
+  border-radius:999px;
+  padding:4px 14px;
+  background:var(--accent);
+  color:#fff;
+  font-size:12px;
 }
-/* ------------------------------
-   ミニ情報（音｜紋章）
------------------------------- */
-
-.miniInfo {
-  text-align: center;
-  font-size: 0.95rem;
-  color: #666;
-  margin-bottom: 12px;
-}
-/* ------------------------------
-   誕生日検索ボックス
------------------------------- */
-
-#birthday input {
-  padding: 8px;
-  font-size: 1rem;
-}
-
-#birthday button {
-  padding: 8px 14px;
-  font-size: 1rem;
-  margin-left: 6px;
-  background: #d4c7b9;
-  border: none;
-  border-radius: 6px;
-}
-
-#birthdayResult {
-  margin-top: 20px;
-  background: #fffceb;
-  padding: 15px;
-  border-radius: 10px;
-  line-height: 1.7;
-  font-size: 1rem;
-}
-
-/* ------------------------------
-   スマホ対応
------------------------------- */
-
-@media (max-width: 600px) {
-  #app { padding: 10px; }
-  .title { font-size: 1.6rem; }
-  .tabButton { padding: 8px 12px; font-size: 0.9rem; }
-}
-
-/* ===== 追加CSS ===== */
-
-.section { margin-bottom: 20px; }
-.section h2 { font-size: 1.1rem; margin-bottom: 6px; }
-
-.tag {
-  display: inline-block;
-  font-size: 0.75rem;
-  background: #efe1c7;
-  color: #6b5a3c;
-  padding: 4px 10px;
-  border-radius: 999px;
-  margin-bottom: 8px;
-}
-
-.card {
-  background: #fff;
-  padding: 16px;
-  border-radius: 16px;
-  line-height: 1.7;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.card.front { background: #fff2d8; }
-.card.back  { background: #ffe3e3; }
 </style>
-
-<script> 
-
-
-/* -------------------------------------
-   しらの専用「ウロコ暦」設定
--------------------------------------- */
-const urokoBaseDate = new Date("2025-12-08");
-const urokoBaseTone = 1;
-const urokoBaseSeal = 2;
-// しらの専用の起点（ケツァルさん方式）
-const u_startDate = new Date("2025-09-02"); 
-const u_startTone = 1;      // 音1
-const u_startGlyph = 15;    // 夜（Ak'bal）
-
-/* -------------------------------------
-   一般向けツォルキン設定（標準流派）
--------------------------------------- */
-
-// 一般向けの基準日（260日サイクルの共通基準）
-const t_startDate  = new Date("1987-05-14");
-const t_startTone  = 11;
-const t_startGlyph = 7; // シカ
-/* -------------------------------------
-   辞書データ（しらの版・一般版どちらも使用）
-   ※ 表・裏の全文は PART 3-2 で読み込む
--------------------------------------- */
-
-const frontDescriptions = {};   // 表の意味
-/* ----------- 表：紋章の意味（ワニ〜コーン） ----------- */
-
-frontDescriptions["ワニ"] = `
-新しいものを生み出す始まりの力。  
-守る・育てる・抱きしめるエネルギーが強い日。  
-「産声をあげるものの気配」がある。
-`;
-
-frontDescriptions["風"] = `
-言葉・メッセージ・伝達がテーマの日。  
-呼吸が整うと運も整うタイプ。  
-コミュニケーションが動きやすく、人と心が交差する。
-`;
-
-frontDescriptions["夜"] = `
-内面の洞窟へ潜るエネルギーの日。  
-アイデア・霊感・夢の世界とつながる。  
-静かな集中ができるが、引きこもりにもなりやすい。
-`;
-
-frontDescriptions["トカゲ"] = `
-ひらめき・即断即決・切り替えの象徴。  
-皮を脱ぎ捨てるように「古い自分を脱ぐ」チャンス。  
-直感で動くほど成功しやすい。
-`;
-
-frontDescriptions["蛇"] = `
-生命力と執念の紋章。  
-本能・欲・集中力が高まり、やり抜く力が強い日。  
-一方で嫉妬・執着も出やすい二面性あり。
-`;
-
-frontDescriptions["死"] = `
-区切りと再生のエネルギー。  
-終わるべきものが終わり、新しい流れを呼び込む日。  
-浄化が強い代わりに感情も揺れる。
-`;
-
-frontDescriptions["シカ"] = `
-献身・責任・癒しのエネルギー。  
-周囲のために動くほど力を発揮。  
-場を整え、縁を守る守護者タイプ。
-`;
-
-frontDescriptions["ウサギ"] = `
-豊かさ・楽しさ・社交性の紋章。  
-キラキラしたものに惹かれ、人との交流が増える。  
-ただし調子に乗ると事故りやすい。
-`;
-
-frontDescriptions["水"] = `
-感情の波がテーマ。  
-浄化・涙・癒しが起こりやすい。  
-しんどい人は寝たほうが流れがよくなる日。
-`;
-frontDescriptions["猿"] = `
-遊び心・柔軟さ・ひらめきがテーマの日。
-状況を軽く見て、抜け道を見つける力が働く。
-
-人とのやりとりや即興的な対応に強い。
-笑いやユーモアが場を和ませ、流れを変える。
-
-深刻になりすぎず、
-「一回試してみる」が運を動かす鍵。
-`;
-frontDescriptions["道"] = `
-選択・方向性・人生のルートがテーマの日。
-日常の中の「どっちに進むか」が浮かび上がる。
-
-派手な変化より、
-小さな選択の積み重ねが未来を作る。
-
-迷いは悪ではなく、調整のサイン。
-「今日はどこへ向かう？」を意識すると整う。
-`;
-frontDescriptions["コーン"] = `
-収穫・繁栄・実りの紋章。  
-コツコツ積み上げてきた成果が形になりやすい。  
-謙虚さと感謝が運を引き寄せる。
-`;
-frontDescriptions["ジャガー"] = `
-感性と直感が冴える日。
-静かな場所・聖域・自然と相性がいい。
-
-気配を読む力が強まり、
-繊細な気づきが降ってくる。
-
-エネルギーワーク・浄化・空間づくりに◎。
-「秘密の時間」が鍵になる日。
-`;
-
-frontDescriptions["ワシ"] = `
-未来や方向性を考えるのに向く日。
-視野が広がり、遠くを見る発想が出やすい。
-
-長期計画・目標設定・スケジュール調整に◎。
-俯瞰視点で、いまの状況を整理しやすい。
-`;
-
-frontDescriptions["コンドル"] = `
-学び・振り返り・意味づけがテーマの日。
-過去の経験からヒントが得やすい。
-
-失敗の中に宝があるタイミング。
-
-研究・読書・整理整頓・アーカイブ作りに◎。
-歴史の声を聞くように進めると吉。
-`;
-
-frontDescriptions["香"] = `
-大地・リズム・体調とのつながりを感じる日。
-自然のサイクルに合わせることで調子が整う。
-
-ルーティンづくり・習慣化・メンテナンスに◎。
-
-直感の「タイミング感覚」が掴みやすい日。
-`;
-
-frontDescriptions["ナイフ"] = `
-要るものと要らないものを切り分ける日。
-曖昧が残りにくく、本質が見えやすい。
-
-決断・仕分け・ルールづくりに◎。
-鋭さは優しさとセットで扱うと最強。
-`;
-
-frontDescriptions["嵐"] = `
-浄化と変容のエネルギーが強い日。
-感情・状況・環境が大きく動きやすい。
-
-それは停滞を流すための揺れ。
-
-改革・改善・リセットに◎。
-変化の波に乗ると成果大。
-`;
-
-frontDescriptions["祖先"] = `
-完成と祝福のエネルギーの日。
-これまでの流れに一区切りがつく。
-
-まとめ・締め・評価・感謝がテーマ。
-
-未来への扉が開きやすい。
-静かに整えることで運気が整う。
-`;
-const backDescriptions  = {};   // 裏の意味
-backDescriptions["ワニ"] = `
-本能は「守る・抱く・溜め込む」。
-安心を与える巣づくりの力が強まる日。
-
-良い方向では、大切なものを包み込み心を落ち着かせる。
-暴走すると、心配が膨らみ変化を止めがち。
-
-「深呼吸して手放す」が鍵の裏エネルギー。
-`;
-backDescriptions["風"] = `
-本能は「しゃべる・知らせる・突っ込む」。
-言葉の切れ味が増し、頭の回転が早くなる日。
-
-良い方向では誤解をほどき場を軽くする。
-暴走すると、皮肉や批判が強まり自他を削る。
-
-言葉に“やわらかさ”を混ぜると吉。
-`;
-backDescriptions["夜"] = `
-本能は「隠す・守る・深掘りする」。
-内面に意識が向き、静かな集中が生まれる日。
-
-良い方向では、心の奥の本音が見えてくる。
-暴走すると、考えすぎて不安が増幅しやすい。
-
-光と闇のバランスを意識して過ごす日。
-`;
-backDescriptions["トカゲ"] = `
-本能は「欲しがる・試す・育てる」。
-好奇心が強まり、才能の種が動き出す日。
-
-良い方向では、新しい可能性を発掘できる。
-暴走すると、渇きを埋めるために動きすぎて消耗しがち。
-
-“今育てたい種”を一つだけ選ぶと吉。
-`;
-backDescriptions["蛇"] = `
-本能は「感じる・求める・生き抜く」。
-感情と体感が強く働き、直感が冴える日。
-
-良い方向では、生命力がまっすぐ表現される。
-暴走すると、怒り・依存・燃え尽きとして出やすい。
-
-体の声を尊重すると整う裏エネルギー。
-`;
-backDescriptions["死"] = `
-本能は「終わらせる・区切る・抜ける」。
-手放しや整理がしやすく、切り替えが進む日。
-
-良い方向では、再生への余白が生まれる。
-暴走すると、捨て癖や諦め癖が出やすい。
-
-“終わりは次の始まり”がテーマ。
-`;
-backDescriptions["シカ"] = `
-本能は「守る・支える・整える・献身」。
-優しさと責任感が高まり、場を整えやすい日。
-
-良い方向では、周囲に安心と秩序が生まれる。
-暴走すると、背負いすぎて自分を見失いがち。
-
-まず自分の足場を整えるのが鍵。
-`;
-backDescriptions["ウサギ"] = `
-本能は「楽しむ・飾る・増やす」。
-喜びと美意識が増え、豊かさを広げる日。
-
-良い方向では、心が明るくなり創造性が高まる。
-暴走すると、衝動や過剰な快楽に流れやすい。
-
-“楽しみの質”を意識することで整う裏エネルギー。
-`;
-backDescriptions["水"] = `
-本能は「感じる・受け取る・流す」。
-感情が動きやすく、共感力が高まる日。
-
-良い方向では、人の気持ちを癒やす作用が強い。
-暴走すると、境界が薄まりエネルギーを吸われやすい。
-
-“自分の感情にも名前をつける”と整う。
-`;
-backDescriptions["犬"] = `
-本能は「守る・寄り添う・吠える」。
-仲間意識が強まり、身内を守る力が働く日。
-
-良い方向では、支え合いの絆が深まる。
-暴走すると、心配・束縛・自己犠牲が出やすい。
-
-境界線を意識するとバランスが取れる。
-`;
-backDescriptions["サル"] = `
-本能は「遊ぶ・試す・ふざける」。
-好奇心とユーモアが強まり、軽やかな動きが生まれる日。
-
-良い方向では、発想力と機転が冴え、場を救うアイデアが降りる。
-暴走すると、責任から逃げるための軽口に走りがち。
-
-“楽しさの中にひとつ本気を混ぜる”と整う裏エネルギー。
-`;
-backDescriptions["道"] = `
-本能は「選ぶ・歩く・導く」。
-日常の選択に光が当たり、進む方向を見直しやすい日。
-
-良い方向では、人生の流れが自然と整い、小さな一歩が積み重なる。
-暴走すると、「どれが正しいか」で迷い込みやすい。
-
-“今日はひとつだけ選ぶ”が鍵になる裏エネルギー。
-`;
-backDescriptions["コーン"] = `
-本能は「根を守り、幹を伸ばす」。
-家族・基盤・自分の軸を意識しやすい日。
-
-良い方向では、拠点づくりや成長の意志が強まる。
-暴走すると、家系のパターンや責任感に縛られがち。
-
-“自分の軸を一本だけ整える”と安定する裏エネルギー。
-`;
-backDescriptions["ジャガー"] = `
-本能は「感じる・護る・引く」。
-感性と直感が鋭くなり、気配を読み取る日。
-
-良い方向では、空間や人のエネルギーを整える番人になれる。
-暴走すると、過剰防衛・疑い癖で疲れやすい。
-
-“静かな場所で整える時間”が鍵になる裏エネルギー。
-`;
-backDescriptions["ワシ"] = `
-本能は「高く飛ぶ・見渡す・導く」。
-視野が広がり、未来のビジョンが見えやすい日。
-
-良い方向では、方向性を示し、自分や周囲を導ける。
-暴走すると、理想の高さで自他を追い詰めがち。
-
-“地に足をつけて高く飛ぶ”が整え方のポイント。
-`;
-backDescriptions["コンドル"] = `
-本能は「振り返る・意味づける・教える」。
-過去の出来事から学びやすい日。
-
-良い方向では、経験を宝に変える賢者として働く。
-暴走すると、反省が行きすぎて自己否定に傾きがち。
-
-“過去を素材に、未来へ渡す”が裏エネルギーの使い方。
-`;
-backDescriptions["香"] = `
-本能は「合わせる・感じる・整える」。
-大地・体調・リズムに強く影響される日。
-
-良い方向では、習慣やペースを整えられる。
-暴走すると、リズムを乱すものを過剰に嫌いやすい。
-
-“体の声を最優先にする”と整う裏エネルギー。
-`;
-backDescriptions["ナイフ"] = `
-本能は「切る・見抜く・整える」。
-真実が鮮明に見え、決断力が上がる日。
-
-良い方向では、無駄をそぎ落とし世界をクリアにできる。
-暴走すると、切る快感に寄りすぎて人間関係も断ちがち。
-
-“切る前に一呼吸”がポイントになる裏エネルギー。
-`;
-backDescriptions["嵐"] = `
-本能は「揺らす・壊す・洗う」。
-浄化が起きやすく、環境・感情がよく動く日。
-
-良い方向では、大転換のきっかけを作れる。
-暴走すると、嵐そのものになり消耗が激しくなる。
-
-“流しきった後の静けさ”を意識すると整いやすい。
-`;
-backDescriptions["祖先"] = `
-本能は「照らす・統合する・締めくくる」。
-物事の完成が見え、光が当たりやすい日。
-
-良い方向では、まとめ役・祝福役として作用する。
-暴走すると、「まだ足りない光」を求めすぎてしんどくなりがち。
-
-“終わりに光を当てる”が裏エネルギーの使い方。
-`;
-const birthdayDescriptions = {}; // 誕生日の詳細版（後で埋める）
-
-/* -------------------------------------
-   音・紋章の基本データ
--------------------------------------- */
-
-const glyphNames = [
-  "ワニ","風","夜","トカゲ","蛇","死","シカ","ウサギ","水","犬",
-  "猿","道","コーン","ジャガー","ワシ","コンドル","香","ナイフ","嵐","祖先"
-];
-
-const toneNames = [
-  "音1","音2","音3","音4","音5","音6","音7",
-  "音8","音9","音10","音11","音12","音13"
-];
-
-/* -------------------------------------
-   日付からサイクル計算（共通）
--------------------------------------- */
-
-function calcCycle(date, startDate, startTone, startGlyph) {
-
-  const diff = Math.floor((date - startDate) / (1000*60*60*24));
-  const day = (diff % 260 + 260) % 260;
-
-  const tone  = ((startTone - 1 + day) % 13) + 1;
-  const glyph = ((startGlyph - 1 + day) % 20) + 1;
-
-  const cycleDay = (day % 13) + 1;
-
-  return { tone, glyph, cycleDay };
+</head>
+
+<body>
+<header>
+  <h1>Uroko Calendar</h1>
+  <div class="date" id="today"></div>
+</header>
+
+<main>
+
+<!-- ① ツォルキン -->
+<section class="card">
+  <h2>ツォルキンの表と裏</h2>
+  <div class="badge">一般向けマヤ暦</div>
+  <div class="body" id="tzFront"></div>
+  <div class="body" id="tzBack"></div>
+</section>
+
+<!-- ② ウロコ暦 -->
+<section class="card">
+  <h2>ウロコ暦の表と裏</h2>
+  <div class="badge">しらの専用</div>
+  <div class="body" id="uFront"></div>
+  <div class="body" id="uBack"></div>
+</section>
+
+<!-- ③ 13日間 -->
+<section class="card">
+  <h2>いま流れている13日間</h2>
+  <div class="badge">ウェイブスペル</div>
+  <div class="body" id="waveInfo"></div>
+</section>
+
+<!-- ④ 説明 -->
+<section class="card">
+  <h2>音・紋章・ツォルキン暦とは</h2>
+  <div class="body">
+マヤ暦（ツォルキン）は「13の音 × 20の紋章」で260日を巡る暦です。
+音はその日のリズム、紋章はテーマや性質を表します。
+
+表は「外で動きやすい流れ」、
+裏は「本能や無意識で出やすい動き」。
+
+どちらも合わせて読むことで、
+その日の全体像が見えてきます。
+  </div>
+</section>
+
+<!-- ⑤ 誕生日 -->
+<section class="card">
+  <h2>誕生日から調べる</h2>
+  <div class="badge">ツォルキン</div>
+  <input type="date" id="birth">
+  <button onclick="calcBirth()">検索</button>
+  <div class="body" id="birthResult"></div>
+</section>
+
+</main>
+
+<script>
+const signs=["ワニ","風","夜","トカゲ","蛇","死","シカ","ウサギ","水","犬","猿","道","コーン","ジャガー","ワシ","コンドル","香","ナイフ","嵐","祖先"];
+const tones=[1,2,3,4,5,6,7,8,9,10,11,12,13];
+
+function mod(n,m){return((n%m)+m)%m}
+
+const base=new Date(2025,11,10); // 音9 香
+const baseTone=9;
+const baseSign=16;
+
+function getKin(d){
+  const diff=Math.round((d-base)/86400000);
+  const tone=tones[mod(baseTone-1+diff,13)];
+  const sign=signs[mod(baseSign+diff,20)];
+  return{tone,sign,diff}
 }
 
-/* -------------------------------------
-   今日の表示更新
--------------------------------------- */
+function init(){
+  const today=new Date();
+  document.getElementById("today").textContent=today.toLocaleDateString("ja-JP");
 
-function updateToday() {
-  const today = new Date();
+  const k=getKin(today);
+  document.getElementById("tzFront").textContent=`【表】音${k.tone}・${k.sign}`;
+  document.getElementById("tzBack").textContent=`【裏】本能に${k.sign}が出やすい`;
 
-  document.getElementById("todayDate").textContent =
-    today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
+  document.getElementById("uFront").textContent=`【表】しらの用 音${k.tone}・${k.sign}`;
+  document.getElementById("uBack").textContent=`【裏】ウロコ的${k.sign}`;
 
-  /* --- ① ウロコ暦（しらの専用） --- */
-  const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
-  document.getElementById("uTone").textContent  = toneNames[u.tone - 1];
-  document.getElementById("uGlyph").textContent = glyphNames[u.glyph - 1];
-  document.getElementById("uFront").textContent = frontDescriptions[glyphNames[u.glyph - 1]];
-  document.getElementById("uBack").textContent  = backDescriptions[glyphNames[u.glyph - 1]];
-  document.getElementById("uCycle").textContent = `${u.cycleDay} / 13`;
+  const dayInWave=mod(k.tone-1,13)+1;
+  const start=new Date(today);
+  start.setDate(today.getDate()-(dayInWave-1));
+  const end=new Date(start);
+  end.setDate(start.getDate()+12);
 
-  // ★ ここから下、いったん全部コメントアウト！
-  /*
-  const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
-  document.getElementById("tTone").textContent  = toneNames[t.tone - 1];
-  document.getElementById("tGlyph").textContent = glyphNames[t.glyph - 1];
-  document.getElementById("tFront").textContent = frontDescriptions[glyphNames[t.glyph - 1]];
-  document.getElementById("tBack").textContent  = backDescriptions[glyphNames[t.glyph - 1]];
-  document.getElementById("tCycle").textContent = `${t.cycleDay} / 13`;
-  */
+  document.getElementById("waveInfo").textContent=
+`開始：${start.toLocaleDateString("ja-JP")}
+終了：${end.toLocaleDateString("ja-JP")}
+今日は ${dayInWave} / 13 日目`;
 }
 
-/* -------------------------------------
-   誕生日から紋章を計算する（一般向けのみ）
--------------------------------------- */
-
-function searchBirthday() {
-  const input = document.getElementById("bInput").value;
-  if (!input) return;
-
-  const target = new Date(input);
-  const calc = calcCycle(target, t_startDate, t_startTone, t_startGlyph);
-
-  const glyphName = glyphNames[calc.glyph - 1];
-  const toneName  = toneNames[calc.tone - 1];
-
-  const detail = birthdayDescriptions[glyphName] || "データなし";
-
-  document.getElementById("birthdayResult").innerHTML = `
-    <b>あなたの紋章：</b> ${glyphName}<br>
-    <b>あなたの音：</b> ${toneName}<br><br>
-    ${detail}
-  `;
+function calcBirth(){
+  const v=document.getElementById("birth").value;
+  if(!v)return;
+  const d=new Date(v);
+  const k=getKin(d);
+  document.getElementById("birthResult").textContent=
+`あなたは 音${k.tone}・${k.sign} 生まれ`;
 }
 
-/* -------------------------------------
-   タブ切り替え
--------------------------------------- */
-
-function switchTab(tab) {
-  document.querySelectorAll(".tabContent").forEach(t => t.classList.remove("active"));
-  document.querySelectorAll(".tabButton").forEach(b => b.classList.remove("active"));
-
-  document.getElementById(tab).classList.add("active");
-  document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
-}
-
-/* -------------------------------------
-   初期読み込み
--------------------------------------- */
-
-document.addEventListener("DOMContentLoaded", () => {
-  switchTab("uroko");
-  updateToday();
-});
-
+init();
 </script>
+</body>
+</html>
