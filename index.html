@@ -347,7 +347,8 @@ document.getElementById("uBack").textContent =
     `${glyphNames[u.glyph-1]}の13日間（ウロコ暦）`;
 
   document.getElementById("uWaveInfo").textContent =
-    `開始：${uWaveStart.toLocaleDateString("ja-JP")} ／ 終了：${uWaveEnd.toLocaleDateString("ja-JP")}
+  `${waveTexts[uGlyphName]}
+開始：${uWaveStart.toLocaleDateString("ja-JP")} ／ 終了：${uWaveEnd.toLocaleDateString("ja-JP")}
 今日は ${u.cycleDay} / 13 日目`;
 }
 
