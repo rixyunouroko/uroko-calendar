@@ -380,16 +380,17 @@ function updateToday() {
 
 // --- ツォルキン表示 ---
 const tGlyphName = glyphNames[t.glyph - 1];
-document.getElementById("toneName").textContent =
+
+document.getElementById("tToneName").textContent =
   toneNames[t.tone - 1];
 
-document.getElementById("toneTheme").textContent =
+document.getElementById("tToneTheme").textContent =
   toneThemes[t.tone - 1];
 
-document.getElementById("glyphName").textContent =
+document.getElementById("tGlyphName").textContent =
   tGlyphName;
 
-document.getElementById("glyphTheme").textContent =
+document.getElementById("tGlyphTheme").textContent =
   glyphTexts[tGlyphName].front.split("。")[0];
 document.getElementById("tFront").textContent =
   glyphTexts[tGlyphName].front;
@@ -424,15 +425,18 @@ const waveTexts = {
 document.getElementById("tWaveInfo").textContent =
   `${waveTexts[tGlyphName]}
 今日は ${t.cycleDay} / 13 日目`;
-  // --- ウロコ暦表示 ---
-  const uGlyphName = glyphNames[u.glyph - 1];
+  // --- ウロコ暦 音と紋章 ---
+document.getElementById("uToneName").textContent =
+  toneNames[u.tone - 1];
 
-document.getElementById("uFront").textContent =
-  glyphTexts[uGlyphName].front;
+document.getElementById("uToneTheme").textContent =
+  toneThemes[u.tone - 1];
 
-document.getElementById("uBack").textContent =
-  glyphTexts[uGlyphName].back;
+document.getElementById("uGlyphName").textContent =
+  uGlyphName;
 
+document.getElementById("uGlyphTheme").textContent =
+  glyphTexts[uGlyphName].front.split("。")[0];
   // --- ★ウロコ暦13日間 ---
   const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
   const uWaveEnd   = new Date(uWaveStart.getTime() + 12 * 86400000);
