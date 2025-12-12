@@ -10,7 +10,7 @@
   --bg:#fff6e9;
   --card:#ffffff;
   --accent:#e1b76a;
-  --soft:#f5d7a5;
+  --accent-soft:#f5d7a5;
   --text:#3a2a1a;
   --sub:#7a6a55;
   --shadow:0 8px 18px rgba(0,0,0,.08);
@@ -19,13 +19,14 @@
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Maru Gothic ProN","Noto Sans JP",system-ui,sans-serif;
   background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 55%);
   color:var(--text);
 }
 header{
   text-align:center;
-  padding:24px 16px 12px;
+  padding:26px 16px 12px;
 }
 h1{
   margin:0;
@@ -33,168 +34,182 @@ h1{
   letter-spacing:.08em;
 }
 .date{
-  margin-top:6px;
+  margin-top:8px;
   font-size:14px;
   color:var(--sub);
 }
 main{
   max-width:720px;
-  margin:0 auto;
+  margin:auto;
   padding:0 16px 40px;
 }
 .card{
   background:var(--card);
   border-radius:var(--radius);
-  padding:18px;
+  padding:18px 20px;
   margin-bottom:18px;
   box-shadow:var(--shadow);
 }
-.card h2{
-  margin:0 0 6px;
+.card-title{
   font-size:16px;
-  letter-spacing:.08em;
+  font-weight:600;
+  margin-bottom:6px;
 }
 .badge{
   display:inline-block;
   font-size:11px;
   padding:3px 10px;
   border-radius:999px;
-  background:var(--soft);
+  background:var(--accent-soft);
+  color:#624013;
   margin-bottom:8px;
 }
-.body{
+.block{
+  margin-top:8px;
   font-size:14px;
-  line-height:1.65;
+  line-height:1.6;
   white-space:pre-line;
 }
 .small{
   font-size:12px;
   color:var(--sub);
+  margin-top:6px;
 }
 input[type="date"]{
-  padding:4px 10px;
+  padding:6px 10px;
   border-radius:999px;
   border:1px solid #ccc;
   font-size:13px;
 }
 button{
+  padding:6px 14px;
   border:none;
   border-radius:999px;
-  padding:4px 14px;
   background:var(--accent);
   color:#fff;
-  font-size:12px;
+  font-size:13px;
 }
 </style>
 </head>
 
 <body>
+
 <header>
   <h1>Uroko Calendar</h1>
-  <div class="date" id="today"></div>
+  <div class="date" id="todayLabel"></div>
 </header>
 
 <main>
 
-<!-- ① ツォルキン -->
+<!-- ツォルキン暦 -->
 <section class="card">
-  <h2>ツォルキンの表と裏</h2>
-  <div class="badge">一般向けマヤ暦</div>
-  <div class="body" id="tzFront"></div>
-  <div class="body" id="tzBack"></div>
+  <div class="card-title">ツォルキン暦の表と裏</div>
+  <div class="badge">ツォルキン暦</div>
+  <div class="block" id="tzFront"></div>
+  <div class="block" id="tzBack"></div>
 </section>
 
-<!-- ② ウロコ暦 -->
+<!-- ウロコ暦 -->
 <section class="card">
-  <h2>ウロコ暦の表と裏</h2>
-  <div class="badge">しらの専用</div>
-  <div class="body" id="uFront"></div>
-  <div class="body" id="uBack"></div>
+  <div class="card-title">ウロコ暦の表と裏</div>
+  <div class="badge">ウロコ暦</div>
+  <div class="block" id="urFront"></div>
+  <div class="block" id="urBack"></div>
 </section>
 
-<!-- ③ 13日間 -->
+<!-- 13日間 -->
 <section class="card">
-  <h2>いま流れている13日間</h2>
+  <div class="card-title">いま流れている13日間</div>
   <div class="badge">ウェイブスペル</div>
-  <div class="body" id="waveInfo"></div>
+  <div class="block" id="waveInfo"></div>
 </section>
 
-<!-- ④ 説明 -->
+<!-- 説明 -->
 <section class="card">
-  <h2>音・紋章・ツォルキン暦とは</h2>
-  <div class="body">
+  <div class="card-title">音・紋章・ツォルキン暦とは</div>
+  <div class="block">
 マヤ暦（ツォルキン）は「13の音 × 20の紋章」で260日を巡る暦です。
 音はその日のリズム、紋章はテーマや性質を表します。
 
 表は「外で動きやすい流れ」、
 裏は「本能や無意識で出やすい動き」。
 
-どちらも合わせて読むことで、
-その日の全体像が見えてきます。
+両方あわせて読むことで、その日の全体像が見えてきます。
   </div>
 </section>
 
-<!-- ⑤ 誕生日 -->
+<!-- 誕生日 -->
 <section class="card">
-  <h2>誕生日から調べる</h2>
+  <div class="card-title">誕生日から調べる</div>
   <div class="badge">ツォルキン</div>
-  <input type="date" id="birth">
-  <button onclick="calcBirth()">検索</button>
-  <div class="body" id="birthResult"></div>
+  <input type="date" id="birthInput">
+  <button onclick="searchBirthday()">検索</button>
+  <div class="block" id="birthResult"></div>
 </section>
 
 </main>
 
 <script>
-const signs=["ワニ","風","夜","トカゲ","蛇","死","シカ","ウサギ","水","犬","猿","道","コーン","ジャガー","ワシ","コンドル","香","ナイフ","嵐","祖先"];
+// 基本データ
+const glyphs=["ワニ","風","夜","トカゲ","蛇","死","シカ","ウサギ","水","犬",
+"猿","道","コーン","ジャガー","ワシ","コンドル","香","ナイフ","嵐","祖先"];
 const tones=[1,2,3,4,5,6,7,8,9,10,11,12,13];
 
-function mod(n,m){return((n%m)+m)%m}
+// 基準日
+const tzBase=new Date("1987-05-14"); // 音11・シカ
+const tzTone=11;
+const tzGlyph=6;
 
-const base=new Date(2025,11,10); // 音9 香
-const baseTone=9;
-const baseSign=16;
+const urBase=new Date("2025-09-02"); // 音1・夜
+const urTone=1;
+const urGlyph=2;
 
-function getKin(d){
-  const diff=Math.round((d-base)/86400000);
-  const tone=tones[mod(baseTone-1+diff,13)];
-  const sign=signs[mod(baseSign+diff,20)];
-  return{tone,sign,diff}
+function calc(date,baseDate,baseTone,baseGlyph){
+  const diff=Math.floor((date-baseDate)/86400000);
+  const tone=(baseTone-1+diff)%13+1;
+  const glyph=(baseGlyph+diff)%20;
+  return{tone,glyph,day:(diff%13+13)%13+1};
+}
+
+function format(d){
+  return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
 }
 
 function init(){
   const today=new Date();
-  document.getElementById("today").textContent=today.toLocaleDateString("ja-JP");
+  document.getElementById("todayLabel").textContent=format(today);
 
-  const k=getKin(today);
-  document.getElementById("tzFront").textContent=`【表】音${k.tone}・${k.sign}`;
-  document.getElementById("tzBack").textContent=`【裏】本能に${k.sign}が出やすい`;
+  const tz=calc(today,tzBase,tzTone,tzGlyph);
+  const ur=calc(today,urBase,urTone,urGlyph);
 
-  document.getElementById("uFront").textContent=`【表】しらの用 音${k.tone}・${k.sign}`;
-  document.getElementById("uBack").textContent=`【裏】ウロコ的${k.sign}`;
+  document.getElementById("tzFront").textContent=`【表】音${tz.tone}・${glyphs[tz.glyph]}`;
+  document.getElementById("tzBack").textContent=`【裏】本能に${glyphs[tz.glyph]}が出やすい`;
 
-  const dayInWave=mod(k.tone-1,13)+1;
+  document.getElementById("urFront").textContent=`【表】音${ur.tone}・${glyphs[ur.glyph]}`;
+  document.getElementById("urBack").textContent=`【裏】ウロコ的${glyphs[ur.glyph]}`;
+
   const start=new Date(today);
-  start.setDate(today.getDate()-(dayInWave-1));
+  start.setDate(today.getDate()-(tz.day-1));
   const end=new Date(start);
   end.setDate(start.getDate()+12);
 
   document.getElementById("waveInfo").textContent=
-`開始：${start.toLocaleDateString("ja-JP")}
-終了：${end.toLocaleDateString("ja-JP")}
-今日は ${dayInWave} / 13 日目`;
+`開始：${format(start)}
+終了：${format(end)}
+今日は ${tz.day} / 13 日目`;
 }
 
-function calcBirth(){
-  const v=document.getElementById("birth").value;
+function searchBirthday(){
+  const v=document.getElementById("birthInput").value;
   if(!v)return;
   const d=new Date(v);
-  const k=getKin(d);
+  const r=calc(d,tzBase,tzTone,tzGlyph);
   document.getElementById("birthResult").textContent=
-`あなたは 音${k.tone}・${k.sign} 生まれ`;
+`あなたは 音${r.tone}・${glyphs[r.glyph]} 生まれ`;
 }
 
 init();
 </script>
+
 </body>
 </html>
