@@ -787,9 +787,9 @@ ${glyphTexts[uGlyphName].energy}
 const uGlyphName = glyphNames[u.glyph - 1];
 
 // それから使う
-document.getElementById("tBack").innerHTML = `
+document.getElementById("uBack").innerHTML = `
 【気をつけたいところ】<br>
-・${glyphTexts[tGlyphName].weak.join("<br>・")}
+・${glyphTexts[uGlyphName].weak.join("<br>・")}
 `;
 
 document.getElementById("tWave").textContent =
@@ -837,8 +837,8 @@ document.getElementById("uGlyphTheme").textContent =
   // --- ウロコ暦 表・裏 ---
 document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
-${dailyGlyph[uGlyphName].keyword}<br><br>
-${dailyGlyph[uGlyphName].energy}
+${glyphTexts[uGlyphName].keyword}<br><br>
+${glyphTexts[uGlyphName].energy}
 `;
   // --- ★ウロコ暦13日間 ---
   const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
