@@ -133,8 +133,13 @@ body {
     <h3>本能・影（裏）</h3>
     <div class="card back" id="uBack"></div>
   </div>
-</div>
 
+  <div class="block">
+    <h3>この13日間のテーマ（ウロコ暦）</h3>
+    <div class="card wave" id="uWave"></div>
+    <p id="uWaveInfo"></p>
+ </div>
+</div>
 <!-- 解説 -->
 <div class="section">
   <h2>音・紋章・ツォルキン暦とは</h2>
@@ -199,26 +204,43 @@ function calcCycle(date, startDate, startTone, startGlyph) {
 /* ===== 表示更新 ===== */
 function updateToday() {
   const today = new Date();
+
   document.getElementById("todayDate").textContent =
     today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
 
   const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
   const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
 
+  // --- ツォルキン表示 ---
   document.getElementById("tFront").textContent =
     `${toneNames[t.tone-1]}・${glyphNames[t.glyph-1]}`;
+
   document.getElementById("tBack").textContent =
     `本能に${glyphNames[t.glyph-1]}が出やすい`;
 
   document.getElementById("tWave").textContent =
     `${glyphNames[t.glyph-1]}の13日間`;
+
   document.getElementById("tWaveInfo").textContent =
     `今日は ${t.cycleDay} / 13 日目`;
 
+  // --- ウロコ暦表示 ---
   document.getElementById("uFront").textContent =
-    `音${u.tone}・${glyphNames[u.glyph-1]}`;
+    `${toneNames[u.tone-1]}・${glyphNames[u.glyph-1]}`;
+
   document.getElementById("uBack").textContent =
     `ウロコ的${glyphNames[u.glyph-1]}`;
+
+  // --- ★ウロコ暦13日間 ---
+  const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
+  const uWaveEnd   = new Date(uWaveStart.getTime() + 12 * 86400000);
+
+  document.getElementById("uWave").textContent =
+    `${glyphNames[u.glyph-1]}の13日間（ウロコ暦）`;
+
+  document.getElementById("uWaveInfo").textContent =
+    `開始：${uWaveStart.toLocaleDateString("ja-JP")} ／ 終了：${uWaveEnd.toLocaleDateString("ja-JP")}
+今日は ${u.cycleDay} / 13 日目`;
 }
 
 /* ===== 誕生日検索 ===== */
