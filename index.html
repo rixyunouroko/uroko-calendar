@@ -295,19 +295,20 @@ function updateToday() {
   // 紋章名を取得
 const tGlyphName = glyphNames[t.glyph - 1];
 
-// --- ツォルキン表示（表・裏）---
+// --- ツォルキン表示 ---
+const tGlyphName = glyphNames[t.glyph - 1];
+
 document.getElementById("tFront").textContent =
   glyphTexts[tGlyphName].front;
 
 document.getElementById("tBack").textContent =
   glyphTexts[tGlyphName].back;
 
-  document.getElementById("tWave").textContent =
-    `${glyphNames[t.glyph-1]}の13日間`;
+document.getElementById("tWave").textContent =
+  `${tGlyphName}の13日間`;
 
-  document.getElementById("tWaveInfo").textContent =
-    `今日は ${t.cycleDay} / 13 日目`;
-
+document.getElementById("tWaveInfo").textContent =
+  `今日は ${t.cycleDay} / 13 日目`;
   // --- ウロコ暦表示 ---
   const uGlyphName = glyphNames[u.glyph - 1];
 
