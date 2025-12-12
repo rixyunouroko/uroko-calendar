@@ -126,26 +126,31 @@ body {
 
 <!-- ツォルキン暦 -->
 <div class="section">
+  <div class="section">
   <h2>ツォルキン暦</h2>
+
+  <!-- ヘッダー行：横並び -->
   <div class="header-row">
-    <div class="block">
-  <h3>今日のテーマ（表）</h3>
-  <div class="card" id="tFront"></div>
-</div>
-  <span class="tag">本日の音と紋章</span>
+    <span class="tag">本日の音と紋章</span>
 
-  <div class="mini-info">
-    <div class="mini-col">
-      <div class="mini-title" id="toneName">音1</div>
-      <div class="mini-text" id="toneTheme">はじまり</div>
-    </div>
+    <div class="mini-info">
+      <div class="mini-col">
+        <div class="mini-title" id="tToneName"></div>
+        <div class="mini-text" id="tToneTheme"></div>
+      </div>
 
-    <div class="mini-col">
-      <div class="mini-title" id="glyphName">ワニ</div>
-      <div class="mini-text" id="glyphTheme">安心・土台</div>
+      <div class="mini-col">
+        <div class="mini-title" id="tGlyphName"></div>
+        <div class="mini-text" id="tGlyphTheme"></div>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- ↓ ここからは縦並び -->
+  <div class="block">
+    <h3>今日のテーマ（表）</h3>
+    <div class="card" id="tFront"></div>
+  </div>
 
   <div class="block">
     <h3>本能・無意識（裏）</h3>
@@ -155,31 +160,48 @@ body {
   <div class="block">
     <h3>この13日間のテーマ（ウェイブスペル）</h3>
     <div class="card wave">
-  <div id="tWave"></div>
-  <div id="tWaveInfo"></div>
-</div>
+      <div id="tWave"></div>
+      <div id="tWaveInfo"></div>
+    </div>
   </div>
 </div>
 
 <!-- ウロコ暦 -->
 <div class="section">
   <h2>ウロコ暦</h2>
- <div class="header-row">
-  <div class="block">
-  <h3>今日のテーマ（表）</h3>
-  <div class="card" id="uFront"></div>
-</div>
-  <span class="tag">本日の音と紋章</span>
+<!-- ヘッダー行：横並び -->
+  <div class="header-row">
+    <span class="tag">本日の音と紋章</span>
 
-  <div class="mini-info">
-    <div class="mini-col">
-      <div class="mini-title" id="toneName">音1</div>
-      <div class="mini-text" id="toneTheme">はじまり</div>
+    <div class="mini-info">
+      <div class="mini-col">
+        <div class="mini-title" id="uToneName"></div>
+        <div class="mini-text" id="uToneTheme"></div>
+      </div>
+
+      <div class="mini-col">
+        <div class="mini-title" id="uGlyphName"></div>
+        <div class="mini-text" id="uGlyphTheme"></div>
+      </div>
     </div>
+  </div>
 
-    <div class="mini-col">
-      <div class="mini-title" id="glyphName">ワニ</div>
-      <div class="mini-text" id="glyphTheme">安心・土台</div>
+  <!-- ↓ ここからは縦並び -->
+  <div class="block">
+    <h3>今日のテーマ（表）</h3>
+    <div class="card" id="tFront"></div>
+  </div>
+
+  <div class="block">
+    <h3>本能・無意識（裏）</h3>
+    <div class="card back" id="tBack"></div>
+  </div>
+
+  <div class="block">
+    <h3>この13日間のテーマ（ウェイブスペル）</h3>
+    <div class="card wave">
+      <div id="tWave"></div>
+      <div id="tWaveInfo"></div>
     </div>
   </div>
 </div>
