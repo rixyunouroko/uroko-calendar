@@ -15,25 +15,53 @@
 
     <!-- Tab contents -->
     <div id="uroko" class="tabContent active">
-      <h2>今日のエネルギー（ウロコ暦）</h2>
-      <p><b>音：</b> <span id="uTone"></span></p>
-<p><b>紋章：</b> <span id="uGlyph"></span></p>
-      <div class="dayBox">
-  <p><b>表：</b> <span class="dayFront" id="uFront"></span></p>
-  <p><b>裏：</b> <span class="dayBack" id="uBack"></span></p>
-  <p><b>13日サイクル：</b> <span id="uCycle"></span></p>
+
+  <!-- 音と紋章（小さくまとめる） -->
+  <p class="miniInfo">
+    <span id="uTone"></span>｜<span id="uGlyph"></span>
+  </p>
+
+  <!-- 今日の表 -->
+  <div class="dayBox">
+    <h3>今日の表</h3>
+    <div class="dayFront" id="uFront"></div>
   </div>
+
+  <!-- 今日の裏 -->
+  <div class="dayBox">
+    <h3>今日の裏</h3>
+    <div class="dayBack" id="uBack"></div>
+  </div>
+
+  <!-- 13日サイクル -->
+  <div class="dayBox">
+    <h3>いま流れている13日間</h3>
+    <p><span id="uCycle"></span></p>
+  </div>
+
 </div>
 
-    <div id="tzolkin" class="tabContent">
-      <h2>今日のエネルギー（ツォルキン暦）</h2>
-      <p><b>音：</b> <span id="tTone"></span></p>
-<p><b>紋章：</b> <span id="tGlyph"></span></p>
-      <div class="dayBox">
-  <p><b>表：</b> <span class="dayFront" id="tFront"></span></p>
-  <p><b>裏：</b> <span class="dayBack" id="tBack"></span></p>
-  <p><b>13日サイクル：</b> <span id="tCycle"></span></p>
+   <div id="tzolkin" class="tabContent">
+
+  <p class="miniInfo">
+    <span id="tTone"></span>｜<span id="tGlyph"></span>
+  </p>
+
+  <div class="dayBox">
+    <h3>今日の表</h3>
+    <div class="dayFront" id="tFront"></div>
   </div>
+
+  <div class="dayBox">
+    <h3>今日の裏</h3>
+    <div class="dayBack" id="tBack"></div>
+  </div>
+
+  <div class="dayBox">
+    <h3>いま流れている13日間</h3>
+    <p><span id="tCycle"></span></p>
+  </div>
+
 </div>
 
     <div id="birthday" class="tabContent">
