@@ -624,12 +624,11 @@ function calcCycle(date, startDate, startTone, startGlyph) {
 /* -------------------------------------
    今日の表示更新
 -------------------------------------- */
-document.getElementById("todayDate").textContent =
-  today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
+
 function updateToday() {
-
   const today = new Date();
-
+document.getElementById("todayDate").textContent =
+    today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
   /* --- ① ウロコ暦（しらの専用） --- */
   const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
   document.getElementById("uTone").textContent  = toneNames[u.tone - 1];
