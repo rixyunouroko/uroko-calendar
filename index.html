@@ -756,17 +756,11 @@ function updateToday() {
   document.getElementById("todayDate").textContent =
     today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
 
-  // --- 紋章名を最初に確定させる ---
-conconst today = new Date();
+  const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
+  const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
 
-// ★ これが必要！
-const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
-const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
-
-// そのあとで
-const tGlyphName = glyphNames[t.glyph - 1];
-const uGlyphName = glyphNames[u.glyph - 1];
-
+  const tGlyphName = glyphNames[t.glyph - 1];
+  const uGlyphName = glyphNames[u.glyph - 1];
 
 // --- ツォルキン表示 ---
 
@@ -775,11 +769,7 @@ document.getElementById("tToneName").textContent =
 
 document.getElementById("tToneTheme").textContent =
   toneThemes[t.tone - 1];
-
-document.getElementById("tGlyphName").textContent =
-  tGlyphName;
-
-document.getElementById("uToneName").textContent = toneNames[u.tone - 1];
+  
 document.getElementById("uGlyphName").textContent = uGlyphName;
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
