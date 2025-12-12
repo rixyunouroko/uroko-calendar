@@ -126,7 +126,6 @@ body {
 
 <!-- ツォルキン暦 -->
 <div class="section">
-  <div class="section">
   <h2>ツォルキン暦</h2>
 
   <!-- ヘッダー行：横並び -->
@@ -198,26 +197,21 @@ body {
   </div>
 
   <div class="block">
-    <h3>この13日間のテーマ（ウェイブスペル）</h3>
-    <div class="card wave">
-      <div id="tWave"></div>
-      <div id="tWaveInfo"></div>
-    </div>
-  </div>
+  <h3>今日のテーマ（表）</h3>
+  <div class="card" id="uFront"></div>
 </div>
 
-  <div class="block">
-    <h3>本能・影（裏）</h3>
-    <div class="card back" id="uBack"></div>
-  </div>
-
-  <div class="block">
-    <h3>この13日間のテーマ（ウロコ暦）</h3>
-    <div class="card wave">
-  <div id="uWave"></div>
-  <div id="uWaveInfo"></div>
+<div class="block">
+  <h3>本能・無意識（裏）</h3>
+  <div class="card back" id="uBack"></div>
 </div>
- </div>
+
+<div class="block">
+  <h3>この13日間のテーマ（ウロコ暦）</h3>
+  <div class="card wave">
+    <div id="uWave"></div>
+    <div id="uWaveInfo"></div>
+  </div>
 </div>
 <!-- 解説 -->
 <div class="section">
@@ -425,7 +419,10 @@ const waveTexts = {
 document.getElementById("tWaveInfo").textContent =
   `${waveTexts[tGlyphName]}
 今日は ${t.cycleDay} / 13 日目`;
-  // --- ウロコ暦 音と紋章 ---
+// --- ウロコ暦用 紋章名を先に定義 ---
+const uGlyphName = glyphNames[u.glyph - 1];
+
+// --- ウロコ暦 音と紋章 ---
 document.getElementById("uToneName").textContent =
   toneNames[u.tone - 1];
 
