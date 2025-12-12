@@ -88,6 +88,33 @@ body {
   border-radius: 12px;
   line-height: 1.7;
 }
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-info {
+  display: flex;
+  gap: 18px;
+}
+
+.mini-col {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #6b5a3c;
+}
+
+.mini-title {
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.mini-text {
+  font-size: 0.65rem;
+  opacity: 0.8;
+}
 </style>
 </head>
 
@@ -100,12 +127,21 @@ body {
 <!-- ツォルキン暦 -->
 <div class="section">
   <h2>ツォルキン暦</h2>
+  <div class="header-row">
   <span class="tag">本日の音と紋章</span>
 
-  <div class="block">
-    <h3>今日のテーマ（表）</h3>
-    <div class="card" id="tFront"></div>
+  <div class="mini-info">
+    <div class="mini-col">
+      <div class="mini-title" id="toneName">音1</div>
+      <div class="mini-text" id="toneTheme">はじまり</div>
+    </div>
+
+    <div class="mini-col">
+      <div class="mini-title" id="glyphName">ワニ</div>
+      <div class="mini-text" id="glyphTheme">安心・土台</div>
+    </div>
   </div>
+</div>
 
   <div class="block">
     <h3>本能・無意識（裏）</h3>
@@ -124,12 +160,21 @@ body {
 <!-- ウロコ暦 -->
 <div class="section">
   <h2>ウロコ暦</h2>
+ <div class="header-row">
   <span class="tag">本日の音と紋章</span>
 
-  <div class="block">
-    <h3>今日のテーマ（表）</h3>
-    <div class="card" id="uFront"></div>
+  <div class="mini-info">
+    <div class="mini-col">
+      <div class="mini-title" id="toneName">音1</div>
+      <div class="mini-text" id="toneTheme">はじまり</div>
+    </div>
+
+    <div class="mini-col">
+      <div class="mini-title" id="glyphName">ワニ</div>
+      <div class="mini-text" id="glyphTheme">安心・土台</div>
+    </div>
   </div>
+</div>
 
   <div class="block">
     <h3>本能・影（裏）</h3>
@@ -263,6 +308,11 @@ const glyphTexts = {
     back: "終わりを認めにくい日。小さな「できた」で十分ですよ。"
   }
 };
+const toneThemes = [
+  "はじまり","協力","活性","形づくる","力を与える",
+  "整える","調律","調和","意図","完成へ向かう",
+  "解放","共有","超える"
+];
 /* ===== 起点 ===== */
 // ツォルキン（一般）
 const t_startDate  = new Date("1987-05-14");
@@ -300,7 +350,17 @@ function updateToday() {
 
 // --- ツォルキン表示 ---
 const tGlyphName = glyphNames[t.glyph - 1];
+document.getElementById("toneName").textContent =
+  toneNames[t.tone - 1];
 
+document.getElementById("toneTheme").textContent =
+  toneThemes[t.tone - 1];
+
+document.getElementById("glyphName").textContent =
+  tGlyphName;
+
+document.getElementById("glyphTheme").textContent =
+  glyphTexts[tGlyphName].front.split("。")[0];
 document.getElementById("tFront").textContent =
   glyphTexts[tGlyphName].front;
 
