@@ -253,10 +253,9 @@ const u_startGlyph = 15;    // 夜（Ak'bal）
 -------------------------------------- */
 
 // 一般向けの基準日（260日サイクルの共通基準）
-const t_startDate = new Date("2020-01-01"); 
-const t_startTone = 4;
-const t_startGlyph = 20;
-
+const t_startDate  = new Date("1987-05-14");
+const t_startTone  = 11;
+const t_startGlyph = 7; // シカ
 /* -------------------------------------
    辞書データ（しらの版・一般版どちらも使用）
    ※ 表・裏の全文は PART 3-2 で読み込む
@@ -318,7 +317,26 @@ frontDescriptions["水"] = `
 浄化・涙・癒しが起こりやすい。  
 しんどい人は寝たほうが流れがよくなる日。
 `;
+frontDescriptions["猿"] = `
+遊び心・柔軟さ・ひらめきがテーマの日。
+状況を軽く見て、抜け道を見つける力が働く。
 
+人とのやりとりや即興的な対応に強い。
+笑いやユーモアが場を和ませ、流れを変える。
+
+深刻になりすぎず、
+「一回試してみる」が運を動かす鍵。
+`;
+frontDescriptions["道"] = `
+選択・方向性・人生のルートがテーマの日。
+日常の中の「どっちに進むか」が浮かび上がる。
+
+派手な変化より、
+小さな選択の積み重ねが未来を作る。
+
+迷いは悪ではなく、調整のサイン。
+「今日はどこへ向かう？」を意識すると整う。
+`;
 frontDescriptions["コーン"] = `
 収穫・繁栄・実りの紋章。  
 コツコツ積み上げてきた成果が形になりやすい。  
@@ -606,7 +624,8 @@ function calcCycle(date, startDate, startTone, startGlyph) {
 /* -------------------------------------
    今日の表示更新
 -------------------------------------- */
-
+document.getElementById("todayDate").textContent =
+  today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
 function updateToday() {
 
   const today = new Date();
