@@ -309,11 +309,13 @@ document.getElementById("tBack").textContent =
     `今日は ${t.cycleDay} / 13 日目`;
 
   // --- ウロコ暦表示 ---
-  document.getElementById("uFront").textContent =
-    `${toneNames[u.tone-1]}・${glyphNames[u.glyph-1]}`;
+  const uGlyphName = glyphNames[u.glyph - 1];
 
-  document.getElementById("uBack").textContent =
-    `ウロコ的${glyphNames[u.glyph-1]}`;
+document.getElementById("uFront").textContent =
+  glyphTexts[uGlyphName].front;
+
+document.getElementById("uBack").textContent =
+  glyphTexts[uGlyphName].back;
 
   // --- ★ウロコ暦13日間 ---
   const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
