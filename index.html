@@ -763,7 +763,18 @@ function updateToday() {
   const uGlyphName = glyphNames[u.glyph - 1];
 
 // --- ツォルキン表示 ---
+// --- ツォルキン 表 ---
+document.getElementById("tFront").innerHTML = `
+【キーワード】<br>
+${glyphTexts[tGlyphName].keyword}<br><br>
+${glyphTexts[tGlyphName].energy}
+`;
 
+// --- ツォルキン 裏 ---
+document.getElementById("tBack").innerHTML = `
+【気をつけたいところ】<br>
+・${glyphTexts[tGlyphName].weak.join("<br>・")}
+`;
 document.getElementById("tToneName").textContent =
   toneNames[t.tone - 1];
 
