@@ -328,7 +328,8 @@ const waveTexts = {
   祖先: "一区切りと達成の13日間です。ここまで来た自分をねぎらってください。"
 };
 document.getElementById("tWaveInfo").textContent =
-  `今日は ${t.cycleDay} / 13 日目`;
+  `${waveTexts[tGlyphName]}
+今日は ${t.cycleDay} / 13 日目`;
   // --- ウロコ暦表示 ---
   const uGlyphName = glyphNames[u.glyph - 1];
 
