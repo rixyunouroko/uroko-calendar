@@ -1079,14 +1079,14 @@ function makeJSTDate(y, m, d) {
 }
 
 // ツォルキン（一般）
-const t_startDate = makeJSTDate(2025, 11, 3);
-const t_startTone = 1;
-const t_startGlyph = 1; // ワニ
-
+// 2025/12/13 を 音11・祖先 にする起点
+const t_startDate = makeJSTDate(2025, 11, 13);
+const t_startTone = 11;
+const t_startGlyph = 20; // 祖先
 // ウロコ暦（しらの流）
 const u_startDate = makeJSTDate(2025, 11, 8);
 const u_startTone = 1;
-const u_startGlyph = 3; // 夜
+const u_startGlyph = 19; // 嵐
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
   const diffDays = Math.round((date - startDate) / 86400000);
