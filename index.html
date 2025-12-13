@@ -1121,7 +1121,17 @@ const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
 // 明日の暦
 const tTomorrow = calcCycle(tomorrow, t_startDate, t_startTone, t_startGlyph);
 const uTomorrow = calcCycle(tomorrow, u_startDate, u_startTone, u_startGlyph);
+function calcKin(startDate, date) {
+  const diff = Math.floor((date - startDate) / 86400000);
+  return ((diff % 260) + 260) % 260; // 0〜259
+}
+function calcWaveStartGlyph(startGlyph, kin) {
+  // 13日間の開始KINを求める(0〜12が1セット)
+  const waveStartKin = kin - (kin % 13);
 
+  // 紋章は20で巡るのでこうなる
+  return ((startGlyph - 1 + waveStartKin) % 20) + 1;
+}
 // ★ 表示用の13日間カウント（日本基準ズレ補正）
 const tDisplayDay = t.cycleDay;        // ツォルキン：そのまま
 const uDisplayDay = u.cycleDay;        // ウロコ暦：そのまま
@@ -1151,11 +1161,19 @@ document.getElementById("tToneTheme").textContent =
 document.getElementById("tGlyphName").textContent = tGlyphName;
 document.getElementById("tGlyphTheme").textContent =
   glyphTexts[tGlyphName].keyword.split("／")[0];
-// --- ウロコ暦 紋章 ---
-document.getElementById("uGlyphName").textContent = uGlyphName;
-document.getElementById("uGlyphTheme").textContent =
-  glyphTexts[uGlyphName].keyword.split("／")[0];
+// --- ★ツォルキン暦13日間（修正版） ---
+const tKin = calcKin(t_startDate, today);
+const tWaveGlyph = glyphNames[
+  calcWaveStartGlyph(t_startGlyph, tKin) - 1
+];
 
+document.getElementById("tWave").textContent =
+  `${tWaveGlyph}の13日間`;
+
+document.getElementById("tWaveInfo").innerHTML = `
+<p class="wave-description">${waveTexts[tWaveGlyph]}</p>
+<div class="wave-day">今日は ${tDisplayDay} / 13 日目</div>
+`;
 // --- ウロコ暦 表 ---
 
 document.getElementById("uBack").innerHTML = `
@@ -1164,10 +1182,12 @@ document.getElementById("uBack").innerHTML = `
 `;
 document.getElementById("tWave").textContent =
   `${tGlyphName}の13日間`;
+document.getElementById("tWave").textContent =
+  `${tWaveGlyph}の13日間`;
+
 document.getElementById("tWaveInfo").innerHTML = `
-  <p class="wave-description">${waveTexts[tGlyphName]}</p>
-<div class="wave-day">
-  今日は ${tDisplayDay} / 13 日目
+<p class="wave-description">${waveTexts[tWaveGlyph]}</p>
+<div class="wave-day">今日は ${tDisplayDay} / 13 日目</div>`;
 </div>
 `;
 // --- ウロコ暦用 紋章名を先に定義 ---
@@ -1185,25 +1205,18 @@ document.getElementById("uFront").innerHTML = `
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
 `;
-  // --- ★ウロコ暦13日間（修正版） ---
-// 13日間の開始日
-const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
+// --- ★ウロコ暦13日間（修正版） ---
+const uKin = calcKin(u_startDate, today);
+const uWaveGlyph = glyphNames[
+  calcWaveStartGlyph(u_startGlyph, uKin) - 1
+];
 
-// 開始日の音・紋章を取得
-const uWaveStartData = calcCycle(uWaveStart, u_startDate, u_startTone, u_startGlyph);
-const uWaveGlyphName = glyphNames[uWaveStartData.glyph - 1];
-
-// 表示
 document.getElementById("uWave").textContent =
-  `${uWaveGlyphName}の13日間（ウロコ暦）`;
+  `${uWaveGlyph}の13日間（ウロコ暦）`;
 
 document.getElementById("uWaveInfo").innerHTML = `
-<div class="wave-description">
-  ${waveTexts[uWaveGlyphName]}
-</div>
-<div class="wave-day">
-  今日は ${uDisplayDay} / 13 日目
-</div>
+<div class="wave-description">${waveTexts[uWaveGlyph]}</div>
+<div class="wave-day">今日は ${uDisplayDay} / 13 日目</div>
 `;
 /* ===== 誕生日検索 ===== */
 const glyphInfo = {
