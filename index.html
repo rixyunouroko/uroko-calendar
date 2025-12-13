@@ -128,49 +128,17 @@ body {
     gap: 12px;
   }
 }
-.wave-day {
-  margin-top: 12px;      /* 段落を下げる */
-  padding-top: 8px;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-.wave-day {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  opacity: 0.75;
-}
-.wave p {
+.wave-description{
   margin: 0;
-}
-
-.wave .day-count {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  opacity: 0.75;
-  text-align: right;
-}
-.wave p {
-  margin: 0;
-  font-size: 1rem;        /* ← ここが肝 */
+  font-size: 14px;
   line-height: 1.7;
 }
 
-.wave .day-count {
+.wave-day{
   margin-top: 6px;
-  font-size: 0.85rem;
-  opacity: 0.75;
+  font-size: 14px;
   text-align: right;
-}
-.wave-description {
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.wave-day {
-  margin-top: 6px;
-  font-size: 0.85rem;
-  opacity: 0.75;
-  text-align: right;
+  opacity: 0.7;
 }
 </style>
 </head>
@@ -214,7 +182,7 @@ body {
     <h3>この13日間のテーマ（ウェイブスペル）</h3>
     <div class="card wave">
       <div id="tWave"></div>
-      <div id="tWaveInfo" class="wave-day"></div>
+      <div id="tWaveInfo"></div>
     </div>
   </div>
 </div>
@@ -252,7 +220,7 @@ body {
     <h3>この13日間のテーマ（ウロコ暦）</h3>
     <div class="card wave">
       <div id="uWave"></div>
-      <div id="uWaveInfo" class="wave-day"></div>
+      <div id="uWaveInfo"></div>
     </div>
   </div>
 </div>
@@ -1118,11 +1086,8 @@ function calcCycle(date, startDate, startTone, startGlyph) {
 }
 
 /* ===== 表示更新 ===== */
-const now = new Date();
-const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-jst.setHours(0, 0, 0, 0);
-
-const today = jst;
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
   document.getElementById("todayDate").textContent =
     today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
@@ -1193,12 +1158,8 @@ const waveTexts = {
   祖先: "一区切りと達成の13日間です。ここまで来た自分をねぎらってください。"
 };
 document.getElementById("tWaveInfo").innerHTML = `
-<div class="wave-description">
-  ${waveTexts[tGlyphName]}
-</div>
-<div class="wave-day">
-  今日は ${t.cycleDay} / 13 日目
-</div>
+  <p class="wave-description">${waveTexts[tGlyphName]}</p>
+  <div class="wave-day">今日は ${t.cycleDay} / 13 日目</div>
 `;
 // --- ウロコ暦用 紋章名を先に定義 ---
 
