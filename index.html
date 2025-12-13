@@ -1075,12 +1075,12 @@ const waveTexts = {
 };
 /* ===== 起点 ===== */
 // ツォルキン（一般）
-const t_startDate = new Date(2025, 11, 2); // 2025-12-02 JST 0:00
+const t_startDate = new Date(2025, 11, 2); //
 const t_startTone = 1;
 const t_startGlyph = 1; // ワニ
 
 // ウロコ暦（しらの流）
-const u_startDate = new Date(2025, 11, 7); // 2025-12-07 JST 0:00
+const u_startDate = new Date(2025, 11, 7); //
 const u_startTone = 1;
 const u_startGlyph = 3; // 夜
 /* ===== サイクル計算 ===== */
@@ -1097,8 +1097,13 @@ function calcCycle(date, startDate, startTone, startGlyph) {
 
 /* ===== 表示更新 ===== */
 // 今日
-const today = new Date();
-today.setHours(0, 0, 0, 0);
+// 今日（JST固定）
+const now = new Date();
+const today = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate()
+);
 
 // ★ 明日（今日のコピーから作る）
 const tomorrow = new Date(today);
