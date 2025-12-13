@@ -147,9 +147,6 @@ body {
   </div>
 
 </div>
-      <div class="mini-col">
-  <div class="mini-text" id="tToneTheme"></div>
-</div>
     </div>
   </div>
 
@@ -190,10 +187,6 @@ body {
 <div class="mini-col">
   <div class="mini-title" id="uGlyphName"></div>
   <div class="mini-text" id="uGlyphTheme"></div>
-</div>
-
-      <div class="mini-col">
-  <div class="mini-text" id="uToneTheme"></div>
 </div>
     </div>
   </div>
@@ -1154,9 +1147,8 @@ document.getElementById("uToneName").textContent =
 document.getElementById("uToneTheme").textContent =
   toneThemes[u.tone - 1];
 
-document.getElementById("uGlyphTheme").textContent =
-  glyphTexts[uGlyphName].keyword.split("／")[0];
-  // --- ウロコ暦 表・裏 ---
+// --- ウロコ暦 表 ---
+document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
