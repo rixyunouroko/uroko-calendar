@@ -1078,9 +1078,9 @@ function makeJSTDate(y, m, d) {
 }
 
 // ツォルキン（一般）＝音1ワニからスタート
-const t_startDate = makeJSTDate(2024, 6, 27);  
+const t_startDate = makeJSTDate(2024, 6, 7);  // ← 2024/7/7
 const t_startTone = 1;
-const t_startGlyph = 1; // ワニ
+const t_startGlyph = 1;
 // ウロコ暦（しらの流）
 const u_startDate = makeJSTDate(2025, 11, 8);
 const u_startTone = 1;
@@ -1107,7 +1107,8 @@ function calcWaveStartGlyph(startGlyph, diffDays) {
 }
 
 function calcUrokoWaveGlyph(startGlyph, diffDays) {
-  const waveIndex = Math.floor(diffDays / 13);
+  const safeDays = ((diffDays % 260) + 260) % 260; // 260日ループ & マイナス補正
+  const waveIndex = Math.floor(safeDays / 13);
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
 }
   // 13日ごとに紋章を1つ進める
