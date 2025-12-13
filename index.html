@@ -1097,13 +1097,15 @@ function calcCycle(date, startDate, startTone, startGlyph) {
     cycleDay: (day % 13) + 1
   };
 }
-function calcKin(startDate, date) {
-  const diff = Math.floor((date - startDate) / 86400000);
-  return ((diff % 260) + 260) % 260; // 0〜259
-}function calcWaveStartGlyph(startGlyph, diffDays) {
+function calcWaveStartGlyph(startGlyph, diffDays) {
   const waveIndex = Math.floor(diffDays / 13);
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
+}
+
 function calcUrokoWaveGlyph(startGlyph, diffDays) {
+  const waveIndex = Math.floor(diffDays / 13);
+  return ((startGlyph - 1 + waveIndex) % 20) + 1;
+}
   // 13日ごとに紋章を1つ進める
   const waveIndex = Math.floor(diffDays / 13);
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
