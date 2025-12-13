@@ -1126,9 +1126,9 @@ function calcKin(startDate, date) {
   return ((diff % 260) + 260) % 260; // 0〜259
 }
 function calcWaveStartGlyph(startGlyph, kin) {
-  // 13日間の開始KINを求める(0〜12が1セット)
   const waveStartKin = kin - (kin % 13);
-
+  return ((startGlyph - 1 + waveStartKin) % 20) + 1;
+}
   // 紋章は20で巡るのでこうなる
   return ((startGlyph - 1 + waveStartKin) % 20) + 1;
 }
@@ -1161,11 +1161,10 @@ document.getElementById("tToneTheme").textContent =
 document.getElementById("tGlyphName").textContent = tGlyphName;
 document.getElementById("tGlyphTheme").textContent =
   glyphTexts[tGlyphName].keyword.split("／")[0];
-// --- ★ツォルキン暦13日間（修正版） ---
+// --- ★ツォルキン13日間 ---
 const tKin = calcKin(t_startDate, today);
-const tWaveGlyph = glyphNames[
-  calcWaveStartGlyph(t_startGlyph, tKin) - 1
-];
+const tWaveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, tKin);
+const tWaveGlyph = glyphNames[tWaveStartGlyphNumber - 1];
 
 document.getElementById("tWave").textContent =
   `${tWaveGlyph}の13日間`;
@@ -1204,11 +1203,10 @@ document.getElementById("uFront").innerHTML = `
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
 `;
-// --- ★ウロコ暦13日間（修正版） ---
+// --- ★ウロコ暦13日間 ---
 const uKin = calcKin(u_startDate, today);
-const uWaveGlyph = glyphNames[
-  calcWaveStartGlyph(u_startGlyph, uKin) - 1
-];
+const uWaveStartGlyphNumber = calcWaveStartGlyph(u_startGlyph, uKin);
+const uWaveGlyph = glyphNames[uWaveStartGlyphNumber - 1];
 
 document.getElementById("uWave").textContent =
   `${uWaveGlyph}の13日間（ウロコ暦）`;
