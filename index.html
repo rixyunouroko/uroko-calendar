@@ -193,7 +193,6 @@ body {
 
   <div class="title-row">
     <span class="tag">本日の音と紋章</span>
-
     <div class="mini-info">
       <div class="mini-col">
         <div class="mini-title" id="uToneName"></div>
@@ -1078,11 +1077,10 @@ function makeJSTDate(y, m, d) {
   return new Date(y, m, d);
 }
 
-// ツォルキン（一般）
-// 2025/12/13 を 音11・祖先 にする起点
-const t_startDate = makeJSTDate(2025, 11, 13);
-const t_startTone = 11;
-const t_startGlyph = 20; // 祖先
+// ツォルキン（一般）＝音1ワニからスタート
+const t_startDate = makeJSTDate(2024, 6, 27);  
+const t_startTone = 1;
+const t_startGlyph = 1; // ワニ
 // ウロコ暦（しらの流）
 const u_startDate = makeJSTDate(2025, 11, 8);
 const u_startTone = 1;
@@ -1203,7 +1201,8 @@ ${glyphTexts[uGlyphName].energy}
 const uKin = calcKin(u_startDate, today);
 const uWaveStartGlyphNumber = calcWaveStartGlyph(u_startGlyph, uKin);
 const uWaveGlyph = glyphNames[uWaveStartGlyphNumber - 1];
-
+document.getElementById("uWave").textContent =
+  `${uWaveGlyph}の13日間`;
 document.getElementById("uWaveInfo").innerHTML = `
 <div class="wave-description">${waveTexts[uWaveGlyph]}</div>
 <div class="wave-day">今日は ${uDisplayDay} / 13 日目</div>
