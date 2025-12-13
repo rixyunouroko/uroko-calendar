@@ -1101,15 +1101,18 @@ function calcKin(startDate, targetDate) {
   const diff = Math.floor((targetDate - startDate) / 86400000);
   return ((diff % 260) + 260) % 260;
 }
-function calcWaveStartGlyph(startGlyph, diffDays) {
-  const waveIndex = Math.floor(diffDays / 13);
-  return ((startGlyph - 1 + waveIndex) % 20) + 1;
-}
 
 // ★ ツォルキン 13日間（ウェイブスペル）用 正式版
 function calcWaveStartGlyph(startGlyph, diffDays) {
-  const cycleDay = (diffDays % 13 + 13) % 13; // 音1からの経過日
-  const waveIndex = Math.floor(((diffDays - cycleDay) % 260 + 260) % 260 / 13);
+  const cycleDay = ((diffDays % 13) + 13) % 13;
+  const waveIndex = Math.floor((((diffDays - cycleDay) % 260) + 260) % 260 / 13);
+  return ((startGlyph - 1 + waveIndex) % 20) + 1;
+}
+
+// ★ ウロコ暦 13日間（ウェイブスペル）
+function calcUrokoWaveGlyph(startGlyph, diffDays) {
+  const cycleDay = ((diffDays % 13) + 13) % 13;
+  const waveIndex = Math.floor((((diffDays - cycleDay) % 260) + 260) % 260 / 13);
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
 }
   // 13日ごとに紋章を1つ進める
