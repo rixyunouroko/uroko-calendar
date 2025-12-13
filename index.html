@@ -1099,9 +1099,16 @@ function calcCycle(date, startDate, startTone, startGlyph) {
     cycleDay: (day % 13) + 1
   };
 }
-
+function calcKin(startDate, date) {
+  const diff = Math.floor((date - startDate) / 86400000);
+  return ((diff % 260) + 260) % 260; // 0〜259
+}
+function calcWaveStartGlyph(startGlyph, kin) {
+  const waveStartKin = kin - (kin % 13); // 13日間の最初のKIN番号
+  return ((startGlyph - 1 + waveStartKin) % 20) + 1;
+}
 /* ===== 表示更新 ===== */
-// 今日
+
 // 今日（JST固定）
 const now = new Date();
 const today = new Date(
@@ -1109,38 +1116,32 @@ const today = new Date(
   now.getMonth(),
   now.getDate()
 );
+
 // ---- 今日の日付表示 ----
 const yyyy = today.getFullYear();
 const mm = String(today.getMonth() + 1).padStart(2, "0");
 const dd = String(today.getDate()).padStart(2, "0");
-
 document.getElementById("todayDate").textContent =
   `${yyyy}年${mm}月${dd}日`;
-// ★ 明日（今日のコピーから作る）
+
+// ★ 明日
 const tomorrow = new Date(today);
 tomorrow.setDate(today.getDate() + 1);
 
-// 今日の暦
+// === 今日のサイクル（ここで初めてtとuを作る！） ===
 const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
 const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
 
-// 明日の暦
+// === 明日のサイクル ===
 const tTomorrow = calcCycle(tomorrow, t_startDate, t_startTone, t_startGlyph);
 const uTomorrow = calcCycle(tomorrow, u_startDate, u_startTone, u_startGlyph);
-function calcKin(startDate, date) {
-  const diff = Math.floor((date - startDate) / 86400000);
-  return ((diff % 260) + 260) % 260; // 0〜259
-}
-function calcWaveStartGlyph(startGlyph, kin) {
-  const waveStartKin = kin - (kin % 13);
-  return ((startGlyph - 1 + waveStartKin) % 20) + 1;
-}
-// ★ 表示用の13日間カウント（日本基準ズレ補正）
-const tDisplayDay = t.cycleDay;        // ツォルキン：そのまま
-const uDisplayDay = u.cycleDay;        // ウロコ暦：そのまま
-  const tGlyphName = glyphNames[t.glyph - 1];
-  const uGlyphName = glyphNames[u.glyph - 1];
 
+// ★ 表示用13日間
+const tDisplayDay = t.cycleDay;
+const uDisplayDay = u.cycleDay;
+
+const tGlyphName = glyphNames[t.glyph - 1];
+const uGlyphName = glyphNames[u.glyph - 1];
 // --- ツォルキン表示 ---
 
 // --- ツォルキン 表 ---
@@ -1169,13 +1170,6 @@ const tKin = calcKin(t_startDate, today);
 const tWaveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, tKin);
 const tWaveGlyph = glyphNames[tWaveStartGlyphNumber - 1];
 
-document.getElementById("tWave").textContent =
-  `${tWaveGlyph}の13日間`;
-
-document.getElementById("tWaveInfo").innerHTML = `
-<p class="wave-description">${waveTexts[tWaveGlyph]}</p>
-<div class="wave-day">今日は ${tDisplayDay} / 13 日目</div>
-`;
 // --- ウロコ暦 表 ---
 
 document.getElementById("uBack").innerHTML = `
@@ -1209,9 +1203,6 @@ ${glyphTexts[uGlyphName].energy}
 const uKin = calcKin(u_startDate, today);
 const uWaveStartGlyphNumber = calcWaveStartGlyph(u_startGlyph, uKin);
 const uWaveGlyph = glyphNames[uWaveStartGlyphNumber - 1];
-
-document.getElementById("uWave").textContent =
-  `${uWaveGlyph}の13日間（ウロコ暦）`;
 
 document.getElementById("uWaveInfo").innerHTML = `
 <div class="wave-description">${waveTexts[uWaveGlyph]}</div>
