@@ -132,7 +132,6 @@ body {
     <span class="tag">本日の音と紋章</span>
 
     <div class="mini-info">
-      <div class="mini-info">
 
   <!-- 音 -->
   <div class="mini-col">
@@ -1113,7 +1112,6 @@ document.getElementById("uGlyphName").textContent = uGlyphName;
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
 
-document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
@@ -2273,8 +2271,6 @@ function searchBirthday() {
     <pre>${glyphInfo[glyphName]}</pre>
   `;
 }
-
-document.addEventListener("DOMContentLoaded", updateToday);
 </script>
 </body>
 </html>
