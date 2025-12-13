@@ -148,6 +148,57 @@ body {
   text-align: right;
   opacity: 0.7;
 }
+/* 誕生日入力エリア */
+.birthday-block {
+  margin-top: 10px;
+}
+
+.birthday-label {
+  font-size: 0.9rem;
+  color: #555;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.birthday-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.birthday-input {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.birthday-button {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  border-radius: 999px;
+  border: none;
+  background: #6b5a3c;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* スマホで縦並び */
+@media (max-width: 600px) {
+  .birthday-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .birthday-button {
+    width: 100%;
+    text-align: center;
+  }
+}
 </style>
 </head>
 
@@ -250,11 +301,16 @@ body {
 <!-- 誕生日検索 -->
 <div class="section">
   <h2>誕生日から調べる（ツォルキン）</h2>
-  <input type="date" id="bInput">
-  <button onclick="searchBirthday()">検索</button>
-  <div id="birthdayResult"></div>
-</div>
 
+  <div class="birthday-block">
+    <label for="bInput" class="birthday-label">誕生日をえらんでください</label>
+    <div class="birthday-row">
+      <input type="date" id="bInput" class="birthday-input">
+      <button class="birthday-button" onclick="searchBirthday()">検索</button>
+    </div>
+  </div>
+
+  <div id="birthdayResult"></div>
 </div>
 
 <script>
