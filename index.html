@@ -1097,6 +1097,10 @@ function calcCycle(date, startDate, startTone, startGlyph) {
     cycleDay: (day % 13) + 1
   };
 }
+function calcKin(startDate, targetDate) {
+  const diff = Math.floor((targetDate - startDate) / 86400000);
+  return ((diff % 260) + 260) % 260;
+}
 function calcWaveStartGlyph(startGlyph, diffDays) {
   const waveIndex = Math.floor(diffDays / 13);
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
