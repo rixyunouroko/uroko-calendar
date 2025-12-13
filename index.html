@@ -148,10 +148,6 @@ body {
 
 </div>
       <div class="mini-col">
-        <div class="mini-text" id="tToneTheme"></div>
-      </div>
-
-      <div class="mini-col">
   <div class="mini-text" id="tToneTheme"></div>
 </div>
     </div>
@@ -195,10 +191,6 @@ body {
   <div class="mini-title" id="uGlyphName"></div>
   <div class="mini-text" id="uGlyphTheme"></div>
 </div>
-
-      <div class="mini-col">
-        <div class="mini-text" id="uToneTheme"></div>
-      </div>
 
       <div class="mini-col">
   <div class="mini-text" id="uToneTheme"></div>
@@ -743,6 +735,7 @@ const glyphTexts = {
   pair: ["ワシ", "コンドル"],
   caution: ["ナイフ", "嵐"]
 },
+}; // 
 /* ===== ウロコ暦・裏（神様側：荒れポイント） ===== */
 const urokoBack = {
 "ワニ": {
@@ -1164,7 +1157,6 @@ document.getElementById("uToneTheme").textContent =
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
   // --- ウロコ暦 表・裏 ---
-document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
