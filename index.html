@@ -1049,26 +1049,39 @@ const u_startGlyph = 3; // 夜
 
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
-  const diff = Math.floor((date - startDate) / 86400000);
-  const day = (diff % 260 + 260) % 260;
+  // 日付は「0時固定」
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+
+  const s = new Date(startDate);
+  s.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.floor(
+    (d - s) / (1000 * 60 * 60 * 24)
+  );
+
+  const day = ((diffDays % 260) + 260) % 260;
+
   return {
     tone: ((startTone - 1 + day) % 13) + 1,
     glyph: ((startGlyph - 1 + day) % 20) + 1,
     cycleDay: (day % 13) + 1,
-    waveStart: new Date(date.getTime() - ((day % 13) * 86400000))
+    waveStart: new Date(d.getTime() - (day % 13) * 86400000)
   };
 }
 
 /* ===== 表示更新 ===== */
-function updateToday() {
-  const today = new Date();
-today.setHours(0, 0, 0, 0);
+const now = new Date();
+const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+jst.setHours(0, 0, 0, 0);
+
+const today = jst;
 
   document.getElementById("todayDate").textContent =
     today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
 
   const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
-  const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
+const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
 
   const tGlyphName = glyphNames[t.glyph - 1];
   const uGlyphName = glyphNames[u.glyph - 1];
