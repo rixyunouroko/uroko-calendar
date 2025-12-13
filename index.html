@@ -1063,15 +1063,14 @@ const u_startDate  = new Date("2025-12-13");
 const u_startTone  = 6;
 const u_startGlyph = 8; // ウサギ
 /* ===== サイクル計算 ===== */
-function calcCycle(date, startTone, startGlyph) {
-  function calcCycle(date, startDate, startTone, startGlyph) {
+function calcCycle(date, startDate, startTone, startGlyph) {
   const diffDays = Math.floor((date - startDate) / 86400000);
   const day = ((diffDays % 260) + 260) % 260;
 
   return {
     tone: ((startTone - 1 + day) % 13) + 1,
     glyph: ((startGlyph - 1 + day) % 20) + 1,
-    cycleDay: (day % 13) + 1   // ★ 13日間の何日目か
+    cycleDay: (day % 13) + 1
   };
 }
 
