@@ -1096,11 +1096,21 @@ function calcCycle(date, startDate, startTone, startGlyph) {
 }
 
 /* ===== 表示更新 ===== */
+// 今日
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-  document.getElementById("todayDate").textContent =
-    today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
+// ★ 明日（今日のコピーから作る）
+const tomorrow = new Date(today);
+tomorrow.setDate(today.getDate() + 1);
+
+// 今日の暦
+const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
+const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
+
+// 明日の暦
+const tTomorrow = calcCycle(tomorrow, t_startDate, t_startTone, t_startGlyph);
+const uTomorrow = calcCycle(tomorrow, u_startDate, u_startTone, u_startGlyph);
 
   const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
 const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
