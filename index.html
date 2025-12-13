@@ -1129,9 +1129,6 @@ function calcWaveStartGlyph(startGlyph, kin) {
   const waveStartKin = kin - (kin % 13);
   return ((startGlyph - 1 + waveStartKin) % 20) + 1;
 }
-  // 紋章は20で巡るのでこうなる
-  return ((startGlyph - 1 + waveStartKin) % 20) + 1;
-}
 // ★ 表示用の13日間カウント（日本基準ズレ補正）
 const tDisplayDay = t.cycleDay;        // ツォルキン：そのまま
 const uDisplayDay = u.cycleDay;        // ウロコ暦：そのまま
