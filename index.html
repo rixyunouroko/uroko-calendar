@@ -184,19 +184,16 @@ body {
   <div class="header-row">
     <span class="tag">本日の音と紋章</span>
 
-    <div class="mini-info">
-      <div class="mini-info">
+   <div class="mini-info">
 
-  <!-- 音 -->
   <div class="mini-col">
-    <div class="mini-title" id="uToneName"></div>
-    <div class="mini-text" id="uToneTheme"></div>
+    <div class="mini-title" id="tToneName"></div>
+    <div class="mini-text" id="tToneTheme"></div>
   </div>
 
-  <!-- 紋章 ←★ここに入れる -->
   <div class="mini-col">
-    <div class="mini-title" id="uGlyphName"></div>
-    <div class="mini-text" id="uGlyphTheme"></div>
+    <div class="mini-title" id="tGlyphName"></div>
+    <div class="mini-text" id="tGlyphTheme"></div>
   </div>
 
 </div>
@@ -779,6 +776,7 @@ function calcCycle(date, startDate, startTone, startGlyph) {
 /* ===== 表示更新 ===== */
 function updateToday() {
   const today = new Date();
+today.setHours(0, 0, 0, 0);
 
   document.getElementById("todayDate").textContent =
     today.toLocaleDateString("ja-JP", { year:"numeric", month:"long", day:"numeric" });
@@ -790,6 +788,7 @@ function updateToday() {
   const uGlyphName = glyphNames[u.glyph - 1];
 
 // --- ツォルキン表示 ---
+
 // --- ツォルキン 表 ---
 document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
@@ -807,7 +806,10 @@ document.getElementById("tToneName").textContent =
 
 document.getElementById("tToneTheme").textContent =
   toneThemes[t.tone - 1];
-  
+// --- ツォルキン 紋章 ---
+document.getElementById("tGlyphName").textContent = tGlyphName;
+document.getElementById("tGlyphTheme").textContent =
+  glyphTexts[tGlyphName].keyword.split("／")[0];
 document.getElementById("uGlyphName").textContent = uGlyphName;
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
