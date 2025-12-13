@@ -1184,22 +1184,26 @@ document.getElementById("uFront").innerHTML = `
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
 `;
-  // --- ★ウロコ暦13日間 ---
-  const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
-  const uWaveEnd   = new Date(uWaveStart.getTime() + 12 * 86400000);
+  // --- ★ウロコ暦13日間（修正版） ---
+// 13日間の開始日
+const uWaveStart = new Date(today.getTime() - (u.cycleDay - 1) * 86400000);
 
-  document.getElementById("uWave").textContent =
-    `${glyphNames[u.glyph-1]}の13日間（ウロコ暦）`;
+// 開始日の音・紋章を取得
+const uWaveStartData = calcCycle(uWaveStart, u_startDate, u_startTone, u_startGlyph);
+const uWaveGlyphName = glyphNames[uWaveStartData.glyph - 1];
 
-  document.getElementById("uWaveInfo").innerHTML = `
+// 表示
+document.getElementById("uWave").textContent =
+  `${uWaveGlyphName}の13日間（ウロコ暦）`;
+
+document.getElementById("uWaveInfo").innerHTML = `
 <div class="wave-description">
-  ${waveTexts[uGlyphName]}
+  ${waveTexts[uWaveGlyphName]}
 </div>
 <div class="wave-day">
   今日は ${uDisplayDay} / 13 日目
 </div>
 `;
-
 /* ===== 誕生日検索 ===== */
 const glyphInfo = {
 
