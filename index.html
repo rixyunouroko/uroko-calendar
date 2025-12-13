@@ -90,9 +90,9 @@ body {
 }
 .header-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .mini-info {
@@ -1042,9 +1042,10 @@ const t_startTone  = 11;
 const t_startGlyph = 7;
 
 // ウロコ暦（しらの流）
-const u_startDate  = new Date("2025-09-01"); // ← 1日戻す
-const u_startTone  = 1;
-const u_startGlyph = 3; // 夜
+// 12/13 は 音6・ウサギ
+const u_startDate  = new Date("2025-12-13");
+const u_startTone  = 6;
+const u_startGlyph = 8; // ウサギ
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
   // 日付は「0時固定」
