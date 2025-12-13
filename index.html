@@ -1106,9 +1106,10 @@ function calcWaveStartGlyph(startGlyph, diffDays) {
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
 }
 
-function calcUrokoWaveGlyph(startGlyph, diffDays) {
-  const safeDays = ((diffDays % 260) + 260) % 260; // 260日ループ & マイナス補正
-  const waveIndex = Math.floor(safeDays / 13);
+// ★ ツォルキン 13日間（ウェイブスペル）用 正式版
+function calcWaveStartGlyph(startGlyph, diffDays) {
+  const cycleDay = (diffDays % 13 + 13) % 13; // 音1からの経過日
+  const waveIndex = Math.floor(((diffDays - cycleDay) % 260 + 260) % 260 / 13);
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
 }
   // 13日ごとに紋章を1つ進める
