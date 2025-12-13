@@ -1052,19 +1052,14 @@ const toneThemes = [
   "解放","共有","超える"
 ];
 /* ===== 起点 ===== */
-/* ===== 起点 ===== */
 // ツォルキン（一般）
-const t_startDate = new Date("1987-02-20"); // 音1 ワニ
-t_startDate.setDate(t_startDate.getDate() - 5);
-
-const t_startTone  = 1;
+const t_startDate = new Date("2025-12-03"); // 12/13 - 10日
+const t_startTone = 1;
 const t_startGlyph = 1; // ワニ
 
 // ウロコ暦（しらの流）
-const u_startDate = new Date("2025-12-13"); // 仮
-u_startDate.setDate(u_startDate.getDate() - 1);
-
-const u_startTone  = 1;
+const u_startDate = new Date("2025-12-08"); // 12/13 - 5日
+const u_startTone = 1;
 const u_startGlyph = 3; // 夜
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
