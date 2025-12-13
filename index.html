@@ -128,6 +128,12 @@ body {
     gap: 12px;
   }
 }
+.wave-day {
+  margin-top: 12px;      /* 段落を下げる */
+  padding-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
 </style>
 </head>
 
@@ -170,7 +176,7 @@ body {
     <h3>この13日間のテーマ（ウェイブスペル）</h3>
     <div class="card wave">
       <div id="tWave"></div>
-      <div id="tWaveInfo"></div>
+      <div id="tWaveInfo" class="wave-day"></div>
     </div>
   </div>
 </div>
@@ -208,7 +214,7 @@ body {
     <h3>この13日間のテーマ（ウロコ暦）</h3>
     <div class="card wave">
       <div id="uWave"></div>
-      <div id="uWaveInfo"></div>
+      <div id="uWaveInfo" class="wave-day"></div>
     </div>
   </div>
 </div>
