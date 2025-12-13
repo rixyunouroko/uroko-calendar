@@ -102,18 +102,17 @@ body {
 
 .mini-col {
   text-align: center;
-  font-size: 0.7rem;
-  color: #6b5a3c;
+  font-size: 0.85rem;
 }
 
 .mini-title {
   font-weight: bold;
-  font-size: 0.75rem;
+  font-size: 1rem;   /* ← 音・紋章名 */
 }
 
 .mini-text {
-  font-size: 0.65rem;
-  opacity: 0.8;
+  font-size: 0.75rem; /* ← テーマ一言 */
+  opacity: 0.85;
 }
 </style>
 </head>
@@ -127,29 +126,23 @@ body {
 <!-- ツォルキン暦 -->
 <div class="section">
   <h2>ツォルキン暦</h2>
-</div> <!-- ← ツォルキン暦 section をちゃんと閉じる -->
+
   <div class="header-row">
     <span class="tag">本日の音と紋章</span>
 
     <div class="mini-info">
+      <div class="mini-col">
+        <div class="mini-title" id="tToneName"></div>
+        <div class="mini-text" id="tToneTheme"></div>
+      </div>
 
-  <!-- 音 -->
-  <div class="mini-col">
-    <div class="mini-title" id="tToneName"></div>
-    <div class="mini-text" id="tToneTheme"></div>
-  </div>
-
-  <!-- 紋章 ←★これを追加 -->
-  <div class="mini-col">
-    <div class="mini-title" id="tGlyphName"></div>
-    <div class="mini-text" id="tGlyphTheme"></div>
-  </div>
-
-</div>
+      <div class="mini-col">
+        <div class="mini-title" id="tGlyphName"></div>
+        <div class="mini-text" id="tGlyphTheme"></div>
+      </div>
     </div>
   </div>
 
-  <!-- ↓ ここからは縦並び -->
   <div class="block">
     <h3>今日のテーマ（表）</h3>
     <div class="card" id="tFront"></div>
