@@ -1194,8 +1194,12 @@ const waveTexts = {
   祖先: "一区切りと達成の13日間です。ここまで来た自分をねぎらってください。"
 };
 document.getElementById("tWaveInfo").innerHTML = `
-<p>${waveTexts[uGlyphName]}</p>
-<div class="day-count">今日は ${u.cycleDay} / 13 日目</div>
+<div class="wave-description">
+  ${waveTexts[uGlyphName]}
+</div>
+<div class="wave-day">
+  今日は ${u.cycleDay} / 13 日目
+</div>
 `;
 // --- ウロコ暦用 紋章名を先に定義 ---
 
@@ -1220,8 +1224,12 @@ ${glyphTexts[uGlyphName].energy}
     `${glyphNames[u.glyph-1]}の13日間（ウロコ暦）`;
 
   document.getElementById("uWaveInfo").innerHTML = `
-<p>${waveTexts[uGlyphName]}</p>
-<div class="day-count">今日は ${u.cycleDay} / 13 日目</div>
+<div class="wave-description">
+  ${waveTexts[uGlyphName]}
+</div>
+<div class="wave-day">
+  今日は ${u.cycleDay} / 13 日目
+</div>
 `;
 
 /* ===== 誕生日検索 ===== */
