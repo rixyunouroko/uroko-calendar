@@ -1074,13 +1074,6 @@ function calcCycle(date, startDate, startTone, startGlyph) {
   };
 }
 
-  return {
-    tone: ((startTone - 1 + day) % 13) + 1,
-    glyph: ((startGlyph - 1 + day) % 20) + 1,
-    kinDay: day   // ← これだけ返す
-  };
-}
-
 /* ===== 表示更新 ===== */
 const today = new Date();
 today.setHours(0, 0, 0, 0);
