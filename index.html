@@ -1086,7 +1086,8 @@ const t_startGlyph = 20; // 祖先
 // ウロコ暦（しらの流）
 const u_startDate = makeJSTDate(2025, 11, 8);
 const u_startTone = 1;
-const u_startGlyph = 19; // 嵐
+// ウロコ暦の起点を夜に戻す
+const u_startGlyph = 3; // 夜
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
   const diffDays = Math.floor((date - startDate) / 86400000);
