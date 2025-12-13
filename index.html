@@ -1099,7 +1099,13 @@ function calcCycle(date, startDate, startTone, startGlyph) {
     cycleDay: (day % 13) + 1
   };
 }
+// ---- 今日の日付表示 ----
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, "0");
+const dd = String(today.getDate()).padStart(2, "0");
 
+document.getElementById("todayDate").textContent =
+  `${yyyy}年${mm}月${dd}日`;
 /* ===== 表示更新 ===== */
 // 今日
 // 今日（JST固定）
@@ -1176,8 +1182,7 @@ document.getElementById("uBack").innerHTML = `
 【気をつけたいところ】<br>
 ・${urokoBack[uGlyphName].bad.join("<br>・")}
 `;
-document.getElementById("tWave").textContent =
-  `${tGlyphName}の13日間`;
+
 document.getElementById("tWave").textContent =
   `${tWaveGlyph}の13日間`;
 
