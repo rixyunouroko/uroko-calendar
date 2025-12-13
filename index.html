@@ -1111,9 +1111,6 @@ function calcUrokoWaveGlyph(startGlyph, diffDays) {
   return ((startGlyph - 1 + waveIndex) % 20) + 1;
 }
   // 13日ごとに紋章を1つ進める
-  const waveIndex = Math.floor(diffDays / 13);
-  return ((startGlyph - 1 + waveIndex) % 20) + 1;
-}
 /* ===== 表示更新 ===== */
 
 // 今日（JST固定）
