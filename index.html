@@ -2297,7 +2297,7 @@ function searchBirthday() {
   const input = document.getElementById("bInput").value;
   if (!input) return;
 
-  const d = calcCycle(new Date(input), t_startDate, t_startTone, t_startGlyph);
+  const d = calcCycle(t_startDate, new Date(input), t_startTone, t_startGlyph);
 
   const toneNumber = d.tone.toString();
   const glyphName = glyphNames[d.glyph - 1];
