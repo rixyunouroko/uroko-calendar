@@ -1159,9 +1159,10 @@ const waveTexts = {
   嵐: "変化と浄化の13日間です。揺れの中でも、必要なものは残ります。",
   祖先: "一区切りと達成の13日間です。ここまで来た自分をねぎらってください。"
 };
-document.getElementById("tWaveInfo").textContent =
-  `${waveTexts[tGlyphName]}
-今日は ${t.cycleDay} / 13 日目`;
+document.getElementById("tWaveInfo").innerHTML = `
+<p>${waveTexts[tGlyphName]}</p>
+<p class="wave-day">今日は ${t.cycleDay} / 13 日目</p>
+`;
 // --- ウロコ暦用 紋章名を先に定義 ---
 
 // --- ウロコ暦 音と紋章 ---
@@ -1184,9 +1185,10 @@ ${glyphTexts[uGlyphName].energy}
   document.getElementById("uWave").textContent =
     `${glyphNames[u.glyph-1]}の13日間（ウロコ暦）`;
 
-  document.getElementById("uWaveInfo").textContent =
-  `${waveTexts[uGlyphName]}
-今日は ${u.cycleDay} / 13 日目`;
+  document.getElementById("uWaveInfo").innerHTML = `
+<p>${waveTexts[uGlyphName]}</p>
+<p class="wave-day">今日は ${u.cycleDay} / 13 日目</p>
+`;
 
 /* ===== 誕生日検索 ===== */
 const glyphInfo = {
