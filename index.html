@@ -1122,13 +1122,11 @@ document.getElementById("uBack").innerHTML = `
 【気をつけたいところ】<br>
 ・${urokoBack[uGlyphName].bad.join("<br>・")}
 `;
-const urokoWaveStart = new Date("2025-12-13");
 urokoWaveStart.setHours(0,0,0,0);
-
-function getUrokoWaveDay(today) {
-  const diff = Math.floor((today - urokoWaveStart) / 86400000);
-  return (diff % 13) + 1;
-}
+const uDisplayDay = u.cycleDay;
+<div class="wave-day">
+  今日は ${uDisplayDay} / 13 日目
+</div>
 document.getElementById("tWave").textContent =
   `${tGlyphName}の13日間`;
 const waveTexts = {
