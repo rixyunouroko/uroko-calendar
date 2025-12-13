@@ -127,7 +127,7 @@ body {
 <!-- ツォルキン暦 -->
 <div class="section">
   <h2>ツォルキン暦</h2>
-
+</div> <!-- ← ツォルキン暦 section をちゃんと閉じる -->
   <div class="header-row">
     <span class="tag">本日の音と紋章</span>
 
@@ -1042,10 +1042,9 @@ const t_startTone  = 11;
 const t_startGlyph = 7;
 
 // ウロコ暦（しらの流）
-const u_startDate  = new Date("2025-09-02");
+const u_startDate  = new Date("2025-09-01"); // ← 1日戻す
 const u_startTone  = 1;
 const u_startGlyph = 3; // 夜
-
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
   // 日付は「0時固定」
