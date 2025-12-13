@@ -1133,11 +1133,11 @@ const tomorrow = new Date(today);
 tomorrow.setDate(today.getDate() + 1);
 
 // === 今日のサイクル（ここで初めてtとuを作る！） ===
-const t = calcCycle(t_startDate, today, t_startTone, t_startGlyph);
-const u = calcCycle(u_startDate, today, u_startTone, u_startGlyph);
+const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
+const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
 // === 明日のサイクル ===
-const tTomorrow = calcCycle(t_startDate, tomorrow, t_startTone, t_startGlyph);
-const uTomorrow = calcCycle(u_startDate, tomorrow, u_startTone, u_startGlyph);
+const tTomorrow = calcCycle(tomorrow, t_startDate, t_startTone, t_startGlyph);
+const uTomorrow = calcCycle(tomorrow, u_startDate, u_startTone, u_startGlyph);
 
 // ★ 表示用13日間
 const tDisplayDay = t.cycleDay;
