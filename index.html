@@ -1154,10 +1154,15 @@ ${glyphTexts[tGlyphName].keyword}<br><br>
 ${glyphTexts[tGlyphName].energy}
 `;
 
-// --- ツォルキン 裏 ---
+// --- ツォルキン 裏（先に書く！） ---
 document.getElementById("tBack").innerHTML = `
 【気をつけたいところ】 <br>
 ・${glyphTexts[tGlyphName].weak.join("<br>・")}
+`;
+// --- ウロコ暦 裏 ---
+document.getElementById("uBack").innerHTML = `
+【気をつけたいところ】<br>
+・${urokoBack[uGlyphName].bad.join("<br>・")}
 `;
 document.getElementById("tToneName").textContent =
   toneNames[t.tone - 1];
