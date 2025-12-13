@@ -1089,7 +1089,7 @@ const u_startTone = 1;
 const u_startGlyph = 19; // 嵐
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
-  const diffDays = Math.round((date - startDate) / 86400000);
+  const diffDays = Math.floor((date - startDate) / 86400000);
   const day = ((diffDays % 260) + 260) % 260;
 
   return {
