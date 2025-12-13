@@ -1063,25 +1063,17 @@ const u_startDate  = new Date("2025-12-13");
 const u_startTone  = 6;
 const u_startGlyph = 8; // ウサギ
 /* ===== サイクル計算 ===== */
-function calcCycle(date, startDate, startTone, startGlyph) {
-  // 日付は「0時固定」
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
+function calcCycle(date, startTone, startGlyph) {
+  const baseDate = new Date("2025-12-12");
+  baseDate.setHours(0,0,0,0);
 
-  const s = new Date(startDate);
-  s.setHours(0, 0, 0, 0);
-
-  const diffDays = Math.floor(
-    (d - s) / (1000 * 60 * 60 * 24)
-  );
-
+  const diffDays = Math.floor((date - baseDate) / 86400000);
   const day = ((diffDays % 260) + 260) % 260;
 
   return {
     tone: ((startTone - 1 + day) % 13) + 1,
     glyph: ((startGlyph - 1 + day) % 20) + 1,
-    cycleDay: (day % 13) + 1,
-    waveStart: new Date(d.getTime() - (day % 13) * 86400000)
+    kinDay: day   // ← これだけ返す
   };
 }
 
@@ -1132,7 +1124,13 @@ document.getElementById("uBack").innerHTML = `
 【気をつけたいところ】<br>
 ・${urokoBack[uGlyphName].bad.join("<br>・")}
 `;
+const urokoWaveStart = new Date("2025-12-13");
+urokoWaveStart.setHours(0,0,0,0);
 
+function getUrokoWaveDay(today) {
+  const diff = Math.floor((today - urokoWaveStart) / 86400000);
+  return (diff % 13) + 1;
+}
 document.getElementById("tWave").textContent =
   `${tGlyphName}の13日間`;
 const waveTexts = {
@@ -1188,7 +1186,7 @@ ${glyphTexts[uGlyphName].energy}
   ${waveTexts[uGlyphName]}
 </div>
 <div class="wave-day">
-  今日は ${u.cycleDay} / 13 日目
+  今日は ${getUrokoWaveDay} / 13 日目
 </div>
 `;
 
