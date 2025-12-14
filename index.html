@@ -207,7 +207,16 @@ body {
 
 <h1 class="title">Uroko Calendar</h1>
 <p class="subtitle" id="todayDate"></p>
+<p class="subtitle" id="todayDate"></p>
 
+<!-- 先読み（日付指定） -->
+<div class="birthday-block">
+  <label for="previewInput" class="birthday-label">別の日をみる（先読み）</label>
+  <div class="birthday-row">
+    <input type="date" id="previewInput" class="birthday-input">
+    <button class="birthday-button" onclick="previewDate()">表示</button>
+  </div>
+</div>
 <!-- ツォルキン暦 -->
 <div class="section">
   <h2>ツォルキン暦</h2>
@@ -1186,118 +1195,123 @@ function calcUrokoWaveGlyph(startGlyph, diffDays) {
   // 13日ごとに紋章を1つ進める
 /* ===== 表示更新 ===== */
 
-// 今日（JST固定）
-const now = new Date();
-const today = new Date(
-  now.getFullYear(),
-  now.getMonth(),
-  now.getDate()
-);
+// 指定した日付でツォルキン＆ウロコ暦を描画する関数
+function renderDay(targetDate) {
+  // 時刻を0時にそろえる
+  const date = new Date(
+    targetDate.getFullYear(),
+    targetDate.getMonth(),
+    targetDate.getDate()
+  );
 
-// ---- 今日の日付表示 ----
-const yyyy = today.getFullYear();
-const mm = String(today.getMonth() + 1).padStart(2, "0");
-const dd = String(today.getDate()).padStart(2, "0");
-document.getElementById("todayDate").textContent =
-  `${yyyy}年${mm}月${dd}日`;
+  const yyyy = date.getFullYear();
+  const mm   = String(date.getMonth() + 1).padStart(2, "0");
+  const dd   = String(date.getDate()).padStart(2, "0");
 
-// ★ 明日
-const tomorrow = new Date(today);
-tomorrow.setDate(today.getDate() + 1);
+  // 画面上の日付
+  document.getElementById("todayDate").textContent =
+    `${yyyy}年${mm}月${dd}日`;
 
-// === 今日のサイクル（ここで初めてtとuを作る！） ===
-const t = calcCycle(today, t_startDate, t_startTone, t_startGlyph);
-const u = calcCycle(today, u_startDate, u_startTone, u_startGlyph);
-// === 明日のサイクル ===
-const tTomorrow = calcCycle(tomorrow, t_startDate, t_startTone, t_startGlyph);
-const uTomorrow = calcCycle(tomorrow, u_startDate, u_startTone, u_startGlyph);
+  // 先読み用 input にも反映
+  const previewInput = document.getElementById("previewInput");
+  if (previewInput) {
+    previewInput.value = `${yyyy}-${mm}-${dd}`;
+  }
 
-// ★ 表示用13日間
-const tDisplayDay = t.cycleDay;
-const uDisplayDay = u.cycleDay;
+  // サイクル計算
+  const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
+  const u = calcCycle(date, u_startDate, u_startTone, u_startGlyph);
 
-const tGlyphName = glyphNames[t.glyph - 1];
-const uGlyphName = glyphNames[u.glyph - 1];
-// --- ツォルキン表示 ---
+  const tDisplayDay = t.cycleDay;
+  const uDisplayDay = u.cycleDay;
 
-// --- ツォルキン 表 ---
-document.getElementById("tFront").innerHTML = `
+  const tGlyphName = glyphNames[t.glyph - 1];
+  const uGlyphName = glyphNames[u.glyph - 1];
+
+  // --- ツォルキン 表 ---
+  document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[tGlyphName].keyword}<br><br>
 ${glyphTexts[tGlyphName].energy}
-`;
+  `;
 
-// --- ツォルキン 裏（先に書く！） ---
-document.getElementById("tBack").innerHTML = `
+  // --- ツォルキン 裏 ---
+  document.getElementById("tBack").innerHTML = `
 【気をつけたいところ】 <br>
 ・${glyphTexts[tGlyphName].weak.join("<br>・")}
-`;
-// --- ウロコ暦 裏 ---
-document.getElementById("uBack").innerHTML = `
-【気をつけたいところ】<br>
-・${urokoBack[uGlyphName].bad.join("<br>・")}
-`;
-document.getElementById("tToneName").textContent =
-  toneNames[t.tone - 1];
+  `;
 
-document.getElementById("tToneTheme").textContent =
-  toneThemes[t.tone - 1];
-// --- ツォルキン 紋章 ---
-document.getElementById("tGlyphName").textContent = tGlyphName;
-document.getElementById("tGlyphTheme").textContent =
-  glyphTexts[tGlyphName].keyword.split("／")[0];
-// --- ★ツォルキン13日間 ---
-const tKin = calcKin(t_startDate, today);
-const tWaveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, tKin);
-const tWaveGlyph = glyphNames[tWaveStartGlyphNumber - 1];
+  // --- ツォルキン 音と紋章 ---
+  document.getElementById("tToneName").textContent =
+    toneNames[t.tone - 1];
+  document.getElementById("tToneTheme").textContent =
+    toneThemes[t.tone - 1];
 
-// --- ウロコ暦 表 ---
+  document.getElementById("tGlyphName").textContent = tGlyphName;
+  document.getElementById("tGlyphTheme").textContent =
+    glyphTexts[tGlyphName].keyword.split("／")[0];
 
-document.getElementById("uBack").innerHTML = `
-【気をつけたいところ】<br>
-・${urokoBack[uGlyphName].bad.join("<br>・")}
-`;
+  // --- ツォルキン 13日間（ウェイブスペル） ---
+  const tKin = calcKin(t_startDate, date);
+  const tWaveStartGlyphNumber =
+    calcWaveStartGlyph(t_startGlyph, tKin);
+  const tWaveGlyph = glyphNames[tWaveStartGlyphNumber - 1];
 
-document.getElementById("tWave").textContent =
-  `${tWaveGlyph}の13日間`;
+  document.getElementById("tWave").textContent =
+    `${tWaveGlyph}の13日間`;
 
-document.getElementById("tWaveInfo").innerHTML = `
+  document.getElementById("tWaveInfo").innerHTML = `
 <p class="wave-description">${waveTexts[tWaveGlyph]}</p>
 <div class="wave-day">今日は ${tDisplayDay} / 13 日目</div>
-`;
-// --- ウロコ暦用 紋章名を先に定義 ---
+  `;
 
-// --- ウロコ暦 音と紋章 ---
-document.getElementById("uToneName").textContent =
-  toneNames[u.tone - 1];
-
-document.getElementById("uToneTheme").textContent =
-  toneThemes[u.tone - 1];
-
-// --- ウロコ暦 表 ---
-document.getElementById("uFront").innerHTML = `
+  // --- ウロコ暦 表 ---
+  document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
-`;
-// --- ウロコ暦 紋章 ---
-document.getElementById("uGlyphName").textContent = uGlyphName;
-document.getElementById("uGlyphTheme").textContent =
-  glyphTexts[uGlyphName].keyword.split("／")[0];
-// --- ★ウロコ暦13日間 ---
-// 13日間の計算は「u_waveStartDate／u_waveStartGlyph」を基準にする
-const diffU = Math.floor((today - u_waveStartDate) / 86400000);
-const uWaveStartGlyphNumber =
-  calcUrokoWaveGlyph(u_waveStartGlyph, diffU);
-const uWaveGlyph = glyphNames[uWaveStartGlyphNumber - 1];
+  `;
 
-document.getElementById("uWave").textContent =
-  `${uWaveGlyph}の13日間`;
+  // --- ウロコ暦 裏 ---
+  document.getElementById("uBack").innerHTML = `
+【気をつけたいところ】<br>
+・${urokoBack[uGlyphName].bad.join("<br>・")}
+  `;
 
-document.getElementById("uWaveInfo").innerHTML = `
+  // --- ウロコ暦 音と紋章 ---
+  document.getElementById("uToneName").textContent =
+    toneNames[u.tone - 1];
+  document.getElementById("uToneTheme").textContent =
+    toneThemes[u.tone - 1];
+
+  document.getElementById("uGlyphName").textContent = uGlyphName;
+  document.getElementById("uGlyphTheme").textContent =
+    glyphTexts[uGlyphName].keyword.split("／")[0];
+
+  // --- ウロコ暦 13日間（ウェイブスペル） ---
+  const diffU = Math.floor((date - u_waveStartDate) / 86400000);
+  const uWaveStartGlyphNumber =
+    calcUrokoWaveGlyph(u_waveStartGlyph, diffU);
+  const uWaveGlyph = glyphNames[uWaveStartGlyphNumber - 1];
+
+  document.getElementById("uWave").textContent =
+    `${uWaveGlyph}の13日間`;
+
+  document.getElementById("uWaveInfo").innerHTML = `
   <div class="wave-description">${waveTexts[uWaveGlyph]}</div>
   <div class="wave-day">今日は ${uDisplayDay} / 13 日目</div>
-`;
+  `;
+}
+
+// 先読みボタンから呼ぶ用
+function previewDate() {
+  const value = document.getElementById("previewInput").value;
+  if (!value) return;
+  renderDay(new Date(value));
+}
+
+// 初期表示（ページ開いたときは“今日”を表示）
+renderDay(new Date());
 /* ===== 誕生日検索 ===== */
 const glyphInfo = {
 
