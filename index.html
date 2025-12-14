@@ -1316,15 +1316,6 @@ function resetToToday() {
 // ページ読み込み時は「今日」で表示
 resetToToday();
 
-// 先読みボタンから呼ぶ用
-function previewDate() {
-  const value = document.getElementById("previewInput").value;
-  if (!value) return;
-  renderDay(new Date(value));
-}
-
-// 初期表示（ページ開いたときは“今日”を表示）
-renderDay(new Date());
 /* ===== 誕生日検索 ===== */
 const glyphInfo = {
 
