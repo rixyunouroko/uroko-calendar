@@ -3110,38 +3110,6 @@ function searchBirthday() {
   document.getElementById("birthdayResult").innerHTML = html;
 }
 </script>
-
-  resultEl.innerHTML = `
-    <p style="margin-bottom:8px;">選んだ日：${y}年${m}月${d2}日</p>
-    <table style="width:100%; border-collapse:collapse; font-size:0.9rem; margin-bottom:10px;">
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">KIN</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">KIN${kinNumber}</td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">音</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">
-          ${toneName}（${toneThemes[t.tone - 1]}）
-        </td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">紋章</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${glyphName}</td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">この日の一言</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${kinText}</td>
-      </tr>
-    </table>
-
-    <div style="white-space:pre-wrap; line-height:1.7; font-size:0.9rem; background:#fffceb; padding:10px; border-radius:10px;">
-      ${glyphText}
-    </div>
-
-    ${waveHtml}
-  `;
-}
-</script>
 </div>
 </body>
 </html>
