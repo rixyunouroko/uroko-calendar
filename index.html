@@ -1213,14 +1213,6 @@ const u_startGlyph = 3; // 夜
 const u_waveStartDate  = makeJSTDate(2025, 11, 8); // 2025/12/8 を 1日目にする
 const u_waveStartGlyph = 19; // 嵐スタート（glyphNames の 19番）
 // アイコン画像の場所（必要なら "img/" とかに変えてOK）
-const ICON_BASE_PATH = "./";
-
-function getToneIconSrc(num) {
-  return `${ICON_BASE_PATH}tone${num}.png`;
-}
-
-function getGlyphIconSrc(num) {
-  return `${ICON_BASE_PATH}glyph${num}.png`;
 }
 // アイコン画像の場所（同じフォルダなら "./" でOK）
 const ICON_BASE_PATH = "./";
@@ -1325,21 +1317,13 @@ ${glyphTexts[tGlyphName].energy}
 `;
 
   // --- ツォルキン 音と紋章 ---
-document.getElementById("tToneName").innerHTML = `
-  <img src="${getToneIconSrc(t.tone)}"
-       alt="${toneNames[t.tone - 1]}"
-       class="icon-img">
-  <span>${toneNames[t.tone - 1]}</span>
-`;
+// --- ツォルキン 音と紋章 ---
+document.getElementById("tToneName").textContent =
+  toneNames[t.tone - 1];
 document.getElementById("tToneTheme").textContent =
   toneThemes[t.tone - 1];
 
-document.getElementById("tGlyphName").innerHTML = `
-  <img src="${getGlyphIconSrc(t.glyph)}"
-       alt="${tGlyphName}"
-       class="icon-img">
-  <span>${tGlyphName}</span>
-`;
+document.getElementById("tGlyphName").textContent = tGlyphName;
 document.getElementById("tGlyphTheme").textContent =
   glyphTexts[tGlyphName].keyword.split("／")[0];
 
@@ -1363,24 +1347,15 @@ document.getElementById("tGlyphTheme").textContent =
 `;
 
   // --- ウロコ暦 音と紋章 ---
-document.getElementById("uToneName").innerHTML = `
-  <img src="${getToneIconSrc(u.tone)}"
-       alt="${toneNames[u.tone - 1]}"
-       class="icon-img">
-  <span>${toneNames[u.tone - 1]}</span>
-`;
+// --- ウロコ暦 音と紋章 ---
+document.getElementById("uToneName").textContent =
+  toneNames[u.tone - 1];
 document.getElementById("uToneTheme").textContent =
   toneThemes[u.tone - 1];
 
-document.getElementById("uGlyphName").innerHTML = `
-  <img src="${getGlyphIconSrc(u.glyph)}"
-       alt="${uGlyphName}"
-       class="icon-img">
-  <span>${uGlyphName}</span>
-`;
+document.getElementById("uGlyphName").textContent = uGlyphName;
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
-
 // --- ウロコ暦 表 ---
   document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
