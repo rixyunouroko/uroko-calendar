@@ -258,6 +258,32 @@ body {
   padding-top: 6px;
   line-height: 1.7;
 }
+/* ▼ 誕生日結果エリアの余白調整ここから ▼ */
+
+/* 見出し（あなたの音／あなたの紋章）の上下をコンパクトに */
+#birthdayResult h2,
+#birthdayResult h3,
+#birthdayResult h4 {
+  margin-top: 0;        /* 上ギュッ */
+  margin-bottom: 0.6em; /* 下だけちょいあけ */
+}
+
+/* 段落の基本の余白を少しせまく */
+#birthdayResult p {
+  margin: 0.5em 0;
+}
+
+/* 「◎キーワード」の下の行みたいに、
+   p のすぐ次に来る p だけ、さらにくっつける */
+#birthdayResult p + p {
+  margin-top: 0.15em;
+}
+
+/* 「◎ 音4の人」→ 箇条書き のスキマも詰める */
+#birthdayResult p + ul {
+  margin-top: 0.15em;
+}
+/* ▼ 誕生日結果エリアの余白調整ここまで ▼ */
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2K8VMGRF5H"></script>
