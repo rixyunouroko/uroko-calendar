@@ -202,9 +202,10 @@ body {
 .mini-title {
   font-weight: bold;
   font-size: 1rem;
-  display: flex;          /* ← アイコン＋文字を横並び */
-  align-items: center;
-  gap: 6px;
+  display: flex;
+  flex-direction: column;   /* ← 縦並びにする */
+  align-items: center;      /* ← 中央寄せ */
+  gap: 4px;                 /* ← アイコンと文字の間のスキマ */
 }
 
 .icon-tone,
