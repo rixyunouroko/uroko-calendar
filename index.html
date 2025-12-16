@@ -227,6 +227,37 @@ body {
   margin-bottom: 6px;
   font-weight: bold;
 }
+.more-btn {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #6b5a3c;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.more-btn::before {
+  content: "＋";
+  font-weight: bold;
+}
+
+.more-btn.is-open::before {
+  content: "－";
+}
+
+.extra-detail {
+  display: none;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #555;
+  border-top: 1px dashed #e0d4bf;
+  padding-top: 6px;
+  line-height: 1.7;
+}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2K8VMGRF5H"></script>
@@ -1264,6 +1295,18 @@ function calcUrokoWaveGlyph(startGlyph, diffDays) {
 
 // いま表示している基準日（最初は「今日」）
 let baseDate;
+function toggleExtra(id, btn) {
+  const box = document.getElementById(id);
+  if (!box) return;
+
+  const isHidden = box.style.display === "" || box.style.display === "none";
+  box.style.display = isHidden ? "block" : "none";
+
+  if (btn) {
+    btn.classList.toggle("is-open", isHidden);
+    btn.textContent = (isHidden ? "詳しい解説を閉じる" : "さらに詳しく見る");
+  }
+}
 
 // 共通：この日付で全部描画する関数
 function renderAll(targetDate) {
@@ -1310,13 +1353,25 @@ document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[tGlyphName].keyword}<br><br>
 【生まれ持った性質】<br>
-・${glyphTexts[tGlyphName].born.join("<br>・")}
+・${glyphTexts[tGlyphName].born.join("<br>・")}<br>
+<button class="more-btn" onclick="toggleExtra('tFrontExtra', this)">さらに詳しく見る</button>
+<div id="tFrontExtra" class="extra-detail">
+  【エネルギーの流れ】<br>
+  ${glyphTexts[tGlyphName].energy}<br><br>
+  【活かしどころ】<br>
+  ・${glyphTexts[tGlyphName].good.join("<br>・")}
+</div>
 `;
-
   // --- ツォルキン 裏 ---
-  document.getElementById("tBack").innerHTML = `
+document.getElementById("tBack").innerHTML = `
 【気をつけたいところ】 <br>
-・${glyphTexts[tGlyphName].weak.join("<br>・")}
+・${glyphTexts[tGlyphName].weak.join("<br>・")}<br>
+<button class="more-btn" onclick="toggleExtra('tBackExtra', this)">さらに詳しく見る</button>
+<div id="tBackExtra" class="extra-detail">
+  【この紋章が荒れやすいポイント】<br>
+  ・相性の良い紋章：${glyphTexts[tGlyphName].pair.join(" ／ ")}<br>
+  ・要注意の紋章：${glyphTexts[tGlyphName].caution.join(" ／ ")}
+</div>
 `;
 
   // --- ツォルキン 音と紋章 ---
@@ -1364,12 +1419,26 @@ document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 【生まれ持った性質】<br>
-・${glyphTexts[uGlyphName].born.join("<br>・")}
+・${glyphTexts[uGlyphName].born.join("<br>・")}<br>
+<button class="more-btn" onclick="toggleExtra('uFrontExtra', this)">さらに詳しく見る</button>
+<div id="uFrontExtra" class="extra-detail">
+  【神様側が見ているエネルギー】<br>
+  ${glyphTexts[uGlyphName].energy}
+</div>
 `;
   // --- ウロコ暦 裏 ---
-  document.getElementById("uBack").innerHTML = `
+document.getElementById("uBack").innerHTML = `
 【気をつけたいところ】<br>
-・${urokoBack[uGlyphName].bad.join("<br>・")}
+・${urokoBack[uGlyphName].bad.join("<br>・")}<br>
+<button class="more-btn" onclick="toggleExtra('uBackExtra', this)">さらに詳しく見る</button>
+<div id="uBackExtra" class="extra-detail">
+  【本能の動き】<br>
+  ${urokoBack[uGlyphName].instinct}<br><br>
+  【良い方向に出ると】<br>
+  ・${urokoBack[uGlyphName].good.join("<br>・")}<br><br>
+  【今日の一言アドバイス】<br>
+  ${urokoBack[uGlyphName].advice}
+</div>
 `;
   // --- ★ウロコ暦13日間 ---
   const diffU = Math.floor((targetDate - u_waveStartDate) / 86400000);
