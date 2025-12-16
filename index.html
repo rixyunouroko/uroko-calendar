@@ -274,7 +274,8 @@ body {
 <div id="app">
 
   <h1 class="title">Uroko Calendar</h1>
-  <p class="subtitle" id="todayDate"></p>
+<p class="subtitle" id="todayDate"></p>
+<p class="subtitle" id="todayKin"></p>
   <div class="birthday-row" style="margin: 0 0 16px 0;">
     <input type="date" id="viewDate" class="birthday-input">
     <button class="birthday-button" onclick="setViewDate()">この日を表示</button>
@@ -1228,6 +1229,24 @@ const waveTexts = {
   嵐: "変化と浄化の13日間です。揺れの中でも、必要なものは残ります。",
   祖先: "一区切りと達成の13日間です。ここまで来た自分をねぎらってください。"
 };
+// ===== KINごとの一言メッセージ（1〜260） =====
+const kinDescriptions = {
+  // ここに
+  //  1: "KIN1：……KIN",
+  //  2: "KIN2：……KIN",
+  //  ...
+  // 260: "KIN260：……KIN"
+  // をコピペして入れていく
+};
+
+// ===== 「この13日間生まれ」の人の特徴（20紋章分） =====
+const waveBornDescriptions = {
+  // 例）
+  // "ワニ": "ワニの13日間に生まれた人は〜〜〜KIN",
+  // "風":  "風の13日間に生まれた人は〜〜〜KIN",
+  // ...
+  // "祖先": "祖先の13日間に生まれた人は〜〜〜KIN"
+};
 /* ===== 起点 ===== */
 function makeJSTDate(y, m, d) {
   return new Date(y, m, d);
@@ -1316,7 +1335,19 @@ function renderAll(targetDate) {
   const dd = String(targetDate.getDate()).padStart(2, "0");
   document.getElementById("todayDate").textContent =
     `${yyyy}年${mm}月${dd}日`;
+  // ★ 今日のKIN番号を計算（0〜259 → 1〜260）
+  const kinIndex = calcKin(t_startDate, targetDate); // 0〜259
+  const kinNumber = kinIndex + 1;
 
+  const todayKinEl = document.getElementById("todayKin");
+  if (todayKinEl) {
+    // ここではシンプルに番号だけ表示
+    todayKinEl.textContent = `今日のKIN：KIN${kinNumber}`;
+    // もし一言も出したくなったら：
+    // const kinText = kinDescriptions[kinNumber];
+    // todayKinEl.textContent = kinText || `今日のKIN：KIN${kinNumber}`;
+  }
+  
   // === この日のサイクル（ツォルキン／ウロコ暦） ===
   const t = calcCycle(targetDate, t_startDate, t_startTone, t_startGlyph);
   const u = calcCycle(targetDate, u_startDate, u_startTone, u_startGlyph);
@@ -2562,15 +2593,40 @@ function searchBirthday() {
   const input = document.getElementById("bInput").value;
   if (!input) return;
 
-  const d = calcCycle(new Date(input), t_startDate, t_startTone, t_startGlyph);
+  // 誕生日の Date オブジェクト
+  const birthDate = new Date(input);
 
+  // その日の「音」と「紋章」
+  const d = calcCycle(birthDate, t_startDate, t_startTone, t_startGlyph);
   const toneNumber = d.tone.toString();
   const glyphName = glyphNames[d.glyph - 1];
+
+  // ★ 誕生日のKIN番号
+  const kinIndex = calcKin(t_startDate, birthDate); // 0〜259
+  const kinNumber = kinIndex + 1;
+  const kinText = kinDescriptions[kinNumber] || `KIN${kinNumber}`;
+
+  // ★ 誕生日が属している「13日間（ウェイブスペル）」
+  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
+  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
+  const waveBornText = waveBornDescriptions[waveGlyphName] || "";
 
   document.getElementById("birthdayResult").innerHTML = `
     <h3>あなたの誕生日の設計</h3>
 
     <p><b>${toneNames[d.tone - 1]} × ${glyphName}</b></p>
+    <p>あなたのKIN：<b>KIN${kinNumber}</b></p>
+
+    <hr>
+
+    <h4>◆ KINメッセージ</h4>
+    <pre>${kinText}</pre>
+
+    <hr>
+
+    <h4>◆ あなたが生まれた13日間（ウェイブスペル）</h4>
+    <p><b>${waveGlyphName}の13日間</b></p>
+    <pre>${waveBornText}</pre>
 
     <hr>
 
