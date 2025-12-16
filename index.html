@@ -2997,6 +2997,74 @@ function function searchBirthday() {
     }
   `;
 }
+<script>
+// ここまでが今のコード
+// waveBornInfo の定義の「あと」にこの関数を追加してね
+
+function searchBirthday() {
+  const input = document.getElementById("bInput").value;
+  if (!input) return;
+
+  // 入力された誕生日を「日付だけ」にそろえる
+  const d = new Date(input);
+  const bDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+  // ツォルキン上での音・紋章
+  const t = calcCycle(bDate, t_startDate, t_startTone, t_startGlyph);
+  const toneName  = toneNames[t.tone - 1];
+  const glyphName = glyphNames[t.glyph - 1];
+  const gData     = glyphTexts[glyphName];
+
+  // KIN番号（1〜260）
+  const kinIndex  = calcKin(t_startDate, bDate); // 0〜259
+  const kinNumber = kinIndex + 1;
+  const kinText   = kinBrief[kinNumber];
+
+  // 「この13日間生まれ」の紋章を出す
+  const diffDays = Math.floor((bDate - t_startDate) / 86400000);
+  const waveGlyphNum  = calcWaveStartGlyph(t_startGlyph, diffDays);
+  const waveGlyphName = glyphNames[waveGlyphNum - 1];
+  const waveData      = waveBornInfo[waveGlyphName];
+
+  let html = "";
+
+  html += `<div class="card">`;
+
+  // KIN番号＆一言
+  html += `<div style="font-size:0.95rem; line-height:1.7;">`;
+  html += `あなたのKIN：<b>KIN${kinNumber}</b><br>`;
+  if (kinText) {
+    html += `<div style="margin-top:6px;">${kinText}</div>`;
+  }
+  html += `</div>`;
+
+  // 区切り線
+  html += `<hr style="margin:12px 0; border:none; border-top:1px dashed #e0d4bf;">`;
+
+  // 音・紋章の基本情報
+  html += `<div style="font-size:0.9rem; line-height:1.7;">`;
+  html += `● あなたの音：${toneName}<br>`;
+  html += `● あなたの紋章：${glyphName}<br><br>`;
+  if (gData) {
+    html += `【紋章キーワード】<br>${gData.keyword}<br><br>`;
+    html += `【紋章のエネルギー】<br>${gData.energy}`;
+  }
+  html += `</div>`;
+
+  // 13日間生まれの特徴
+  if (waveData) {
+    html += `<hr style="margin:12px 0; border:none; border-top:1px dashed #e0d4bf;">`;
+    html += `<div style="font-size:0.9rem; line-height:1.7;">`;
+    html += `【あなたが属する13日間】<br>`;
+    html += `${waveGlyphName}の13日間生まれ：<b>${waveData.catch}</b><br><br>`;
+    html += `・${waveData.traits.join("<br>・")}`;
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+
+  document.getElementById("birthdayResult").innerHTML = html;
+}
 </script>
 </div>
 </body>
