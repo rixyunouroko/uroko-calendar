@@ -1724,13 +1724,13 @@ const ICON_BASE_PATH = "./";
 // 音アイコンのパス
 function getToneIconSrc(toneNumber) {
   // 例: tone1.png, tone2.png ...
-  return ${ICON_BASE_PATH}tone${toneNumber}.PNG;
+  return `${ICON_BASE_PATH}tone${toneNumber}.PNG`;
 }
 
 // 紋章アイコンのパス
 function getGlyphIconSrc(glyphNumber) {
   // 例: glyph1.png, glyph2.png ...
-  return ${ICON_BASE_PATH}glyph${glyphNumber}.PNG;
+  return `${ICON_BASE_PATH}glyph${glyphNumber}.PNG`;
 }
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
@@ -1786,7 +1786,7 @@ function renderAll(targetDate) {
   const mm = String(targetDate.getMonth() + 1).padStart(2, "0");
   const dd = String(targetDate.getDate()).padStart(2, "0");
   document.getElementById("todayDate").textContent =
-    ${yyyy}年${mm}月${dd}日;
+    `${yyyy}年${mm}月${dd}日`;
   // ★ 今日のKIN番号を計算（0〜259 → 1〜260）
   const kinIndex = calcKin(t_startDate, targetDate); // 0〜259
   const kinNumber = kinIndex + 1;
@@ -1794,10 +1794,10 @@ function renderAll(targetDate) {
   const todayKinEl = document.getElementById("todayKin");
   if (todayKinEl) {
     // ここではシンプルに番号だけ表示
-    todayKinEl.textContent = 今日のKIN：KIN${kinNumber};
+    todayKinEl.textContent = `今日のKIN：KIN${kinNumber}`;
     // もし一言も出したくなったら：
     // const kinText = kinDescriptions[kinNumber];
-    // todayKinEl.textContent = kinText || 今日のKIN：KIN${kinNumber};
+    // todayKinEl.textContent = kinText || `今日のKIN：KIN${kinNumber}`;
   }
   
   // === この日のサイクル（ツォルキン／ウロコ暦） ===
@@ -1832,7 +1832,7 @@ function renderAll(targetDate) {
     uGlyphIcon.alt = uGlyphName;
   }
   // --- ツォルキン 表 ---
-document.getElementById("tFront").innerHTML = 
+document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[tGlyphName].keyword}<br><br>
 【生まれ持った性質】<br>
@@ -1844,9 +1844,9 @@ ${glyphTexts[tGlyphName].keyword}<br><br>
   【この性質の活かしどころ】<br>
   ・${urokoBack[tGlyphName].good.join("<br>・")}
 </div>
-;
+`;
   // --- ツォルキン 裏 ---
-document.getElementById("tBack").innerHTML = 
+document.getElementById("tBack").innerHTML = `
 【気をつけたいところ】 <br>
 ・${glyphTexts[tGlyphName].weak.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('tBackExtra', this)">さらに詳しく見る</button>
@@ -1854,7 +1854,7 @@ document.getElementById("tBack").innerHTML =
   【この紋章の荒れやすいポイント】<br>
   ${urokoBack[tGlyphName].advice}
 </div>
-;
+`;
   // --- ツォルキン 音と紋章 ---
 // --- ツォルキン 音と紋章 ---
 document.getElementById("tToneName").textContent =
@@ -1872,18 +1872,18 @@ document.getElementById("tGlyphTheme").textContent =
   const tWaveGlyph = glyphNames[tWaveStartGlyphNumber - 1];
 
   document.getElementById("tWave").textContent =
-    ${tWaveGlyph}の13日間;
+    `${tWaveGlyph}の13日間`;
 
   const tWaveGlyphIcon = document.getElementById("tWaveGlyphIcon");
   if (tWaveGlyphIcon) {
     tWaveGlyphIcon.src = getGlyphIconSrc(tWaveStartGlyphNumber);
-    tWaveGlyphIcon.alt = ${tWaveGlyph}の紋章;
+    tWaveGlyphIcon.alt = `${tWaveGlyph}の紋章`;
   }
 
-  document.getElementById("tWaveInfo").innerHTML = 
+  document.getElementById("tWaveInfo").innerHTML = `
 <p class="wave-description">${waveTexts[tWaveGlyph]}</p>
 <div class="wave-day">今日は ${tDisplayDay} / 13 日目</div>
-;
+`;
 
   // --- ウロコ暦 音と紋章 ---
 // --- ウロコ暦 音と紋章 ---
@@ -1896,7 +1896,7 @@ document.getElementById("uGlyphName").textContent = uGlyphName;
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
 // --- ウロコ暦 表 ---
-document.getElementById("uFront").innerHTML = 
+document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 【生まれ持った性質】<br>
@@ -1908,9 +1908,9 @@ ${glyphTexts[uGlyphName].keyword}<br><br>
   【この性質の活かしどころ】<br>
   ・${urokoBack[uGlyphName].good.join("<br>・")}
 </div>
-;
+`;
   // --- ウロコ暦 裏 ---
-document.getElementById("uBack").innerHTML = 
+document.getElementById("uBack").innerHTML = `
 【気をつけたいところ】<br>
 ・${urokoBack[uGlyphName].bad.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('uBackExtra', this)">さらに詳しく見る</button>
@@ -1920,7 +1920,7 @@ document.getElementById("uBack").innerHTML =
   【この紋章の荒れやすいポイント】<br>
   ${urokoBack[uGlyphName].advice}
 </div>
-;
+`;
   // --- ★ウロコ暦13日間 ---
   const diffU = Math.floor((targetDate - u_waveStartDate) / 86400000);
     const uWaveStartGlyphNumber =
@@ -1928,18 +1928,18 @@ document.getElementById("uBack").innerHTML =
   const uWaveGlyph = glyphNames[uWaveStartGlyphNumber - 1];
 
   document.getElementById("uWave").textContent =
-    ${uWaveGlyph}の13日間;
+    `${uWaveGlyph}の13日間`;
 
   const uWaveGlyphIcon = document.getElementById("uWaveGlyphIcon");
   if (uWaveGlyphIcon) {
     uWaveGlyphIcon.src = getGlyphIconSrc(uWaveStartGlyphNumber);
-    uWaveGlyphIcon.alt = ${uWaveGlyph}の紋章;
+    uWaveGlyphIcon.alt = `${uWaveGlyph}の紋章`;
   }
 
-  document.getElementById("uWaveInfo").innerHTML = 
+  document.getElementById("uWaveInfo").innerHTML = `
   <div class="wave-description">${waveTexts[uWaveGlyph]}</div>
   <div class="wave-day">今日は ${uDisplayDay} / 13 日目</div>
-;
+`;
 }
 
 // 「この日を表示」ボタン：日付入力から反映
@@ -3056,7 +3056,7 @@ function searchBirthday() {
   // ★ 誕生日のKIN番号
   const kinIndex = calcKin(t_startDate, birthDate); // 0〜259
   const kinNumber = kinIndex + 1;
-  const kinText = kinDescriptions[kinNumber] || KIN${kinNumber};
+  const kinText = kinDescriptions[kinNumber] || `KIN${kinNumber}`;
 
   // ★ 誕生日が属している「13日間（ウェイブスペル）」
   const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
@@ -3089,94 +3089,6 @@ function searchBirthday() {
 
     <h4>◆ 紋章の性質</h4>
     <pre>${glyphInfo[glyphName]}</pre>
-  `;
-}
-function searchBirthday() {
-  const input = document.getElementById("bInput");
-  const resultEl = document.getElementById("birthdayResult");
-  if (!input || !resultEl) return;
-
-  const v = input.value;
-  if (!v) {
-    resultEl.textContent = "誕生日をえらんでください。";
-    return;
-  }
-
-  const d = new Date(v);
-  if (isNaN(d)) {
-    resultEl.textContent = "正しい日付を入力してください。";
-    return;
-  }
-  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-
-  // KIN番号（1〜260）
-  const kinIndex = calcKin(t_startDate, date); // 0〜259
-  const kinNumber = kinIndex + 1;
-
-  // その日の「音」と「紋章」
-  const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
-  const glyphName = glyphNames[t.glyph - 1];      // 紋章名
-  const toneName  = toneNames[t.tone - 1];        // 音名
-
-  const kinText   = kinBrief[kinNumber] || "";
-
-  // その人が生まれたときに属している「13日間（ウェイブスペル）」
-  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
-  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
-  const waveText      = waveTexts[waveGlyphName] || "";
-  const waveBorn      = waveBornInfo[waveGlyphName];
-
-  // 13日間生まれの説明
-  let waveBornHtml = "";
-  if (waveBorn) {
-    waveBornHtml = `
-      <h4>あなたは「${waveGlyphName}の13日間」生まれ</h4>
-      <p><strong>${waveBorn.catch}</strong></p>
-      <ul>
-        ${waveBorn.traits.map(t => `<li>${t}</li>`).join("")}
-      </ul>
-    `;
-  }
-
-  // 紋章ごとの詳しい説明（glyphInfo から）
-  const glyphDetail = (glyphInfo[glyphName] || "").trim();
-
-  // 結果を描画
-  const yyyy = date.getFullYear();
-  const mm   = String(date.getMonth() + 1).padStart(2, "0");
-  const dd   = String(date.getDate()).padStart(2, "0");
-
-  resultEl.innerHTML = `
-    <h3>${yyyy}年${mm}月${dd}日 生まれ</h3>
-
-    <p>
-      <strong>KIN${kinNumber}</strong><br>
-      音${t.tone} × ${glyphName}
-    </p>
-
-    ${kinText ? `<p>${kinText}</p>` : ""}
-
-    <hr>
-
-    <p>
-      <strong>あなたの13日間のテーマ</strong><br>
-      ${waveGlyphName}の13日間
-    </p>
-    <p>${waveText}</p>
-
-    ${waveBornHtml}
-
-    ${
-      glyphDetail
-        ? `
-        <hr>
-        <h4>あなたの紋章「${glyphName}」について</h4>
-        <p style="white-space: pre-line;">
-          ${glyphDetail}
-        </p>
-        `
-        : ""
-    }
   `;
 }
 </script>
