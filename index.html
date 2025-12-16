@@ -3091,6 +3091,102 @@ function searchBirthday() {
     <pre>${glyphInfo[glyphName]}</pre>
   `;
 }
+function searchBirthday() {
+  const input = document.getElementById("bInput");
+  const resultEl = document.getElementById("birthdayResult");
+  if (!input || !resultEl) return;
+
+  const v = input.value;
+  if (!v) {
+    resultEl.textContent = "誕生日をえらんでください。";
+    return;
+  }
+
+  // 入力された誕生日（日付だけに丸める）
+  const d = new Date(v);
+  if (isNaN(d)) {
+    resultEl.textContent = "正しい日付を入力してください。";
+    return;
+  }
+  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+  // KIN番号（1〜260）
+  const kinIndex = calcKin(t_startDate, date); // 0〜259
+  const kinNumber = kinIndex + 1;
+
+  // その日の「音」と「紋章」
+  const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
+  const glyphName = glyphNames[t.glyph - 1];      // 紋章名
+  const toneName  = toneNames[t.tone - 1];        // 音名
+
+  const glyphData = glyphTexts[glyphName];
+  const backData  = urokoBack[glyphName];
+  const kinText   = kinBrief[kinNumber] || "";
+
+  // その人が生まれたときに属している「13日間（ウェイブスペル）」
+  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
+  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
+  const waveText      = waveTexts[waveGlyphName] || "";
+  const waveBorn      = waveBornInfo[waveGlyphName];
+
+  // 13日間生まれの説明
+  let waveBornHtml = "";
+  if (waveBorn) {
+    waveBornHtml = `
+      <h4>あなたは「${waveGlyphName}の13日間」生まれ</h4>
+      <p><strong>${waveBorn.catch}</strong></p>
+      <ul>
+        ${waveBorn.traits.map(t => `<li>${t}</li>`).join("")}
+      </ul>
+    `;
+  }
+
+  // 結果を描画
+  const yyyy = date.getFullYear();
+  const mm   = String(date.getMonth() + 1).padStart(2, "0");
+  const dd   = String(date.getDate()).padStart(2, "0");
+
+  resultEl.innerHTML = `
+    <h3>${yyyy}年${mm}月${dd}日 生まれ</h3>
+
+    <p>
+      <strong>KIN${kinNumber}</strong><br>
+      ${toneName} × ${glyphName}
+    </p>
+
+    ${kinText ? `<p>${kinText}</p>` : ""}
+
+    <hr>
+
+    <p>
+      <strong>表の性質（${glyphName}）</strong><br>
+      【キーワード】${glyphData ? glyphData.keyword : ""}<br><br>
+      【生まれ持った性質】<br>
+      ${glyphData ? "・" + glyphData.born.join("<br>・") : ""}
+    </p>
+
+    <p>
+      <strong>裏側・本能の動き</strong><br>
+      ${glyphData ? `【気をつけたいところ】<br>・${glyphData.weak.join("<br>・")}<br><br>` : ""}
+      ${backData ? `
+        【本能の動き】<br>
+        ${backData.instinct}<br><br>
+        【アドバイス】<br>
+        ${backData.advice}
+      ` : ""}
+    </p>
+
+    <hr>
+
+    <p>
+      <strong>あなたの13日間のテーマ</strong><br>
+      ${waveGlyphName}の13日間
+    </p>
+    <p>${waveText}</p>
+
+    ${waveBornHtml}
+  `;
+}
 </script>
 </div>
 </body>
