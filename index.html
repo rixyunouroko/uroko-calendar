@@ -1304,10 +1304,11 @@ function renderAll(targetDate) {
     uGlyphIcon.alt = uGlyphName;
   }
   // --- ツォルキン 表 ---
-  document.getElementById("tFront").innerHTML = `
+document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[tGlyphName].keyword}<br><br>
-${glyphTexts[tGlyphName].energy}
+【生まれ持った性質】<br>
+・${glyphTexts[tGlyphName].born.join("<br>・")}
 `;
 
   // --- ツォルキン 裏 ---
@@ -1357,10 +1358,11 @@ document.getElementById("uGlyphName").textContent = uGlyphName;
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
 // --- ウロコ暦 表 ---
-  document.getElementById("uFront").innerHTML = `
+document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
-${glyphTexts[uGlyphName].energy}
+【生まれ持った性質】<br>
+・${glyphTexts[uGlyphName].born.join("<br>・")}
 `;
   // --- ウロコ暦 裏 ---
   document.getElementById("uBack").innerHTML = `
