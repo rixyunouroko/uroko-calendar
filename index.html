@@ -1861,7 +1861,7 @@ function renderAll(targetDate) {
 document.getElementById("tFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[tGlyphName].keyword}<br><br>
-【生まれ持った性質】<br>
+【紋章の特徴】<br>
 ・${glyphTexts[tGlyphName].born.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('tFrontExtra', this)">さらに詳しく見る</button>
 <div id="tFrontExtra" class="extra-detail">
@@ -1873,7 +1873,7 @@ ${glyphTexts[tGlyphName].keyword}<br><br>
 `;
   // --- ツォルキン 裏 ---
 document.getElementById("tBack").innerHTML = `
-【紋章の特徴】 <br>
+【気をつけたいところ】 <br>
 ・${glyphTexts[tGlyphName].weak.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('tBackExtra', this)">さらに詳しく見る</button>
 <div id="tBackExtra" class="extra-detail">
