@@ -1,3 +1,8 @@
+ありがとう😭✨
+
+あら？誕生日検索ができないわ？
+どっかおかしいんかな…↓
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -1283,8 +1288,8 @@ const kinBrief = {
   49: "KIN49：自分の感情の波を理解しようとする姿勢が、そのまま他人への優しさにつながる水KIN",
   50: "KIN50：身内愛と義理人情が強く、大事な人のためにとことん頑張れる看板犬ポジの犬KIN",
   51: "KIN51：ユーモアと企画力を武器に、重い空気を軽くする役割を持ちやすいエンタメ担当サルKIN",
-  52: "KIN52：日常のルーティンや現実的な選択を丁寧に積み重ね、『この道でよかった』を形にしていく道KIN"
-   53: "KIN53：これから育てたい暮らしや仕事の柱を選び、成長の土台を整え直すコーンKIN",
+  52: "KIN52：日常のルーティンや現実的な選択を丁寧に積み重ね、『この道でよかった』を形にしていく道KIN",
+  53: "KIN53：これから育てたい暮らしや仕事の柱を選び、成長の土台を整え直すコーンKIN",
  54: "KIN54：人に見えないところで感性が研ぎ澄まされ、自分だけの聖域を再確認するジャガーKIN",
  55: "KIN55：少し高い場所から全体を見直し、これからの方針やビジョンを組み立て直すワシKIN",
  56: "KIN56：過去の経験や失敗の意味がふっと腑に落ちて、学びとして統合されるコンドルKIN",
@@ -3044,82 +3049,89 @@ const toneInfo = {
 function searchBirthday() {
   const input = document.getElementById("bInput");
   const resultEl = document.getElementById("birthdayResult");
-
   if (!input || !resultEl) return;
 
   const v = input.value;
   if (!v) {
-    resultEl.innerHTML = "<p>誕生日をえらんでね。</p>";
+    resultEl.textContent = "誕生日をえらんでください。";
     return;
   }
 
-  // 入力された誕生日を「日付だけ」にそろえる
   const d = new Date(v);
+  if (isNaN(d)) {
+    resultEl.textContent = "正しい日付を入力してください。";
+    return;
+  }
   const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
-  // KIN番号と音・紋章を計算
-  const kinIndex  = calcKin(t_startDate, date); // 0〜259
+  // KIN番号（1〜260）
+  const kinIndex = calcKin(t_startDate, date); // 0〜259
   const kinNumber = kinIndex + 1;
 
+  // その日の「音」と「紋章」
   const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
-  const glyphName = glyphNames[t.glyph - 1];
-  const toneName  = toneNames[t.tone - 1];
+  const glyphName = glyphNames[t.glyph - 1];      // 紋章名
+  const toneName  = toneNames[t.tone - 1];        // 音名
 
-  // この人が属する「13日間」のスタート紋章
+  const kinText   = kinBrief[kinNumber] || "";
+
+  // その人が生まれたときに属している「13日間（ウェイブスペル）」
   const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
   const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
+  const waveText      = waveTexts[waveGlyphName] || "";
+  const waveBorn      = waveBornInfo[waveGlyphName];
 
-  // テキスト系
-  const kinText   = kinBrief[kinNumber] || "";
-  const glyphText = glyphInfo[glyphName] || "";
-  const waveInfo  = waveBornInfo[waveGlyphName] || null;
-
-  // HTML組み立て
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d2 = String(date.getDate()).padStart(2, "0");
-
-  let waveHtml = "";
-  if (waveInfo) {
-    waveHtml = `
-      <div class="section" style="margin-top:12px; background:#f0f6ff;">
-        <h3>この13日間に生まれた人の特徴（${waveGlyphName}）</h3>
-        <p class="wave-description">${waveInfo.catch}</p>
-        <ul style="margin-top:6px; padding-left:1.2em; font-size:0.9rem;">
-          ${waveInfo.traits.map(t => `<li>${t}</li>`).join("")}
-        </ul>
-      </div>
+  // 13日間生まれの説明
+  let waveBornHtml = "";
+  if (waveBorn) {
+    waveBornHtml = `
+      <h4>あなたは「${waveGlyphName}の13日間」生まれ</h4>
+      <p><strong>${waveBorn.catch}</strong></p>
+      <ul>
+        ${waveBorn.traits.map(t => `<li>${t}</li>`).join("")}
+      </ul>
     `;
   }
 
+  // 紋章ごとの詳しい説明（glyphInfo から）
+  const glyphDetail = (glyphInfo[glyphName] || "").trim();
+
+  // 結果を描画
+  const yyyy = date.getFullYear();
+  const mm   = String(date.getMonth() + 1).padStart(2, "0");
+  const dd   = String(date.getDate()).padStart(2, "0");
+
   resultEl.innerHTML = `
-    <p style="margin-bottom:8px;">選んだ日：${y}年${m}月${d2}日</p>
-    <table style="width:100%; border-collapse:collapse; font-size:0.9rem; margin-bottom:10px;">
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">KIN</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">KIN${kinNumber}</td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">音</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">
-          ${toneName}（${toneThemes[t.tone - 1]}）
-        </td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">紋章</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${glyphName}</td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">この日の一言</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${kinText}</td>
-      </tr>
-    </table>
+    <h3>${yyyy}年${mm}月${dd}日 生まれ</h3>
 
-    <div style="white-space:pre-wrap; line-height:1.7; font-size:0.9rem; background:#fffceb; padding:10px; border-radius:10px;">
-      ${glyphText}
-    </div>
+    <p>
+      <strong>KIN${kinNumber}</strong><br>
+      音${t.tone} × ${glyphName}
+    </p>
 
-    ${waveHtml}
+    ${kinText ? `<p>${kinText}</p>` : ""}
+
+    <hr>
+
+    <p>
+      <strong>あなたの13日間のテーマ</strong><br>
+      ${waveGlyphName}の13日間
+    </p>
+    <p>${waveText}</p>
+
+    ${waveBornHtml}
+
+    ${
+      glyphDetail
+        ? `
+        <hr>
+        <h4>あなたの紋章「${glyphName}」について</h4>
+        <p style="white-space: pre-line;">
+          ${glyphDetail}
+        </p>
+        `
+        : ""
+    }
   `;
 }
 </script>
