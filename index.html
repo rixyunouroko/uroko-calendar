@@ -3041,56 +3041,75 @@ const toneInfo = {
 `
 
 };
+<script>
+// ここまでが今のコード
+// waveBornInfo の定義の「あと」にこの関数を追加してね
+
 function searchBirthday() {
-  const input = document.getElementById("bInput");
-  const resultEl = document.getElementById("birthdayResult");
-
-  if (!input || !resultEl) return;
-
-  const v = input.value;
-  if (!v) {
-    resultEl.innerHTML = "<p>誕生日をえらんでね。</p>";
-    return;
-  }
+  const input = document.getElementById("bInput").value;
+  if (!input) return;
 
   // 入力された誕生日を「日付だけ」にそろえる
-  const d = new Date(v);
-  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const d = new Date(input);
+  const bDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
-  // KIN番号と音・紋章を計算
-  const kinIndex  = calcKin(t_startDate, date); // 0〜259
-  const kinNumber = kinIndex + 1;
-
-  const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
-  const glyphName = glyphNames[t.glyph - 1];
+  // ツォルキン上での音・紋章
+  const t = calcCycle(bDate, t_startDate, t_startTone, t_startGlyph);
   const toneName  = toneNames[t.tone - 1];
+  const glyphName = glyphNames[t.glyph - 1];
+  const gData     = glyphTexts[glyphName];
 
-  // この人が属する「13日間」のスタート紋章
-  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
-  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
+  // KIN番号（1〜260）
+  const kinIndex  = calcKin(t_startDate, bDate); // 0〜259
+  const kinNumber = kinIndex + 1;
+  const kinText   = kinBrief[kinNumber];
 
-  // テキスト系
-  const kinText   = kinBrief[kinNumber] || "";
-  const glyphText = glyphInfo[glyphName] || "";
-  const waveInfo  = waveBornInfo[waveGlyphName] || null;
+  // 「この13日間生まれ」の紋章を出す
+  const diffDays = Math.floor((bDate - t_startDate) / 86400000);
+  const waveGlyphNum  = calcWaveStartGlyph(t_startGlyph, diffDays);
+  const waveGlyphName = glyphNames[waveGlyphNum - 1];
+  const waveData      = waveBornInfo[waveGlyphName];
 
-  // HTML組み立て
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d2 = String(date.getDate()).padStart(2, "0");
+  let html = "";
 
-  let waveHtml = "";
-  if (waveInfo) {
-    waveHtml = `
-      <div class="section" style="margin-top:12px; background:#f0f6ff;">
-        <h3>この13日間に生まれた人の特徴（${waveGlyphName}）</h3>
-        <p class="wave-description">${waveInfo.catch}</p>
-        <ul style="margin-top:6px; padding-left:1.2em; font-size:0.9rem;">
-          ${waveInfo.traits.map(t => `<li>${t}</li>`).join("")}
-        </ul>
-      </div>
-    `;
+  html += `<div class="card">`;
+
+  // KIN番号＆一言
+  html += `<div style="font-size:0.95rem; line-height:1.7;">`;
+  html += `あなたのKIN：<b>KIN${kinNumber}</b><br>`;
+  if (kinText) {
+    html += `<div style="margin-top:6px;">${kinText}</div>`;
   }
+  html += `</div>`;
+
+  // 区切り線
+  html += `<hr style="margin:12px 0; border:none; border-top:1px dashed #e0d4bf;">`;
+
+  // 音・紋章の基本情報
+  html += `<div style="font-size:0.9rem; line-height:1.7;">`;
+  html += `● あなたの音：${toneName}<br>`;
+  html += `● あなたの紋章：${glyphName}<br><br>`;
+  if (gData) {
+    html += `【紋章キーワード】<br>${gData.keyword}<br><br>`;
+    html += `【紋章のエネルギー】<br>${gData.energy}`;
+  }
+  html += `</div>`;
+
+  // 13日間生まれの特徴
+  if (waveData) {
+    html += `<hr style="margin:12px 0; border:none; border-top:1px dashed #e0d4bf;">`;
+    html += `<div style="font-size:0.9rem; line-height:1.7;">`;
+    html += `【あなたが属する13日間】<br>`;
+    html += `${waveGlyphName}の13日間生まれ：<b>${waveData.catch}</b><br><br>`;
+    html += `・${waveData.traits.join("<br>・")}`;
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+
+  document.getElementById("birthdayResult").innerHTML = html;
+}
+</script>
 
   resultEl.innerHTML = `
     <p style="margin-bottom:8px;">選んだ日：${y}年${m}月${d2}日</p>
