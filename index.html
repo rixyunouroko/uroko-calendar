@@ -1358,8 +1358,8 @@ ${glyphTexts[tGlyphName].keyword}<br><br>
 <div id="tFrontExtra" class="extra-detail">
   【エネルギーの流れ】<br>
   ${glyphTexts[tGlyphName].energy}<br><br>
-  【活かしどころ】<br>
-  ・${glyphTexts[tGlyphName].good.join("<br>・")}
+  【この性質の活かしどころ】<br>
+  ・${urokoBack[tGlyphName].good.join("<br>・")}
 </div>
 `;
   // --- ツォルキン 裏 ---
@@ -1368,12 +1368,10 @@ document.getElementById("tBack").innerHTML = `
 ・${glyphTexts[tGlyphName].weak.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('tBackExtra', this)">さらに詳しく見る</button>
 <div id="tBackExtra" class="extra-detail">
-  【この紋章が荒れやすいポイント】<br>
-  ・相性の良い紋章：${glyphTexts[tGlyphName].pair.join(" ／ ")}<br>
-  ・要注意の紋章：${glyphTexts[tGlyphName].caution.join(" ／ ")}
+  【この紋章の荒れやすいポイント】<br>
+  ${urokoBack[tGlyphName].advice}
 </div>
 `;
-
   // --- ツォルキン 音と紋章 ---
 // --- ツォルキン 音と紋章 ---
 document.getElementById("tToneName").textContent =
@@ -1422,8 +1420,10 @@ ${glyphTexts[uGlyphName].keyword}<br><br>
 ・${glyphTexts[uGlyphName].born.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('uFrontExtra', this)">さらに詳しく見る</button>
 <div id="uFrontExtra" class="extra-detail">
-  【神様側が見ているエネルギー】<br>
-  ${glyphTexts[uGlyphName].energy}
+  【神様側から見たエネルギー】<br>
+  ${glyphTexts[uGlyphName].energy}<br><br>
+  【この性質の活かしどころ】<br>
+  ・${urokoBack[uGlyphName].good.join("<br>・")}
 </div>
 `;
   // --- ウロコ暦 裏 ---
@@ -1434,9 +1434,7 @@ document.getElementById("uBack").innerHTML = `
 <div id="uBackExtra" class="extra-detail">
   【本能の動き】<br>
   ${urokoBack[uGlyphName].instinct}<br><br>
-  【良い方向に出ると】<br>
-  ・${urokoBack[uGlyphName].good.join("<br>・")}<br><br>
-  【今日の一言アドバイス】<br>
+  【この紋章の荒れやすいポイント】<br>
   ${urokoBack[uGlyphName].advice}
 </div>
 `;
