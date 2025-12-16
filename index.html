@@ -106,7 +106,11 @@ body {
   text-align: center;
   font-size: 0.85rem;
 }
-
+.icon-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
 .mini-title {
   font-weight: bold;
   font-size: 1rem;   /* ← 音・紋章名 */
@@ -1218,6 +1222,20 @@ function getToneIconSrc(num) {
 function getGlyphIconSrc(num) {
   return `${ICON_BASE_PATH}glyph${num}.png`;
 }
+// アイコン画像の場所（同じフォルダなら "./" でOK）
+const ICON_BASE_PATH = "./";
+
+// 音アイコンのパス
+function getToneIconSrc(toneNumber) {
+  // 例: tone1.png, tone2.png ...
+  return `${ICON_BASE_PATH}tone${toneNumber}.png`;
+}
+
+// 紋章アイコンのパス
+function getGlyphIconSrc(glyphNumber) {
+  // 例: glyph1.png, glyph2.png ...
+  return `${ICON_BASE_PATH}glyph${glyphNumber}.png`;
+}
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
   const diffDays = Math.floor((date - startDate) / 86400000);
@@ -1306,21 +1324,24 @@ ${glyphTexts[tGlyphName].energy}
 ・${glyphTexts[tGlyphName].weak.join("<br>・")}
 `;
 
-  // --- ウロコ暦 裏 ---
-  document.getElementById("uBack").innerHTML = `
-【気をつけたいところ】<br>
-・${urokoBack[uGlyphName].bad.join("<br>・")}
-`;
-
   // --- ツォルキン 音と紋章 ---
-  document.getElementById("tToneName").textContent =
-    toneNames[t.tone - 1];
-  document.getElementById("tToneTheme").textContent =
-    toneThemes[t.tone - 1];
+document.getElementById("tToneName").innerHTML = `
+  <img src="${getToneIconSrc(t.tone)}"
+       alt="${toneNames[t.tone - 1]}"
+       class="icon-img">
+  <span>${toneNames[t.tone - 1]}</span>
+`;
+document.getElementById("tToneTheme").textContent =
+  toneThemes[t.tone - 1];
 
-  document.getElementById("tGlyphName").textContent = tGlyphName;
-  document.getElementById("tGlyphTheme").textContent =
-    glyphTexts[tGlyphName].keyword.split("／")[0];
+document.getElementById("tGlyphName").innerHTML = `
+  <img src="${getGlyphIconSrc(t.glyph)}"
+       alt="${tGlyphName}"
+       class="icon-img">
+  <span>${tGlyphName}</span>
+`;
+document.getElementById("tGlyphTheme").textContent =
+  glyphTexts[tGlyphName].keyword.split("／")[0];
 
   // --- ★ツォルキン13日間 ---
   const tKin = calcKin(t_startDate, targetDate);
@@ -1342,23 +1363,35 @@ ${glyphTexts[tGlyphName].energy}
 `;
 
   // --- ウロコ暦 音と紋章 ---
-  document.getElementById("uToneName").textContent =
-    toneNames[u.tone - 1];
-  document.getElementById("uToneTheme").textContent =
-    toneThemes[u.tone - 1];
+document.getElementById("uToneName").innerHTML = `
+  <img src="${getToneIconSrc(u.tone)}"
+       alt="${toneNames[u.tone - 1]}"
+       class="icon-img">
+  <span>${toneNames[u.tone - 1]}</span>
+`;
+document.getElementById("uToneTheme").textContent =
+  toneThemes[u.tone - 1];
 
-  // --- ウロコ暦 表 ---
+document.getElementById("uGlyphName").innerHTML = `
+  <img src="${getGlyphIconSrc(u.glyph)}"
+       alt="${uGlyphName}"
+       class="icon-img">
+  <span>${uGlyphName}</span>
+`;
+document.getElementById("uGlyphTheme").textContent =
+  glyphTexts[uGlyphName].keyword.split("／")[0];
+
+// --- ウロコ暦 表 ---
   document.getElementById("uFront").innerHTML = `
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 ${glyphTexts[uGlyphName].energy}
 `;
-
-  // --- ウロコ暦 紋章 ---
-  document.getElementById("uGlyphName").textContent = uGlyphName;
-  document.getElementById("uGlyphTheme").textContent =
-    glyphTexts[uGlyphName].keyword.split("／")[0];
-
+  // --- ウロコ暦 裏 ---
+  document.getElementById("uBack").innerHTML = `
+【気をつけたいところ】<br>
+・${urokoBack[uGlyphName].bad.join("<br>・")}
+`;
   // --- ★ウロコ暦13日間 ---
   const diffU = Math.floor((targetDate - u_waveStartDate) / 86400000);
     const uWaveStartGlyphNumber =
