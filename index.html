@@ -258,8 +258,6 @@ body {
   padding-top: 6px;
   line-height: 1.7;
 }
-const tDiff = diffDaysFrom(t_startDate, targetDate);
-const tWaveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, tDiff);
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2K8VMGRF5H"></script>
@@ -283,8 +281,6 @@ const tWaveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, tDiff);
     <button class="birthday-button" onclick="setViewDate()">この日を表示</button>
     <button class="birthday-button" onclick="resetToToday()">今日に戻る</button>
   </div>
-function diffDaysFrom(startDate, targetDate) {
-  return Math.floor((targetDate - startDate) / 86400000);
 }
 <!-- ツォルキン暦 -->
 <div class="section">
