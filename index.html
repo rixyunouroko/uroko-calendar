@@ -3042,56 +3042,6 @@ const toneInfo = {
 
 };
 function searchBirthday() {
-  const input = document.getElementById("bInput").value;
-  if (!input) return;
-
-  // 誕生日の Date オブジェクト
-  const birthDate = new Date(input);
-
-  // その日の「音」と「紋章」
-  const d = calcCycle(birthDate, t_startDate, t_startTone, t_startGlyph);
-  const toneNumber = d.tone.toString();
-  const glyphName = glyphNames[d.glyph - 1];
-
-  // ★ 誕生日のKIN番号
-  const kinIndex = calcKin(t_startDate, birthDate); // 0〜259
-  const kinNumber = kinIndex + 1;
-  const kinText = kinDescriptions[kinNumber] || `KIN${kinNumber}`;
-
-  // ★ 誕生日が属している「13日間（ウェイブスペル）」
-  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
-  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
-  const waveBornText = waveBornDescriptions[waveGlyphName] || "";
-
-  document.getElementById("birthdayResult").innerHTML = `
-    <h3>あなたの誕生日の設計</h3>
-
-    <p><b>${toneNames[d.tone - 1]} × ${glyphName}</b></p>
-    <p>あなたのKIN：<b>KIN${kinNumber}</b></p>
-
-    <hr>
-
-    <h4>◆ KINメッセージ</h4>
-    <pre>${kinText}</pre>
-
-    <hr>
-
-    <h4>◆ あなたが生まれた13日間（ウェイブスペル）</h4>
-    <p><b>${waveGlyphName}の13日間</b></p>
-    <pre>${waveBornText}</pre>
-
-    <hr>
-
-    <h4>◆ 音の性質</h4>
-    <pre>${toneInfo[toneNumber]}</pre>
-
-    <hr>
-
-    <h4>◆ 紋章の性質</h4>
-    <pre>${glyphInfo[glyphName]}</pre>
-  `;
-}
-function searchBirthday() {
   const input = document.getElementById("bInput");
   const resultEl = document.getElementById("birthdayResult");
   if (!input || !resultEl) return;
@@ -3102,7 +3052,6 @@ function searchBirthday() {
     return;
   }
 
-  // 入力された誕生日（日付だけに丸める）
   const d = new Date(v);
   if (isNaN(d)) {
     resultEl.textContent = "正しい日付を入力してください。";
@@ -3119,8 +3068,6 @@ function searchBirthday() {
   const glyphName = glyphNames[t.glyph - 1];      // 紋章名
   const toneName  = toneNames[t.tone - 1];        // 音名
 
-  const glyphData = glyphTexts[glyphName];
-  const backData  = urokoBack[glyphName];
   const kinText   = kinBrief[kinNumber] || "";
 
   // その人が生まれたときに属している「13日間（ウェイブスペル）」
@@ -3141,6 +3088,9 @@ function searchBirthday() {
     `;
   }
 
+  // 紋章ごとの詳しい説明（glyphInfo から）
+  const glyphDetail = (glyphInfo[glyphName] || "").trim();
+
   // 結果を描画
   const yyyy = date.getFullYear();
   const mm   = String(date.getMonth() + 1).padStart(2, "0");
@@ -3151,30 +3101,10 @@ function searchBirthday() {
 
     <p>
       <strong>KIN${kinNumber}</strong><br>
-      ${toneName} × ${glyphName}
+      音${t.tone} × ${glyphName}
     </p>
 
     ${kinText ? `<p>${kinText}</p>` : ""}
-
-    <hr>
-
-    <p>
-      <strong>表の性質（${glyphName}）</strong><br>
-      【キーワード】${glyphData ? glyphData.keyword : ""}<br><br>
-      【生まれ持った性質】<br>
-      ${glyphData ? "・" + glyphData.born.join("<br>・") : ""}
-    </p>
-
-    <p>
-      <strong>裏側・本能の動き</strong><br>
-      ${glyphData ? `【気をつけたいところ】<br>・${glyphData.weak.join("<br>・")}<br><br>` : ""}
-      ${backData ? `
-        【本能の動き】<br>
-        ${backData.instinct}<br><br>
-        【アドバイス】<br>
-        ${backData.advice}
-      ` : ""}
-    </p>
 
     <hr>
 
@@ -3185,6 +3115,18 @@ function searchBirthday() {
     <p>${waveText}</p>
 
     ${waveBornHtml}
+
+    ${
+      glyphDetail
+        ? `
+        <hr>
+        <h4>あなたの紋章「${glyphName}」について</h4>
+        <p style="white-space: pre-line;">
+          ${glyphDetail}
+        </p>
+        `
+        : ""
+    }
   `;
 }
 </script>
