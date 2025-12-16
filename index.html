@@ -2047,7 +2047,9 @@ function resetToToday() {
 }
 
 // ページ読み込み時は「今日」で表示
-resetToToday();
+document.addEventListener("DOMContentLoaded", () => {
+  resetToToday();
+});
 
 /* ===== 誕生日検索 ===== */
 const glyphInfo = {
