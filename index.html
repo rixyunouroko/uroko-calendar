@@ -3044,74 +3044,82 @@ const toneInfo = {
 function searchBirthday() {
   const input = document.getElementById("bInput");
   const resultEl = document.getElementById("birthdayResult");
+
   if (!input || !resultEl) return;
 
   const v = input.value;
   if (!v) {
-    resultEl.textContent = "誕生日をえらんでください。";
+    resultEl.innerHTML = "<p>誕生日をえらんでね。</p>";
     return;
   }
 
+  // 入力された誕生日を「日付だけ」にそろえる
   const d = new Date(v);
-  if (isNaN(d)) {
-    resultEl.textContent = "正しい日付を入力してください。";
-    return;
-  }
-
   const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
-  // KIN番号（1〜260）
-  const kinIndex = calcKin(t_startDate, date); // 0〜259
+  // KIN番号と音・紋章を計算
+  const kinIndex  = calcKin(t_startDate, date); // 0〜259
   const kinNumber = kinIndex + 1;
 
-  // その日の「音」と「紋章」
   const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
-  const glyphName = glyphNames[t.glyph - 1];      // 紋章名
-  const toneNum   = t.tone;                       // 1〜13
-  const toneName  = toneNames[toneNum - 1];       // 「音1」みたいな名前
+  const glyphName = glyphNames[t.glyph - 1];
+  const toneName  = toneNames[t.tone - 1];
 
-  const kinText     = kinBrief[kinNumber] || "";
-  const glyphDetail = (glyphInfo[glyphName] || "").trim();
-  const toneDetail  = (toneInfo[String(toneNum)] || "").trim();
+  // この人が属する「13日間」のスタート紋章
+  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
+  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
 
-  const yyyy = date.getFullYear();
-  const mm   = String(date.getMonth() + 1).padStart(2, "0");
-  const dd   = String(date.getDate()).padStart(2, "0");
+  // テキスト系
+  const kinText   = kinBrief[kinNumber] || "";
+  const glyphText = glyphInfo[glyphName] || "";
+  const waveInfo  = waveBornInfo[waveGlyphName] || null;
+
+  // HTML組み立て
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d2 = String(date.getDate()).padStart(2, "0");
+
+  let waveHtml = "";
+  if (waveInfo) {
+    waveHtml = `
+      <div class="section" style="margin-top:12px; background:#f0f6ff;">
+        <h3>この13日間に生まれた人の特徴（${waveGlyphName}）</h3>
+        <p class="wave-description">${waveInfo.catch}</p>
+        <ul style="margin-top:6px; padding-left:1.2em; font-size:0.9rem;">
+          ${waveInfo.traits.map(t => `<li>${t}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
 
   resultEl.innerHTML = `
-    <h3>${yyyy}年${mm}月${dd}日 生まれ</h3>
+    <p style="margin-bottom:8px;">選んだ日：${y}年${m}月${d2}日</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.9rem; margin-bottom:10px;">
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">KIN</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">KIN${kinNumber}</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">音</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">
+          ${toneName}（${toneThemes[t.tone - 1]}）
+        </td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">紋章</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${glyphName}</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">この日の一言</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${kinText}</td>
+      </tr>
+    </table>
 
-    <p>
-      <strong>KIN${kinNumber}</strong><br>
-      音${toneNum}（${toneName}） × ${glyphName}
-    </p>
+    <div style="white-space:pre-wrap; line-height:1.7; font-size:0.9rem; background:#fffceb; padding:10px; border-radius:10px;">
+      ${glyphText}
+    </div>
 
-    ${kinText ? `<p>${kinText}</p>` : ""}
-
-    <hr>
-
-    ${
-      toneDetail
-        ? `
-        <h4>あなたの「音${toneNum}」について</h4>
-        <p style="white-space: pre-line;">
-          ${toneDetail}
-        </p>
-        <hr>
-        `
-        : ""
-    }
-
-    ${
-      glyphDetail
-        ? `
-        <h4>あなたの紋章「${glyphName}」について</h4>
-        <p style="white-space: pre-line;">
-          ${glyphDetail}
-        </p>
-        `
-        : ""
-    }
+    ${waveHtml}
   `;
 }
 </script>
