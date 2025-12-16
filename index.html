@@ -667,7 +667,9 @@ const glyphTexts = {
   ],
   pair: ["水", "夜", "ワシ"],
   caution: ["ウサギ", "ナイフ", "嵐"]
-},// --- 8. ウサギ ---
+},
+
+// --- 8. ウサギ ---
 "ウサギ": {
   keyword: "楽しみ／美／豊かさ／収穫／遊び心",
   energy: "ウサギは“喜びと豊かさ”を増幅する紋章。好き・推し・美にエネルギーを注ぐことで人生全体を明るくする。",
@@ -1860,6 +1862,13 @@ function toggleExtra(id, btn) {
 
 // 共通：この日付で全部描画する関数
 function renderAll(targetDate) {
+  const tData = glyphTexts[tGlyphName];
+const uData = glyphTexts[uGlyphName];
+
+if (!tData || !uData) {
+  console.warn("glyphTexts に紋章の定義が足りてないっぽい:", tGlyphName, uGlyphName);
+  return;
+}
   // ---- 画面上部の日付表示 ----
   const yyyy = targetDate.getFullYear();
   const mm = String(targetDate.getMonth() + 1).padStart(2, "0");
@@ -1934,7 +1943,7 @@ document.getElementById("tBack").innerHTML = `
   ${urokoBack[tGlyphName].advice}
 </div>
 `;
-  // --- ツォルキン 音と紋章 ---
+
 // --- ツォルキン 音と紋章 ---
 document.getElementById("tToneName").textContent =
   toneNames[t.tone - 1];
