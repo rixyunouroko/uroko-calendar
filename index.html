@@ -412,7 +412,87 @@ const glyphNames = [
   "ワニ","風","夜","トカゲ","蛇","死","シカ","ウサギ","水","犬",
   "サル","道","コーン","ジャガー","ワシ","コンドル","香","ナイフ","嵐","祖先"
 ];
+function searchBirthday() {
+  const input = document.getElementById("bInput");
+  const resultEl = document.getElementById("birthdayResult");
 
+  if (!input || !resultEl) return;
+
+  const v = input.value;
+  if (!v) {
+    resultEl.innerHTML = "<p>誕生日をえらんでね。</p>";
+    return;
+  }
+
+  // 入力された誕生日を「日付だけ」にそろえる
+  const d = new Date(v);
+  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+  // KIN番号と音・紋章を計算
+  const kinIndex  = calcKin(t_startDate, date); // 0〜259
+  const kinNumber = kinIndex + 1;
+
+  const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
+  const glyphName = glyphNames[t.glyph - 1];
+  const toneName  = toneNames[t.tone - 1];
+
+  // この人が属する「13日間」のスタート紋章
+  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
+  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
+
+  // テキスト系
+  const kinText   = kinBrief[kinNumber] || "";
+  const glyphText = glyphInfo[glyphName] || "";
+  const waveInfo  = waveBornInfo[waveGlyphName] || null;
+
+  // HTML組み立て
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d2 = String(date.getDate()).padStart(2, "0");
+
+  let waveHtml = "";
+  if (waveInfo) {
+    waveHtml = `
+      <div class="section" style="margin-top:12px; background:#f0f6ff;">
+        <h3>この13日間に生まれた人の特徴（${waveGlyphName}）</h3>
+        <p class="wave-description">${waveInfo.catch}</p>
+        <ul style="margin-top:6px; padding-left:1.2em; font-size:0.9rem;">
+          ${waveInfo.traits.map(t => `<li>${t}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
+
+  resultEl.innerHTML = `
+    <p style="margin-bottom:8px;">選んだ日：${y}年${m}月${d2}日</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.9rem; margin-bottom:10px;">
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">KIN</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">KIN${kinNumber}</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">音</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">
+          ${toneName}（${toneThemes[t.tone - 1]}）
+        </td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">紋章</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${glyphName}</td>
+      </tr>
+      <tr>
+        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">この日の一言</th>
+        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${kinText}</td>
+      </tr>
+    </table>
+
+    <div style="white-space:pre-wrap; line-height:1.7; font-size:0.9rem; background:#fffceb; padding:10px; border-radius:10px;">
+      ${glyphText}
+    </div>
+
+    ${waveHtml}
+  `;
+}
 const toneNames = [
   "音1","音2","音3","音4","音5","音6","音7",
   "音8","音9","音10","音11","音12","音13"
