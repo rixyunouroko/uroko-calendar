@@ -281,6 +281,7 @@ body {
     <button class="birthday-button" onclick="setViewDate()">この日を表示</button>
     <button class="birthday-button" onclick="resetToToday()">今日に戻る</button>
   </div>
+
 <!-- ツォルキン暦 -->
 <div class="section">
   <h2>ツォルキン暦</h2>
@@ -411,87 +412,7 @@ const glyphNames = [
   "ワニ","風","夜","トカゲ","蛇","死","シカ","ウサギ","水","犬",
   "サル","道","コーン","ジャガー","ワシ","コンドル","香","ナイフ","嵐","祖先"
 ];
-function searchBirthday() {
-  const input = document.getElementById("bInput");
-  const resultEl = document.getElementById("birthdayResult");
 
-  if (!input || !resultEl) return;
-
-  const v = input.value;
-  if (!v) {
-    resultEl.innerHTML = "<p>誕生日をえらんでね。</p>";
-    return;
-  }
-
-  // 入力された誕生日を「日付だけ」にそろえる
-  const d = new Date(v);
-  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-
-  // KIN番号と音・紋章を計算
-  const kinIndex  = calcKin(t_startDate, date); // 0〜259
-  const kinNumber = kinIndex + 1;
-
-  const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
-  const glyphName = glyphNames[t.glyph - 1];
-  const toneName  = toneNames[t.tone - 1];
-
-  // この人が属する「13日間」のスタート紋章
-  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
-  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
-
-  // テキスト系
-  const kinText   = kinBrief[kinNumber] || "";
-  const glyphText = glyphInfo[glyphName] || "";
-  const waveInfo  = waveBornInfo[waveGlyphName] || null;
-
-  // HTML組み立て
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d2 = String(date.getDate()).padStart(2, "0");
-
-  let waveHtml = "";
-  if (waveInfo) {
-    waveHtml = `
-      <div class="section" style="margin-top:12px; background:#f0f6ff;">
-        <h3>この13日間に生まれた人の特徴（${waveGlyphName}）</h3>
-        <p class="wave-description">${waveInfo.catch}</p>
-        <ul style="margin-top:6px; padding-left:1.2em; font-size:0.9rem;">
-          ${waveInfo.traits.map(t => `<li>${t}</li>`).join("")}
-        </ul>
-      </div>
-    `;
-  }
-
-  resultEl.innerHTML = `
-    <p style="margin-bottom:8px;">選んだ日：${y}年${m}月${d2}日</p>
-    <table style="width:100%; border-collapse:collapse; font-size:0.9rem; margin-bottom:10px;">
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">KIN</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">KIN${kinNumber}</td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">音</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">
-          ${toneName}（${toneThemes[t.tone - 1]}）
-        </td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">紋章</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${glyphName}</td>
-      </tr>
-      <tr>
-        <th style="text-align:left; padding:4px; border-bottom:1px solid #e0d4bf;">この日の一言</th>
-        <td style="padding:4px; border-bottom:1px solid #e0d4bf;">${kinText}</td>
-      </tr>
-    </table>
-
-    <div style="white-space:pre-wrap; line-height:1.7; font-size:0.9rem; background:#fffceb; padding:10px; border-radius:10px;">
-      ${glyphText}
-    </div>
-
-    ${waveHtml}
-  `;
-}
 const toneNames = [
   "音1","音2","音3","音4","音5","音6","音7",
   "音8","音9","音10","音11","音12","音13"
@@ -667,9 +588,7 @@ const glyphTexts = {
   ],
   pair: ["水", "夜", "ワシ"],
   caution: ["ウサギ", "ナイフ", "嵐"]
-},
-
-// --- 8. ウサギ ---
+},// --- 8. ウサギ ---
 "ウサギ": {
   keyword: "楽しみ／美／豊かさ／収穫／遊び心",
   energy: "ウサギは“喜びと豊かさ”を増幅する紋章。好き・推し・美にエネルギーを注ぐことで人生全体を明るくする。",
@@ -1805,13 +1724,13 @@ const ICON_BASE_PATH = "./";
 // 音アイコンのパス
 function getToneIconSrc(toneNumber) {
   // 例: tone1.png, tone2.png ...
-  return `${ICON_BASE_PATH}tone${toneNumber}.PNG`;
+  return ${ICON_BASE_PATH}tone${toneNumber}.PNG;
 }
 
 // 紋章アイコンのパス
 function getGlyphIconSrc(glyphNumber) {
   // 例: glyph1.png, glyph2.png ...
-  return `${ICON_BASE_PATH}glyph${glyphNumber}.PNG`;
+  return ${ICON_BASE_PATH}glyph${glyphNumber}.PNG;
 }
 /* ===== サイクル計算 ===== */
 function calcCycle(date, startDate, startTone, startGlyph) {
@@ -1862,19 +1781,12 @@ function toggleExtra(id, btn) {
 
 // 共通：この日付で全部描画する関数
 function renderAll(targetDate) {
-  const tData = glyphTexts[tGlyphName];
-const uData = glyphTexts[uGlyphName];
-
-if (!tData || !uData) {
-  console.warn("glyphTexts に紋章の定義が足りてないっぽい:", tGlyphName, uGlyphName);
-  return;
-}
   // ---- 画面上部の日付表示 ----
   const yyyy = targetDate.getFullYear();
   const mm = String(targetDate.getMonth() + 1).padStart(2, "0");
   const dd = String(targetDate.getDate()).padStart(2, "0");
   document.getElementById("todayDate").textContent =
-    `${yyyy}年${mm}月${dd}日`;
+    ${yyyy}年${mm}月${dd}日;
   // ★ 今日のKIN番号を計算（0〜259 → 1〜260）
   const kinIndex = calcKin(t_startDate, targetDate); // 0〜259
   const kinNumber = kinIndex + 1;
@@ -1882,10 +1794,10 @@ if (!tData || !uData) {
   const todayKinEl = document.getElementById("todayKin");
   if (todayKinEl) {
     // ここではシンプルに番号だけ表示
-    todayKinEl.textContent = `今日のKIN：KIN${kinNumber}`;
+    todayKinEl.textContent = 今日のKIN：KIN${kinNumber};
     // もし一言も出したくなったら：
     // const kinText = kinDescriptions[kinNumber];
-    // todayKinEl.textContent = kinText || `今日のKIN：KIN${kinNumber}`;
+    // todayKinEl.textContent = kinText || 今日のKIN：KIN${kinNumber};
   }
   
   // === この日のサイクル（ツォルキン／ウロコ暦） ===
@@ -1920,7 +1832,7 @@ if (!tData || !uData) {
     uGlyphIcon.alt = uGlyphName;
   }
   // --- ツォルキン 表 ---
-document.getElementById("tFront").innerHTML = `
+document.getElementById("tFront").innerHTML = 
 【キーワード】<br>
 ${glyphTexts[tGlyphName].keyword}<br><br>
 【生まれ持った性質】<br>
@@ -1930,11 +1842,11 @@ ${glyphTexts[tGlyphName].keyword}<br><br>
   【エネルギーの流れ】<br>
   ${glyphTexts[tGlyphName].energy}<br><br>
   【この性質の活かしどころ】<br>
-  ・${glyphTexts[tGlyphName].good.join("<br>・")}
+  ・${urokoBack[tGlyphName].good.join("<br>・")}
 </div>
-`;
+;
   // --- ツォルキン 裏 ---
-document.getElementById("tBack").innerHTML = `
+document.getElementById("tBack").innerHTML = 
 【気をつけたいところ】 <br>
 ・${glyphTexts[tGlyphName].weak.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('tBackExtra', this)">さらに詳しく見る</button>
@@ -1942,8 +1854,8 @@ document.getElementById("tBack").innerHTML = `
   【この紋章の荒れやすいポイント】<br>
   ${urokoBack[tGlyphName].advice}
 </div>
-`;
-
+;
+  // --- ツォルキン 音と紋章 ---
 // --- ツォルキン 音と紋章 ---
 document.getElementById("tToneName").textContent =
   toneNames[t.tone - 1];
@@ -1960,18 +1872,18 @@ document.getElementById("tGlyphTheme").textContent =
   const tWaveGlyph = glyphNames[tWaveStartGlyphNumber - 1];
 
   document.getElementById("tWave").textContent =
-    `${tWaveGlyph}の13日間`;
+    ${tWaveGlyph}の13日間;
 
   const tWaveGlyphIcon = document.getElementById("tWaveGlyphIcon");
   if (tWaveGlyphIcon) {
     tWaveGlyphIcon.src = getGlyphIconSrc(tWaveStartGlyphNumber);
-    tWaveGlyphIcon.alt = `${tWaveGlyph}の紋章`;
+    tWaveGlyphIcon.alt = ${tWaveGlyph}の紋章;
   }
 
-  document.getElementById("tWaveInfo").innerHTML = `
+  document.getElementById("tWaveInfo").innerHTML = 
 <p class="wave-description">${waveTexts[tWaveGlyph]}</p>
 <div class="wave-day">今日は ${tDisplayDay} / 13 日目</div>
-`;
+;
 
   // --- ウロコ暦 音と紋章 ---
 // --- ウロコ暦 音と紋章 ---
@@ -1984,7 +1896,7 @@ document.getElementById("uGlyphName").textContent = uGlyphName;
 document.getElementById("uGlyphTheme").textContent =
   glyphTexts[uGlyphName].keyword.split("／")[0];
 // --- ウロコ暦 表 ---
-document.getElementById("uFront").innerHTML = `
+document.getElementById("uFront").innerHTML = 
 【キーワード】<br>
 ${glyphTexts[uGlyphName].keyword}<br><br>
 【生まれ持った性質】<br>
@@ -1996,9 +1908,9 @@ ${glyphTexts[uGlyphName].keyword}<br><br>
   【この性質の活かしどころ】<br>
   ・${urokoBack[uGlyphName].good.join("<br>・")}
 </div>
-`;
+;
   // --- ウロコ暦 裏 ---
-document.getElementById("uBack").innerHTML = `
+document.getElementById("uBack").innerHTML = 
 【気をつけたいところ】<br>
 ・${urokoBack[uGlyphName].bad.join("<br>・")}<br>
 <button class="more-btn" onclick="toggleExtra('uBackExtra', this)">さらに詳しく見る</button>
@@ -2008,7 +1920,7 @@ document.getElementById("uBack").innerHTML = `
   【この紋章の荒れやすいポイント】<br>
   ${urokoBack[uGlyphName].advice}
 </div>
-`;
+;
   // --- ★ウロコ暦13日間 ---
   const diffU = Math.floor((targetDate - u_waveStartDate) / 86400000);
     const uWaveStartGlyphNumber =
@@ -2016,18 +1928,18 @@ document.getElementById("uBack").innerHTML = `
   const uWaveGlyph = glyphNames[uWaveStartGlyphNumber - 1];
 
   document.getElementById("uWave").textContent =
-    `${uWaveGlyph}の13日間`;
+    ${uWaveGlyph}の13日間;
 
   const uWaveGlyphIcon = document.getElementById("uWaveGlyphIcon");
   if (uWaveGlyphIcon) {
     uWaveGlyphIcon.src = getGlyphIconSrc(uWaveStartGlyphNumber);
-    uWaveGlyphIcon.alt = `${uWaveGlyph}の紋章`;
+    uWaveGlyphIcon.alt = ${uWaveGlyph}の紋章;
   }
 
-  document.getElementById("uWaveInfo").innerHTML = `
+  document.getElementById("uWaveInfo").innerHTML = 
   <div class="wave-description">${waveTexts[uWaveGlyph]}</div>
   <div class="wave-day">今日は ${uDisplayDay} / 13 日目</div>
-`;
+;
 }
 
 // 「この日を表示」ボタン：日付入力から反映
@@ -2056,9 +1968,7 @@ function resetToToday() {
 }
 
 // ページ読み込み時は「今日」で表示
-document.addEventListener("DOMContentLoaded", () => {
-  resetToToday();
-});
+resetToToday();
 
 /* ===== 誕生日検索 ===== */
 const glyphInfo = {
@@ -2225,40 +2135,36 @@ const glyphInfo = {
 
 ◎ どんなエネルギー？
 蛇は「生きている身体と情熱」。
-頭でこねくり回す前に、体感と直感で「これや」と感じるタイプのエネルギー。
-喜び・怒り・悲しみ・ときめき、どれも濃いめに出やすい。
+体感・直感・喜怒哀楽が濃い。
 
 ◎ 蛇の日に生まれた人
-・感情表現がはっきりしていて分かりやすい  
-・情熱スイッチが入ると一気に集中してやり切る  
-・体調とメンタルがリンクしやすい  
-・雰囲気や色気など「存在感」で覚えられやすい  
+・感情がはっきり  
+・情熱全振り  
+・体調とメンタル連動  
+・フェロモン・雰囲気が独特  
 
 ◎ 得意
-・身体を使う仕事や表現（ダンス、舞台、接客など）  
-・深い情熱を込める創作やものづくり  
-・ここ一番の勝負どころでの集中・決断  
+・身体表現  
+・魂レベルの創作  
+・ここ一番の集中  
 
 ◎ 落とし穴
-・感情がジェットコースターになりやすい  
-・感情を押し殺すと先に身体に出てくる  
-・「欲」や「好き」を危険視しすぎて、自分の火を消してしまう  
+・感情ジェットコースター  
+・押し殺すと身体症状として出る  
+・欲望を危険と決めて封印  
 
 ◎ 相性
-・トカゲ：欲望や種を一緒に燃料にしてくれる相棒  
-・水：感情のケアと浄化を手伝ってくれる存在  
+・トカゲ：種と情熱の相乗効果  
+・水：蛇の熱量を調整  
 
 ◎ 注意
-・嵐：感情と状況が一気に荒れやすいコンビ  
-・ナイフ：正論と切れ味で自分を刺しすぎないよう注意  
+・嵐：爆発コンボ  
+・ナイフ：情熱を否定されたように感じる  
 
 ◎ 裏の視点（本能）
-「感じる・求める・生き抜く」本能そのもの。  
-良い方向に出ると、生命力と情熱で周りまで温める“暖炉”みたいな存在。  
-暴走すると、感情の炎上・依存・燃え尽きに振れやすい。
-
-『体が羅針盤』タイプやから、  
-頭でガマンしすぎず、運動・声・創作など安全な発散先を用意しておくと本領発揮しやすい紋章。
+「感じる・求める・生き抜く」。  
+良い方向ではカリスマ。  
+暴走すると怒り・依存・燃え尽きになる。
 `,
 
 "死": `
@@ -2852,10 +2758,20 @@ const toneInfo = {
 ◎ キーワード  
 始まり／意志／スタートの火種
 
+◎ どんな日？  
+物事の“核”が決まる日。  
+勢いや直感が信頼できる。  
+始めたい気持ちが湧いたら GO。
+
 ◎ 音1の人  
 ・新しい流れを呼ぶ存在  
 ・直感先行で動くタイプ  
 ・始める力が強い  
+
+◎ 過ごし方  
+・新しい計画を立てる  
+・直感ノートを作る  
+・やりたいことを書き出す  
 
 ◎ 裏の視点  
 スタートの火力は強いが、続ける仕組みが必要。
@@ -2865,10 +2781,19 @@ const toneInfo = {
 ◎ キーワード  
 比較／バランス／選別
 
+◎ どんな日？  
+「どっちを選ぶ？」がテーマ。  
+良し悪しではなく、適・不適で分かれていく。
+
 ◎ 音2の人  
 ・白黒はっきり  
 ・判断が早い  
 ・合う人とだけ深くつながる  
+
+◎ 過ごし方  
+・選択肢を2つに絞る  
+・不要な予定を手放す  
+・人間関係の距離感調整  
 
 ◎ 裏の視点  
 二極化しやすいので、極端にならない工夫が鍵。
@@ -2878,10 +2803,19 @@ const toneInfo = {
 ◎ キーワード  
 動く／広がる／交流
 
+◎ どんな日？  
+動きが出る日。  
+想定外の展開も起こりやすいけど、それが吉。
+
 ◎ 音3の人  
 ・コミュ力高い  
 ・ひらめき多い  
 ・せわしなく見えるけど本領発揮中  
+
+◎ 過ごし方  
+・軽く散歩する  
+・人と話してみる  
+・思いつき行動が吉  
 
 ◎ 裏の視点  
 散らかりやすいので、ゴールを1つ決めておくと安定。
@@ -2891,10 +2825,19 @@ const toneInfo = {
 ◎ キーワード  
 基礎／土台／ルール／安定
 
+◎ どんな日？  
+“形にするための土台” を固める日。  
+計画・整理整頓・準備に最適。
+
 ◎ 音4の人  
 ・安定性の人  
 ・丁寧で現実的  
 ・雰囲気を落ち着かせる役割  
+
+◎ 過ごし方  
+・部屋の整理  
+・計画の整備  
+・生活習慣の見直し  
 
 ◎ 裏の視点  
 こだわりすぎると頑固に見えるので柔軟さも一つ。
@@ -2904,10 +2847,19 @@ const toneInfo = {
 ◎ キーワード  
 中心／加速／底力
 
+◎ どんな日？  
+物事に勢いがつく日。  
+一気にやり切る力が発動しやすい。
+
 ◎ 音5の人  
 ・中心軸が強い  
 ・人をまとめる  
 ・動くとまわりもついてくる  
+
+◎ 過ごし方  
+・集中作業  
+・重要案件をすすめる  
+・決めることを一つ選ぶ  
 
 ◎ 裏の視点  
 がんばりすぎ注意。燃費の管理が大事。
@@ -2917,10 +2869,19 @@ const toneInfo = {
 ◎ キーワード  
 流れ／循環／調整
 
+◎ どんな日？  
+“流れによる調整” が起こる日。  
+良い流れに乗りやすく、悪い流れは修正が入りやすい。
+
 ◎ 音6の人  
 ・環境適応力が高い  
 ・縁の流れを呼びやすい  
 ・自然体  
+
+◎ 過ごし方  
+・柔軟に動く  
+・予定変更OKの姿勢  
+・流れを読む練習  
 
 ◎ 裏の視点  
 振り回されやすいので、最初に目的だけ決めると安定。
@@ -2930,10 +2891,19 @@ const toneInfo = {
 ◎ キーワード  
 見直し／集中／内側へ
 
+◎ どんな日？  
+“魂の調整日” と言われるほど内側に意識が向く。  
+本質的なことだけが残る。
+
 ◎ 音7の人  
 ・直感鋭い  
 ・スピリチュアル強め  
 ・静かに深く感じとるタイプ  
+
+◎ 過ごし方  
+・一人時間を作る  
+・やりすぎてる部分を削る  
+・迷いの原因を書き出す  
 
 ◎ 裏の視点  
 孤立モードになりすぎると不安定になるので光も取り入れて。
@@ -2943,10 +2913,19 @@ const toneInfo = {
 ◎ キーワード  
 調和／公平／バランスの完成
 
+◎ どんな日？  
+人間関係・お金・仕事、全部の“帳尻が合う”日。  
+平等性やフェアさがテーマ。
+
 ◎ 音8の人  
 ・調整役  
 ・平和主義  
 ・不公平に敏感  
+
+◎ 過ごし方  
+・部屋の美化  
+・対等な関係を見直す  
+・バランスを整える行為全般  
 
 ◎ 裏の視点  
 がまんしがち。意見を飲み込みすぎないように。
@@ -2956,10 +2935,19 @@ const toneInfo = {
 ◎ キーワード  
 意図の完成／引き寄せ／結果が動く
 
+◎ どんな日？  
+“思っていたことが形になる”日。  
+タイミングが合いやすい。
+
 ◎ 音9の人  
 ・引き寄せ体質  
 ・感受性豊か  
 ・広い視点を持つ  
+
+◎ 過ごし方  
+・願いを再確認  
+・直感を信じて行動  
+・作品発表などに良い  
 
 ◎ 裏の視点  
 感情過多になって疲れる時があるので深呼吸を。
@@ -2969,10 +2957,18 @@ const toneInfo = {
 ◎ キーワード  
 形になる／実現／完成の手前
 
+◎ どんな日？  
+“積み上げたものが見える形になる”日。
+
 ◎ 音10の人  
 ・実務が得意  
 ・責任感強め  
 ・完成度にこだわる  
+
+◎ 過ごし方  
+・成果物をまとめる  
+・整える時間を作る  
+・途中のものを完成へ運ぶ  
 
 ◎ 裏の視点  
 完璧主義になりがち。8割完成で十分なこともある。
@@ -2982,10 +2978,19 @@ const toneInfo = {
 ◎ キーワード  
 解放／手放し／破壊と再構築
 
+◎ どんな日？  
+不要なものが一気に離れる日。  
+崩れるのは“次のため”。
+
 ◎ 音11の人  
 ・浄化役  
 ・物事の真実を見抜く  
 ・壊すのではなく整えるために削るタイプ  
+
+◎ 過ごし方  
+・部屋の断捨離  
+・いらん人間関係整理  
+・気になることを全部書き出す  
 
 ◎ 裏の視点  
 やりすぎ注意。切りすぎると孤独になりやすい。
@@ -2995,10 +3000,19 @@ const toneInfo = {
 ◎ キーワード  
 理解／共有／つながり
 
+◎ どんな日？  
+“話す・伝える・まとめる” のに最適。  
+学びや情報も整理されやすい。
+
 ◎ 音12の人  
 ・説明が上手い  
 ・仲介役  
 ・人の気持ちをくみ取る  
+
+◎ 過ごし方  
+・人に話す  
+・知識まとめ  
+・文章整理  
 
 ◎ 裏の視点  
 人のために動きすぎて疲れやすい。
@@ -3008,159 +3022,75 @@ const toneInfo = {
 ◎ キーワード  
 変容／未来／統合／悟り
 
+◎ どんな日？  
+13は“締めと再生”。  
+一つのサイクルが終わり、未来の入口が開く。
+
 ◎ 音13の人  
 ・循環の達人  
 ・過去と未来をつなぐ  
 ・不思議な縁が来やすい  
+
+◎ 過ごし方  
+・流れの総まとめ  
+・未来の方向性を考える  
+・瞑想・インスピレーション  
 
 ◎ 裏の視点  
 締めの勢いで全部捨てがち。必要なものは残す意識を。
 `
 
 };
-function function searchBirthday() {
-  const input = document.getElementById("bInput");
-  const resultEl = document.getElementById("birthdayResult");
-  if (!input || !resultEl) return;
-
-  const v = input.value;
-  if (!v) {
-    resultEl.textContent = "誕生日をえらんでください。";
-    return;
-  }
-
-  const d = new Date(v);
-  if (isNaN(d)) {
-    resultEl.textContent = "正しい日付を入力してください。";
-    return;
-  }
-
-  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-
-  // KIN番号（1〜260）
-  const kinIndex = calcKin(t_startDate, date); // 0〜259
-  const kinNumber = kinIndex + 1;
-
-  // その日の「音」と「紋章」
-  const t = calcCycle(date, t_startDate, t_startTone, t_startGlyph);
-  const glyphName = glyphNames[t.glyph - 1];      // 紋章名
-  const toneNum   = t.tone;                       // 1〜13
-  const toneName  = toneNames[toneNum - 1];       // 「音1」みたいな名前
-
-  const kinText     = kinBrief[kinNumber] || "";
-  const glyphDetail = (glyphInfo[glyphName] || "").trim();
-  const toneDetail  = (toneInfo[String(toneNum)] || "").trim();
-
-  const yyyy = date.getFullYear();
-  const mm   = String(date.getMonth() + 1).padStart(2, "0");
-  const dd   = String(date.getDate()).padStart(2, "0");
-
-  resultEl.innerHTML = `
-    <h3>${yyyy}年${mm}月${dd}日 生まれ</h3>
-
-    <p>
-      <strong>KIN${kinNumber}</strong><br>
-      音${toneNum}（${toneName}） × ${glyphName}
-    </p>
-
-    ${kinText ? `<p>${kinText}</p>` : ""}
-
-    <hr>
-
-    ${
-      toneDetail
-        ? `
-        <h4>あなたの「音${toneNum}」について</h4>
-        <p style="white-space: pre-line;">
-          ${toneDetail}
-        </p>
-        <hr>
-        `
-        : ""
-    }
-
-    ${
-      glyphDetail
-        ? `
-        <h4>あなたの紋章「${glyphName}」について</h4>
-        <p style="white-space: pre-line;">
-          ${glyphDetail}
-        </p>
-        `
-        : ""
-    }
-  `;
-}
-<script>
-// ここまでが今のコード
-// waveBornInfo の定義の「あと」にこの関数を追加してね
-
 function searchBirthday() {
   const input = document.getElementById("bInput").value;
   if (!input) return;
 
-  // 入力された誕生日を「日付だけ」にそろえる
-  const d = new Date(input);
-  const bDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  // 誕生日の Date オブジェクト
+  const birthDate = new Date(input);
 
-  // ツォルキン上での音・紋章
-  const t = calcCycle(bDate, t_startDate, t_startTone, t_startGlyph);
-  const toneName  = toneNames[t.tone - 1];
-  const glyphName = glyphNames[t.glyph - 1];
-  const gData     = glyphTexts[glyphName];
+  // その日の「音」と「紋章」
+  const d = calcCycle(birthDate, t_startDate, t_startTone, t_startGlyph);
+  const toneNumber = d.tone.toString();
+  const glyphName = glyphNames[d.glyph - 1];
 
-  // KIN番号（1〜260）
-  const kinIndex  = calcKin(t_startDate, bDate); // 0〜259
+  // ★ 誕生日のKIN番号
+  const kinIndex = calcKin(t_startDate, birthDate); // 0〜259
   const kinNumber = kinIndex + 1;
-  const kinText   = kinBrief[kinNumber];
+  const kinText = kinDescriptions[kinNumber] || KIN${kinNumber};
 
-  // 「この13日間生まれ」の紋章を出す
-  const diffDays = Math.floor((bDate - t_startDate) / 86400000);
-  const waveGlyphNum  = calcWaveStartGlyph(t_startGlyph, diffDays);
-  const waveGlyphName = glyphNames[waveGlyphNum - 1];
-  const waveData      = waveBornInfo[waveGlyphName];
+  // ★ 誕生日が属している「13日間（ウェイブスペル）」
+  const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, kinIndex);
+  const waveGlyphName = glyphNames[waveStartGlyphNumber - 1];
+  const waveBornText = waveBornDescriptions[waveGlyphName] || "";
 
-  let html = "";
+  document.getElementById("birthdayResult").innerHTML = `
+    <h3>あなたの誕生日の設計</h3>
 
-  html += `<div class="card">`;
+    <p><b>${toneNames[d.tone - 1]} × ${glyphName}</b></p>
+    <p>あなたのKIN：<b>KIN${kinNumber}</b></p>
 
-  // KIN番号＆一言
-  html += `<div style="font-size:0.95rem; line-height:1.7;">`;
-  html += `あなたのKIN：<b>KIN${kinNumber}</b><br>`;
-  if (kinText) {
-    html += `<div style="margin-top:6px;">${kinText}</div>`;
-  }
-  html += `</div>`;
+    <hr>
 
-  // 区切り線
-  html += `<hr style="margin:12px 0; border:none; border-top:1px dashed #e0d4bf;">`;
+    <h4>◆ KINメッセージ</h4>
+    <pre>${kinText}</pre>
 
-  // 音・紋章の基本情報
-  html += `<div style="font-size:0.9rem; line-height:1.7;">`;
-  html += `● あなたの音：${toneName}<br>`;
-  html += `● あなたの紋章：${glyphName}<br><br>`;
-  if (gData) {
-    html += `【紋章キーワード】<br>${gData.keyword}<br><br>`;
-    html += `【紋章のエネルギー】<br>${gData.energy}`;
-  }
-  html += `</div>`;
+    <hr>
 
-  // 13日間生まれの特徴
-  if (waveData) {
-    html += `<hr style="margin:12px 0; border:none; border-top:1px dashed #e0d4bf;">`;
-    html += `<div style="font-size:0.9rem; line-height:1.7;">`;
-    html += `【あなたが属する13日間】<br>`;
-    html += `${waveGlyphName}の13日間生まれ：<b>${waveData.catch}</b><br><br>`;
-    html += `・${waveData.traits.join("<br>・")}`;
-    html += `</div>`;
-  }
+    <h4>◆ あなたが生まれた13日間（ウェイブスペル）</h4>
+    <p><b>${waveGlyphName}の13日間</b></p>
+    <pre>${waveBornText}</pre>
 
-  html += `</div>`;
+    <hr>
 
-  document.getElementById("birthdayResult").innerHTML = html;
+    <h4>◆ 音の性質</h4>
+    <pre>${toneInfo[toneNumber]}</pre>
+
+    <hr>
+
+    <h4>◆ 紋章の性質</h4>
+    <pre>${glyphInfo[glyphName]}</pre>
+  `;
 }
-const tDiff = diffDaysFrom(t_startDate, date);
-const waveStartGlyphNumber = calcWaveStartGlyph(t_startGlyph, tDiff);
 </script>
 </div>
 </body>
